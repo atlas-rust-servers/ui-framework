@@ -13,19 +13,6 @@ namespace Oxide.Ext.UiFramework.Callbacks;
 public abstract class BaseAsyncCallback : BasePoolable
 {
     /// <summary>
-    /// The callback to be called by the delegate
-    /// </summary>
-    private readonly Action _callback;
-        
-    /// <summary>
-    /// Constructor
-    /// </summary>
-    protected BaseAsyncCallback()
-    {
-        _callback = CallbackInternal;
-    }
-
-    /// <summary>
     /// Overridden in the child class to handle the callback
     /// </summary>
     protected abstract ValueTask HandleCallback();
@@ -35,18 +22,16 @@ public abstract class BaseAsyncCallback : BasePoolable
     /// </summary>
     /// <returns></returns>
     protected abstract string GetExceptionMessage();
-        
+
     /// <summary>
     /// Runs the callback using async
     /// </summary>
     protected void Run()
     {
-#pragma warning disable EPC13
-        Task.Run(_callback);
-#pragma warning restore EPC13
+        AsyncExecutioner.Schedule(this);
     }
 
-    private async void CallbackInternal()
+    internal async void CallbackInternal()
     {
         try
         {

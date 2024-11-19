@@ -29,6 +29,44 @@ jobs:
         run: |
           .\Download-References.ps1
 
+      - name: Set up JDK 17
+        uses: actions/setup-java@v1
+        with:
+          java-version: 1.17
+          
+      - name: Cache SonarQube packages
+        uses: actions/cache@v1
+        with:
+          path: ~\sonar\cache
+          key: ${{ runner.os }}-sonar
+          restore-keys: ${{ runner.os }}-sonar
+          
+      - name: Cache SonarQube scanner
+        id: cache-sonar-scanner
+        uses: actions/cache@v1
+        with:
+          path: .\.sonar\scanner
+          key: ${{ runner.os }}-sonar-scanner
+          restore-keys: ${{ runner.os }}-sonar-scanner
+          
+      - name: Install SonarQube scanner
+        if: steps.cache-sonar-scanner.outputs.cache-hit != 'true'
+        shell: powershell
+        run: |
+          cd src\
+          New-Item -Path .\.\.sonar\scanner -ItemType Directory
+          dotnet tool update dotnet-sonarscanner --tool-path .\.\.sonar\scanner
+          
+      - name: Build and analyze
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
+        shell: powershell
+        run: |
+          cd src\
+          .\.\.sonar\scanner\dotnet-sonarscanner begin /k:"atlas-rust-servers_ui-framework_AZNCqE89FtKmJoS6gHBD" /d:sonar.login="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="${{ secrets.SONAR_HOST_URL }}"
+          dotnet build
+          .\.\.sonar\scanner\dotnet-sonarscanner end /d:sonar.login="${{ secrets.SONAR_TOKEN }}"
+
       - name: Build DLLs - Oxide
         run: dotnet build Rust.UIFramework.csproj -c Release /p:Platform=Oxide /p:Version=${{ env.VERSION }} -f net48
         working-directory: src/Rust.UIFramework

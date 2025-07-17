@@ -95,7 +95,7 @@ public abstract class BaseUiComponent : BasePoolable
         writer.WriteEndObject();
     }
 
-    public void SetReferenceName(string name, bool autoDestroy)
+    public void SetReferenceName(string name, bool autoDestroy = false)
     {
         Reference = Reference.WithName(name);
         AutoDestroy = autoDestroy;

@@ -1,4 +1,5 @@
-﻿using Oxide.Ext.UiFramework.Json;
+﻿using Oxide.Ext.UiFramework.Extensions;
+using Oxide.Ext.UiFramework.Json;
 using Oxide.Ext.UiFramework.Offsets;
 using Oxide.Ext.UiFramework.Pooling;
 using Oxide.Ext.UiFramework.Positions;
@@ -11,6 +12,7 @@ public abstract class BaseUiComponent : BasePoolable
     public float FadeOut;
     public UiPosition Position;
     public UiOffset Offset;
+    public bool AutoDestroy;
 
     protected static T CreateBase<T>(in UiPosition pos, in UiOffset offset) where T : BaseUiComponent, new()
     {
@@ -71,7 +73,10 @@ public abstract class BaseUiComponent : BasePoolable
         writer.AddFieldRaw(JsonDefaults.Common.ComponentName, Reference.Name);
         writer.AddFieldRaw(JsonDefaults.Common.ParentName, Reference.Parent);
         writer.AddField(JsonDefaults.Common.FadeOutName, FadeOut, JsonDefaults.Common.FadeOut);
-
+        
+        if (AutoDestroy)
+            writer.AddFieldRaw(JsonDefaults.Common.AutoDestroy, Reference.Name);
+        
         writer.WritePropertyName("components");
         writer.WriteStartArray();
         WriteComponents(writer);
@@ -90,6 +95,12 @@ public abstract class BaseUiComponent : BasePoolable
         writer.WriteEndObject();
     }
 
+    public void SetReferenceName(string name, bool autoDestroy)
+    {
+        Reference = Reference.WithName(name);
+        AutoDestroy = autoDestroy;
+    }
+    
     public void SetFadeOut(float duration)
     {
         FadeOut = duration;
@@ -97,6 +108,7 @@ public abstract class BaseUiComponent : BasePoolable
 
     protected override void EnterPool()
     {
+        AutoDestroy = false;
         Reference = default;
         FadeOut = 0;
         Position = default;

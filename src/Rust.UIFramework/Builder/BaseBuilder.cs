@@ -136,11 +136,7 @@ public abstract class BaseBuilder : BasePoolable
 
     public static void DestroyUi(SendInfo send, string name)
     {
-        CommunityEntity.ServerInstance.ClientRPC(new RpcTarget
-        {
-            Function = UiConstants.RpcFunctions.DestroyUiFunc,
-            Connections = send
-        }, name);
+        SendHandler.Enqueue(UiDestroyRequest.Create(name, send));
     }
 
     public static void DestroyUi(IEnumerable<Connection> connections, string name)

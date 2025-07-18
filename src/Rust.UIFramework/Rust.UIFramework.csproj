@@ -42,11 +42,35 @@
     </PropertyGroup>
     
     <ItemGroup>
+      <Reference Include="0Harmony" Condition="'$(TargetFramework)' == 'net48'">
+        <HintPath>..\..\..\MinigameExt\src\dependencies\0Harmony.dll</HintPath>
+      </Reference>
       <Reference Include="Assembly-CSharp">
         <HintPath>..\References\Assembly-CSharp.dll</HintPath>
       </Reference>
+      <Reference Include="Assembly-CSharp" Condition="'$(TargetFramework)' == 'net48'">
+        <HintPath>..\..\..\MinigameExt\src\dependencies\Assembly-CSharp.dll</HintPath>
+      </Reference>
       <Reference Include="Assembly-CSharp-firstpass">
         <HintPath>..\References\Assembly-CSharp-firstpass.dll</HintPath>
+      </Reference>
+      <Reference Include="Assembly-CSharp-firstpass" Condition="'$(TargetFramework)' == 'net48'">
+        <HintPath>..\..\..\MinigameExt\src\dependencies\Assembly-CSharp-firstpass.dll</HintPath>
+      </Reference>
+      <Reference Include="Autodesk.Fbx" Condition="'$(TargetFramework)' == 'net48'">
+        <HintPath>..\..\..\MinigameExt\src\dependencies\Autodesk.Fbx.dll</HintPath>
+      </Reference>
+      <Reference Include="Azure.Core" Condition="'$(TargetFramework)' == 'net48'">
+        <HintPath>..\..\..\MinigameExt\src\dependencies\Azure.Core.dll</HintPath>
+      </Reference>
+      <Reference Include="Azure.Identity" Condition="'$(TargetFramework)' == 'net48'">
+        <HintPath>..\..\..\MinigameExt\src\dependencies\Azure.Identity.dll</HintPath>
+      </Reference>
+      <Reference Include="Azure.Storage.Blobs" Condition="'$(TargetFramework)' == 'net48'">
+        <HintPath>..\..\..\MinigameExt\src\dependencies\Azure.Storage.Blobs.dll</HintPath>
+      </Reference>
+      <Reference Include="Azure.Storage.Common" Condition="'$(TargetFramework)' == 'net48'">
+        <HintPath>..\..\..\MinigameExt\src\dependencies\Azure.Storage.Common.dll</HintPath>
       </Reference>
       <Reference Include="Carbon.Common" Condition=" '$(Platform)' == 'Carbon'">
         <HintPath>..\References\Carbon.Common.dll</HintPath>
@@ -54,59 +78,698 @@
       <Reference Include="Carbon.SDK" Condition=" '$(Platform)' == 'Carbon'">
         <HintPath>..\References\Carbon.SDK.dll</HintPath>
       </Reference>
+      <Reference Include="Cinemachine" Condition="'$(TargetFramework)' == 'net48'">
+        <HintPath>..\..\..\MinigameExt\src\dependencies\Cinemachine.dll</HintPath>
+      </Reference>
+      <Reference Include="Cronos" Condition="'$(TargetFramework)' == 'net48'">
+        <HintPath>..\..\..\MinigameExt\src\dependencies\Cronos.dll</HintPath>
+      </Reference>
+      <Reference Include="CurvedTextMeshPro" Condition="'$(TargetFramework)' == 'net48'">
+        <HintPath>..\..\..\MinigameExt\src\dependencies\CurvedTextMeshPro.dll</HintPath>
+      </Reference>
+      <Reference Include="DelaunayER" Condition="'$(TargetFramework)' == 'net48'">
+        <HintPath>..\..\..\MinigameExt\src\dependencies\DelaunayER.dll</HintPath>
+      </Reference>
+      <Reference Include="Discord.Sdk" Condition="'$(TargetFramework)' == 'net48'">
+        <HintPath>..\..\..\MinigameExt\src\dependencies\Discord.Sdk.dll</HintPath>
+      </Reference>
+      <Reference Include="DnsClient" Condition="'$(TargetFramework)' == 'net48'">
+        <HintPath>..\..\..\MinigameExt\src\dependencies\DnsClient.dll</HintPath>
+      </Reference>
+      <Reference Include="EasyRoads3Dv3" Condition="'$(TargetFramework)' == 'net48'">
+        <HintPath>..\..\..\MinigameExt\src\dependencies\EasyRoads3Dv3.dll</HintPath>
+      </Reference>
+      <Reference Include="EZhex1991.EZSoftBone" Condition="'$(TargetFramework)' == 'net48'">
+        <HintPath>..\..\..\MinigameExt\src\dependencies\EZhex1991.EZSoftBone.dll</HintPath>
+      </Reference>
+      <Reference Include="Facepunch.BurstCloth" Condition="'$(TargetFramework)' == 'net48'">
+        <HintPath>..\..\..\MinigameExt\src\dependencies\Facepunch.BurstCloth.dll</HintPath>
+      </Reference>
       <Reference Include="Facepunch.Console">
         <HintPath>..\References\Facepunch.Console.dll</HintPath>
+      </Reference>
+      <Reference Include="Facepunch.Console" Condition="'$(TargetFramework)' == 'net48'">
+        <HintPath>..\..\..\MinigameExt\src\dependencies\Facepunch.Console.dll</HintPath>
+      </Reference>
+      <Reference Include="Facepunch.Flexbox" Condition="'$(TargetFramework)' == 'net48'">
+        <HintPath>..\..\..\MinigameExt\src\dependencies\Facepunch.Flexbox.dll</HintPath>
+      </Reference>
+      <Reference Include="Facepunch.GoogleSheets" Condition="'$(TargetFramework)' == 'net48'">
+        <HintPath>..\..\..\MinigameExt\src\dependencies\Facepunch.GoogleSheets.dll</HintPath>
+      </Reference>
+      <Reference Include="Facepunch.Input" Condition="'$(TargetFramework)' == 'net48'">
+        <HintPath>..\..\..\MinigameExt\src\dependencies\Facepunch.Input.dll</HintPath>
       </Reference>
       <Reference Include="Facepunch.Network">
         <HintPath>..\References\Facepunch.Network.dll</HintPath>
       </Reference>
+      <Reference Include="Facepunch.Network" Condition="'$(TargetFramework)' == 'net48'">
+        <HintPath>..\..\..\MinigameExt\src\dependencies\Facepunch.Network.dll</HintPath>
+      </Reference>
+      <Reference Include="Facepunch.Nexus" Condition="'$(TargetFramework)' == 'net48'">
+        <HintPath>..\..\..\MinigameExt\src\dependencies\Facepunch.Nexus.dll</HintPath>
+      </Reference>
+      <Reference Include="Facepunch.Ping" Condition="'$(TargetFramework)' == 'net48'">
+        <HintPath>..\..\..\MinigameExt\src\dependencies\Facepunch.Ping.dll</HintPath>
+      </Reference>
+      <Reference Include="Facepunch.Raknet" Condition="'$(TargetFramework)' == 'net48'">
+        <HintPath>..\..\..\MinigameExt\src\dependencies\Facepunch.Raknet.dll</HintPath>
+      </Reference>
+      <Reference Include="Facepunch.Rcon" Condition="'$(TargetFramework)' == 'net48'">
+        <HintPath>..\..\..\MinigameExt\src\dependencies\Facepunch.Rcon.dll</HintPath>
+      </Reference>
+      <Reference Include="Facepunch.Skeleton" Condition="'$(TargetFramework)' == 'net48'">
+        <HintPath>..\..\..\MinigameExt\src\dependencies\Facepunch.Skeleton.dll</HintPath>
+      </Reference>
+      <Reference Include="Facepunch.Sqlite" Condition="'$(TargetFramework)' == 'net48'">
+        <HintPath>..\..\..\MinigameExt\src\dependencies\Facepunch.Sqlite.dll</HintPath>
+      </Reference>
+      <Reference Include="Facepunch.SteamNetworking" Condition="'$(TargetFramework)' == 'net48'">
+        <HintPath>..\..\..\MinigameExt\src\dependencies\Facepunch.SteamNetworking.dll</HintPath>
+      </Reference>
+      <Reference Include="Facepunch.Steamworks.Posix" Condition="'$(TargetFramework)' == 'net48'">
+        <HintPath>..\..\..\MinigameExt\src\dependencies\Facepunch.Steamworks.Posix.dll</HintPath>
+      </Reference>
+      <Reference Include="Facepunch.Steamworks.Win64" Condition="'$(TargetFramework)' == 'net48'">
+        <HintPath>..\..\..\MinigameExt\src\dependencies\Facepunch.Steamworks.Win64.dll</HintPath>
+      </Reference>
       <Reference Include="Facepunch.System">
         <HintPath>..\References\Facepunch.System.dll</HintPath>
+      </Reference>
+      <Reference Include="Facepunch.System" Condition="'$(TargetFramework)' == 'net48'">
+        <HintPath>..\..\..\MinigameExt\src\dependencies\Facepunch.System.dll</HintPath>
+      </Reference>
+      <Reference Include="Facepunch.Unity" Condition="'$(TargetFramework)' == 'net48'">
+        <HintPath>..\..\..\MinigameExt\src\dependencies\Facepunch.Unity.dll</HintPath>
       </Reference>
       <Reference Include="Facepunch.UnityEngine">
         <HintPath>..\References\Facepunch.UnityEngine.dll</HintPath>
       </Reference>
+      <Reference Include="Facepunch.UnityEngine" Condition="'$(TargetFramework)' == 'net48'">
+        <HintPath>..\..\..\MinigameExt\src\dependencies\Facepunch.UnityEngine.dll</HintPath>
+      </Reference>
+      <Reference Include="Facepunch.UnwrapBaker.Settings" Condition="'$(TargetFramework)' == 'net48'">
+        <HintPath>..\..\..\MinigameExt\src\dependencies\Facepunch.UnwrapBaker.Settings.dll</HintPath>
+      </Reference>
+      <Reference Include="FbxBuildTestAssets" Condition="'$(TargetFramework)' == 'net48'">
+        <HintPath>..\..\..\MinigameExt\src\dependencies\FbxBuildTestAssets.dll</HintPath>
+      </Reference>
+      <Reference Include="Fleck" Condition="'$(TargetFramework)' == 'net48'">
+        <HintPath>..\..\..\MinigameExt\src\dependencies\Fleck.dll</HintPath>
+      </Reference>
+      <Reference Include="GA" Condition="'$(TargetFramework)' == 'net48'">
+        <HintPath>..\..\..\MinigameExt\src\dependencies\GA.dll</HintPath>
+      </Reference>
+      <Reference Include="I18N" Condition="'$(TargetFramework)' == 'net48'">
+        <HintPath>..\..\..\MinigameExt\src\dependencies\I18N.dll</HintPath>
+      </Reference>
+      <Reference Include="I18N.CJK" Condition="'$(TargetFramework)' == 'net48'">
+        <HintPath>..\..\..\MinigameExt\src\dependencies\I18N.CJK.dll</HintPath>
+      </Reference>
+      <Reference Include="I18N.MidEast" Condition="'$(TargetFramework)' == 'net48'">
+        <HintPath>..\..\..\MinigameExt\src\dependencies\I18N.MidEast.dll</HintPath>
+      </Reference>
+      <Reference Include="I18N.Other" Condition="'$(TargetFramework)' == 'net48'">
+        <HintPath>..\..\..\MinigameExt\src\dependencies\I18N.Other.dll</HintPath>
+      </Reference>
+      <Reference Include="I18N.Rare" Condition="'$(TargetFramework)' == 'net48'">
+        <HintPath>..\..\..\MinigameExt\src\dependencies\I18N.Rare.dll</HintPath>
+      </Reference>
+      <Reference Include="I18N.West" Condition="'$(TargetFramework)' == 'net48'">
+        <HintPath>..\..\..\MinigameExt\src\dependencies\I18N.West.dll</HintPath>
+      </Reference>
+      <Reference Include="Ionic.Zip.Reduced" Condition="'$(TargetFramework)' == 'net48'">
+        <HintPath>..\..\..\MinigameExt\src\dependencies\Ionic.Zip.Reduced.dll</HintPath>
+      </Reference>
+      <Reference Include="LZ4" Condition="'$(TargetFramework)' == 'net48'">
+        <HintPath>..\..\..\MinigameExt\src\dependencies\LZ4.dll</HintPath>
+      </Reference>
+      <Reference Include="LZ4pn" Condition="'$(TargetFramework)' == 'net48'">
+        <HintPath>..\..\..\MinigameExt\src\dependencies\LZ4pn.dll</HintPath>
+      </Reference>
+      <Reference Include="Melanchall.DryWetMidi" Condition="'$(TargetFramework)' == 'net48'">
+        <HintPath>..\..\..\MinigameExt\src\dependencies\Melanchall.DryWetMidi.dll</HintPath>
+      </Reference>
+      <Reference Include="Microsoft.Bcl.AsyncInterfaces" Condition="'$(TargetFramework)' == 'net48'">
+        <HintPath>..\..\..\MinigameExt\src\dependencies\Microsoft.Bcl.AsyncInterfaces.dll</HintPath>
+      </Reference>
+      <Reference Include="Microsoft.Identity.Client" Condition="'$(TargetFramework)' == 'net48'">
+        <HintPath>..\..\..\MinigameExt\src\dependencies\Microsoft.Identity.Client.dll</HintPath>
+      </Reference>
+      <Reference Include="Microsoft.Identity.Client.Extensions.Msal" Condition="'$(TargetFramework)' == 'net48'">
+        <HintPath>..\..\..\MinigameExt\src\dependencies\Microsoft.Identity.Client.Extensions.Msal.dll</HintPath>
+      </Reference>
+      <Reference Include="Microsoft.IdentityModel.Abstractions" Condition="'$(TargetFramework)' == 'net48'">
+        <HintPath>..\..\..\MinigameExt\src\dependencies\Microsoft.IdentityModel.Abstractions.dll</HintPath>
+      </Reference>
+      <Reference Include="Microsoft.Win32.Registry" Condition="'$(TargetFramework)' == 'net48'">
+        <HintPath>..\..\..\MinigameExt\src\dependencies\Microsoft.Win32.Registry.dll</HintPath>
+      </Reference>
+      <Reference Include="MidiJack" Condition="'$(TargetFramework)' == 'net48'">
+        <HintPath>..\..\..\MinigameExt\src\dependencies\MidiJack.dll</HintPath>
+      </Reference>
+      <Reference Include="Mono.Cecil" Condition="'$(TargetFramework)' == 'net48'">
+        <HintPath>..\..\..\MinigameExt\src\dependencies\Mono.Cecil.dll</HintPath>
+      </Reference>
+      <Reference Include="Mono.Cecil.Mdb" Condition="'$(TargetFramework)' == 'net48'">
+        <HintPath>..\..\..\MinigameExt\src\dependencies\Mono.Cecil.Mdb.dll</HintPath>
+      </Reference>
+      <Reference Include="Mono.Cecil.Pdb" Condition="'$(TargetFramework)' == 'net48'">
+        <HintPath>..\..\..\MinigameExt\src\dependencies\Mono.Cecil.Pdb.dll</HintPath>
+      </Reference>
+      <Reference Include="Mono.Cecil.Rocks" Condition="'$(TargetFramework)' == 'net48'">
+        <HintPath>..\..\..\MinigameExt\src\dependencies\Mono.Cecil.Rocks.dll</HintPath>
+      </Reference>
+      <Reference Include="Mono.Data.Sqlite" Condition="'$(TargetFramework)' == 'net48'">
+        <HintPath>..\..\..\MinigameExt\src\dependencies\Mono.Data.Sqlite.dll</HintPath>
+      </Reference>
+      <Reference Include="Mono.Data.Tds" Condition="'$(TargetFramework)' == 'net48'">
+        <HintPath>..\..\..\MinigameExt\src\dependencies\Mono.Data.Tds.dll</HintPath>
+      </Reference>
+      <Reference Include="Mono.Security" Condition="'$(TargetFramework)' == 'net48'">
+        <HintPath>..\..\..\MinigameExt\src\dependencies\Mono.Security.dll</HintPath>
+      </Reference>
+      <Reference Include="MP3Sharp" Condition="'$(TargetFramework)' == 'net48'">
+        <HintPath>..\..\..\MinigameExt\src\dependencies\MP3Sharp.dll</HintPath>
+      </Reference>
       <Reference Include="mscorlib">
         <HintPath>..\References\mscorlib.dll</HintPath>
+      </Reference>
+      <Reference Include="mscorlib" Condition="'$(TargetFramework)' == 'net48'">
+        <HintPath>..\..\..\MinigameExt\src\dependencies\mscorlib.dll</HintPath>
+      </Reference>
+      <Reference Include="MySql.Data" Condition="'$(TargetFramework)' == 'net48'">
+        <HintPath>..\..\..\MinigameExt\src\dependencies\MySql.Data.dll</HintPath>
+      </Reference>
+      <Reference Include="netstandard" Condition="'$(TargetFramework)' == 'net48'">
+        <HintPath>..\..\..\MinigameExt\src\dependencies\netstandard.dll</HintPath>
       </Reference>
       <Reference Include="Newtonsoft.Json" Condition=" '$(Platform)' == 'Carbon'">
         <HintPath>..\References\Newtonsoft.Json.dll</HintPath>
       </Reference>
+      <Reference Include="Newtonsoft.Json" Condition="'$(TargetFramework)' == 'net48'">
+        <HintPath>..\..\..\MinigameExt\src\dependencies\Newtonsoft.Json.dll</HintPath>
+      </Reference>
+      <Reference Include="Oxide.Common" Condition="'$(TargetFramework)' == 'net48'">
+        <HintPath>..\..\..\MinigameExt\src\dependencies\Oxide.Common.dll</HintPath>
+      </Reference>
       <Reference Include="Oxide.Core" Condition=" '$(Platform)' == 'Oxide'">
         <HintPath>..\References\Oxide.Core.dll</HintPath>
+      </Reference>
+      <Reference Include="Oxide.Core" Condition="'$(TargetFramework)' == 'net48'">
+        <HintPath>..\..\..\MinigameExt\src\dependencies\Oxide.Core.dll</HintPath>
       </Reference>
       <Reference Include="Oxide.CSharp" Condition=" '$(Platform)' == 'Oxide'">
         <HintPath>..\References\Oxide.CSharp.dll</HintPath>
       </Reference>
+      <Reference Include="Oxide.CSharp" Condition="'$(TargetFramework)' == 'net48'">
+        <HintPath>..\..\..\MinigameExt\src\dependencies\Oxide.CSharp.dll</HintPath>
+      </Reference>
+      <Reference Include="Oxide.Ext.AtlasExt" Condition="'$(TargetFramework)' == 'net48'">
+        <HintPath>..\..\..\MinigameExt\src\dependencies\Oxide.Ext.AtlasExt.dll</HintPath>
+      </Reference>
+      <Reference Include="Oxide.Ext.BattleMetricsFramework" Condition="'$(TargetFramework)' == 'net48'">
+        <HintPath>..\..\..\MinigameExt\src\dependencies\Oxide.Ext.BattleMetricsFramework.dll</HintPath>
+      </Reference>
+      <Reference Include="Oxide.Ext.ConsoleExt" Condition="'$(TargetFramework)' == 'net48'">
+        <HintPath>..\..\..\MinigameExt\src\dependencies\Oxide.Ext.ConsoleExt.dll</HintPath>
+      </Reference>
+      <Reference Include="Oxide.Ext.DiscordExt" Condition="'$(TargetFramework)' == 'net48'">
+        <HintPath>..\..\..\MinigameExt\src\dependencies\Oxide.Ext.DiscordExt.dll</HintPath>
+      </Reference>
+      <Reference Include="Oxide.Ext.GizmosExt" Condition="'$(TargetFramework)' == 'net48'">
+        <HintPath>..\..\..\MinigameExt\src\dependencies\Oxide.Ext.GizmosExt.dll</HintPath>
+      </Reference>
+      <Reference Include="Oxide.Ext.IlovepatatosExt" Condition="'$(TargetFramework)' == 'net48'">
+        <HintPath>..\..\..\MinigameExt\src\dependencies\Oxide.Ext.IlovepatatosExt.dll</HintPath>
+      </Reference>
+      <Reference Include="Oxide.Ext.TriggersExt" Condition="'$(TargetFramework)' == 'net48'">
+        <HintPath>..\..\..\MinigameExt\src\dependencies\Oxide.Ext.TriggersExt.dll</HintPath>
+      </Reference>
+      <Reference Include="Oxide.MySql" Condition="'$(TargetFramework)' == 'net48'">
+        <HintPath>..\..\..\MinigameExt\src\dependencies\Oxide.MySql.dll</HintPath>
+      </Reference>
       <Reference Include="Oxide.References" Condition=" '$(Platform)' == 'Oxide'">
         <HintPath>..\References\Oxide.References.dll</HintPath>
+      </Reference>
+      <Reference Include="Oxide.References" Condition="'$(TargetFramework)' == 'net48'">
+        <HintPath>..\..\..\MinigameExt\src\dependencies\Oxide.References.dll</HintPath>
       </Reference>
       <Reference Include="Oxide.Rust" Condition=" '$(Platform)' == 'Oxide'">
         <HintPath>..\References\Oxide.Rust.dll</HintPath>
       </Reference>
+      <Reference Include="Oxide.Rust" Condition="'$(TargetFramework)' == 'net48'">
+        <HintPath>..\..\..\MinigameExt\src\dependencies\Oxide.Rust.dll</HintPath>
+      </Reference>
       <Reference Include="Oxide.SQLite" Condition=" '$(Platform)' == 'Oxide'">
         <HintPath>..\References\Oxide.SQLite.dll</HintPath>
+      </Reference>
+      <Reference Include="Oxide.SQLite" Condition="'$(TargetFramework)' == 'net48'">
+        <HintPath>..\..\..\MinigameExt\src\dependencies\Oxide.SQLite.dll</HintPath>
       </Reference>
       <Reference Include="Oxide.Unity" Condition=" '$(Platform)' == 'Oxide'">
         <HintPath>..\References\Oxide.Unity.dll</HintPath>
       </Reference>
+      <Reference Include="Oxide.Unity" Condition="'$(TargetFramework)' == 'net48'">
+        <HintPath>..\..\..\MinigameExt\src\dependencies\Oxide.Unity.dll</HintPath>
+      </Reference>
+      <Reference Include="RTLTMPro" Condition="'$(TargetFramework)' == 'net48'">
+        <HintPath>..\..\..\MinigameExt\src\dependencies\RTLTMPro.dll</HintPath>
+      </Reference>
+      <Reference Include="Rust.Clans" Condition="'$(TargetFramework)' == 'net48'">
+        <HintPath>..\..\..\MinigameExt\src\dependencies\Rust.Clans.dll</HintPath>
+      </Reference>
+      <Reference Include="Rust.Clans.Local" Condition="'$(TargetFramework)' == 'net48'">
+        <HintPath>..\..\..\MinigameExt\src\dependencies\Rust.Clans.Local.dll</HintPath>
+      </Reference>
       <Reference Include="Rust.Data">
         <HintPath>..\References\Rust.Data.dll</HintPath>
+      </Reference>
+      <Reference Include="Rust.Data" Condition="'$(TargetFramework)' == 'net48'">
+        <HintPath>..\..\..\MinigameExt\src\dependencies\Rust.Data.dll</HintPath>
+      </Reference>
+      <Reference Include="Rust.Demo" Condition="'$(TargetFramework)' == 'net48'">
+        <HintPath>..\..\..\MinigameExt\src\dependencies\Rust.Demo.dll</HintPath>
+      </Reference>
+      <Reference Include="Rust.FileSystem" Condition="'$(TargetFramework)' == 'net48'">
+        <HintPath>..\..\..\MinigameExt\src\dependencies\Rust.FileSystem.dll</HintPath>
+      </Reference>
+      <Reference Include="Rust.Friends" Condition="'$(TargetFramework)' == 'net48'">
+        <HintPath>..\..\..\MinigameExt\src\dependencies\Rust.Friends.dll</HintPath>
       </Reference>
       <Reference Include="Rust.Global">
         <HintPath>..\References\Rust.Global.dll</HintPath>
       </Reference>
+      <Reference Include="Rust.Global" Condition="'$(TargetFramework)' == 'net48'">
+        <HintPath>..\..\..\MinigameExt\src\dependencies\Rust.Global.dll</HintPath>
+      </Reference>
+      <Reference Include="Rust.Harmony" Condition="'$(TargetFramework)' == 'net48'">
+        <HintPath>..\..\..\MinigameExt\src\dependencies\Rust.Harmony.dll</HintPath>
+      </Reference>
+      <Reference Include="Rust.Localization" Condition="'$(TargetFramework)' == 'net48'">
+        <HintPath>..\..\..\MinigameExt\src\dependencies\Rust.Localization.dll</HintPath>
+      </Reference>
+      <Reference Include="Rust.Platform" Condition="'$(TargetFramework)' == 'net48'">
+        <HintPath>..\..\..\MinigameExt\src\dependencies\Rust.Platform.dll</HintPath>
+      </Reference>
+      <Reference Include="Rust.Platform.Common" Condition="'$(TargetFramework)' == 'net48'">
+        <HintPath>..\..\..\MinigameExt\src\dependencies\Rust.Platform.Common.dll</HintPath>
+      </Reference>
+      <Reference Include="Rust.Platform.Steam" Condition="'$(TargetFramework)' == 'net48'">
+        <HintPath>..\..\..\MinigameExt\src\dependencies\Rust.Platform.Steam.dll</HintPath>
+      </Reference>
+      <Reference Include="Rust.UI" Condition="'$(TargetFramework)' == 'net48'">
+        <HintPath>..\..\..\MinigameExt\src\dependencies\Rust.UI.dll</HintPath>
+      </Reference>
+      <Reference Include="Rust.Workshop" Condition="'$(TargetFramework)' == 'net48'">
+        <HintPath>..\..\..\MinigameExt\src\dependencies\Rust.Workshop.dll</HintPath>
+      </Reference>
+      <Reference Include="Rust.World" Condition="'$(TargetFramework)' == 'net48'">
+        <HintPath>..\..\..\MinigameExt\src\dependencies\Rust.World.dll</HintPath>
+      </Reference>
+      <Reference Include="SingularityGroup.HotReload.Runtime" Condition="'$(TargetFramework)' == 'net48'">
+        <HintPath>..\..\..\MinigameExt\src\dependencies\SingularityGroup.HotReload.Runtime.dll</HintPath>
+      </Reference>
+      <Reference Include="SingularityGroup.HotReload.Runtime.Public" Condition="'$(TargetFramework)' == 'net48'">
+        <HintPath>..\..\..\MinigameExt\src\dependencies\SingularityGroup.HotReload.Runtime.Public.dll</HintPath>
+      </Reference>
+      <Reference Include="System" Condition="'$(TargetFramework)' == 'net48'">
+        <HintPath>..\..\..\MinigameExt\src\dependencies\System.dll</HintPath>
+      </Reference>
+      <Reference Include="System.Buffers" Condition="'$(TargetFramework)' == 'net48'">
+        <HintPath>..\..\..\MinigameExt\src\dependencies\System.Buffers.dll</HintPath>
+      </Reference>
+      <Reference Include="System.ClientModel" Condition="'$(TargetFramework)' == 'net48'">
+        <HintPath>..\..\..\MinigameExt\src\dependencies\System.ClientModel.dll</HintPath>
+      </Reference>
+      <Reference Include="System.ComponentModel.Composition" Condition="'$(TargetFramework)' == 'net48'">
+        <HintPath>..\..\..\MinigameExt\src\dependencies\System.ComponentModel.Composition.dll</HintPath>
+      </Reference>
+      <Reference Include="System.Configuration" Condition="'$(TargetFramework)' == 'net48'">
+        <HintPath>..\..\..\MinigameExt\src\dependencies\System.Configuration.dll</HintPath>
+      </Reference>
+      <Reference Include="System.Configuration.Install" Condition="'$(TargetFramework)' == 'net48'">
+        <HintPath>..\..\..\MinigameExt\src\dependencies\System.Configuration.Install.dll</HintPath>
+      </Reference>
+      <Reference Include="System.Core" Condition="'$(TargetFramework)' == 'net48'">
+        <HintPath>..\..\..\MinigameExt\src\dependencies\System.Core.dll</HintPath>
+      </Reference>
+      <Reference Include="System.Data" Condition="'$(TargetFramework)' == 'net48'">
+        <HintPath>..\..\..\MinigameExt\src\dependencies\System.Data.dll</HintPath>
+      </Reference>
+      <Reference Include="System.Data.DataSetExtensions" Condition="'$(TargetFramework)' == 'net48'">
+        <HintPath>..\..\..\MinigameExt\src\dependencies\System.Data.DataSetExtensions.dll</HintPath>
+      </Reference>
+      <Reference Include="System.Data.SQLite" Condition="'$(TargetFramework)' == 'net48'">
+        <HintPath>..\..\..\MinigameExt\src\dependencies\System.Data.SQLite.dll</HintPath>
+      </Reference>
+      <Reference Include="System.Diagnostics.DiagnosticSource" Condition="'$(TargetFramework)' == 'net48'">
+        <HintPath>..\..\..\MinigameExt\src\dependencies\System.Diagnostics.DiagnosticSource.dll</HintPath>
+      </Reference>
+      <Reference Include="System.Drawing" Condition="'$(TargetFramework)' == 'net48'">
+        <HintPath>..\..\..\MinigameExt\src\dependencies\System.Drawing.dll</HintPath>
+      </Reference>
+      <Reference Include="System.EnterpriseServices" Condition="'$(TargetFramework)' == 'net48'">
+        <HintPath>..\..\..\MinigameExt\src\dependencies\System.EnterpriseServices.dll</HintPath>
+      </Reference>
+      <Reference Include="System.IO.Compression" Condition="'$(TargetFramework)' == 'net48'">
+        <HintPath>..\..\..\MinigameExt\src\dependencies\System.IO.Compression.dll</HintPath>
+      </Reference>
+      <Reference Include="System.IO.Compression.FileSystem" Condition="'$(TargetFramework)' == 'net48'">
+        <HintPath>..\..\..\MinigameExt\src\dependencies\System.IO.Compression.FileSystem.dll</HintPath>
+      </Reference>
+      <Reference Include="System.IO.FileSystem.AccessControl" Condition="'$(TargetFramework)' == 'net48'">
+        <HintPath>..\..\..\MinigameExt\src\dependencies\System.IO.FileSystem.AccessControl.dll</HintPath>
+      </Reference>
+      <Reference Include="System.IO.Hashing" Condition="'$(TargetFramework)' == 'net48'">
+        <HintPath>..\..\..\MinigameExt\src\dependencies\System.IO.Hashing.dll</HintPath>
+      </Reference>
+      <Reference Include="System.Memory" Condition="'$(TargetFramework)' == 'net48'">
+        <HintPath>..\..\..\MinigameExt\src\dependencies\System.Memory.dll</HintPath>
+      </Reference>
+      <Reference Include="System.Memory.Data" Condition="'$(TargetFramework)' == 'net48'">
+        <HintPath>..\..\..\MinigameExt\src\dependencies\System.Memory.Data.dll</HintPath>
+      </Reference>
+      <Reference Include="System.Net.Http" Condition="'$(TargetFramework)' == 'net48'">
+        <HintPath>..\..\..\MinigameExt\src\dependencies\System.Net.Http.dll</HintPath>
+      </Reference>
+      <Reference Include="System.Numerics" Condition="'$(TargetFramework)' == 'net48'">
+        <HintPath>..\..\..\MinigameExt\src\dependencies\System.Numerics.dll</HintPath>
+      </Reference>
+      <Reference Include="System.Numerics.Vectors" Condition="'$(TargetFramework)' == 'net48'">
+        <HintPath>..\..\..\MinigameExt\src\dependencies\System.Numerics.Vectors.dll</HintPath>
+      </Reference>
+      <Reference Include="System.Runtime" Condition="'$(TargetFramework)' == 'net48'">
+        <HintPath>..\..\..\MinigameExt\src\dependencies\System.Runtime.dll</HintPath>
+      </Reference>
+      <Reference Include="System.Runtime.CompilerServices.Unsafe" Condition="'$(TargetFramework)' == 'net48'">
+        <HintPath>..\..\..\MinigameExt\src\dependencies\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
+      </Reference>
+      <Reference Include="System.Runtime.Serialization" Condition="'$(TargetFramework)' == 'net48'">
+        <HintPath>..\..\..\MinigameExt\src\dependencies\System.Runtime.Serialization.dll</HintPath>
+      </Reference>
+      <Reference Include="System.Security" Condition="'$(TargetFramework)' == 'net48'">
+        <HintPath>..\..\..\MinigameExt\src\dependencies\System.Security.dll</HintPath>
+      </Reference>
+      <Reference Include="System.Security.AccessControl" Condition="'$(TargetFramework)' == 'net48'">
+        <HintPath>..\..\..\MinigameExt\src\dependencies\System.Security.AccessControl.dll</HintPath>
+      </Reference>
+      <Reference Include="System.Security.Cryptography.ProtectedData" Condition="'$(TargetFramework)' == 'net48'">
+        <HintPath>..\..\..\MinigameExt\src\dependencies\System.Security.Cryptography.ProtectedData.dll</HintPath>
+      </Reference>
+      <Reference Include="System.Security.Principal.Windows" Condition="'$(TargetFramework)' == 'net48'">
+        <HintPath>..\..\..\MinigameExt\src\dependencies\System.Security.Principal.Windows.dll</HintPath>
+      </Reference>
+      <Reference Include="System.ServiceModel.Internals" Condition="'$(TargetFramework)' == 'net48'">
+        <HintPath>..\..\..\MinigameExt\src\dependencies\System.ServiceModel.Internals.dll</HintPath>
+      </Reference>
+      <Reference Include="System.Text.Encodings.Web" Condition="'$(TargetFramework)' == 'net48'">
+        <HintPath>..\..\..\MinigameExt\src\dependencies\System.Text.Encodings.Web.dll</HintPath>
+      </Reference>
+      <Reference Include="System.Text.Json" Condition="'$(TargetFramework)' == 'net48'">
+        <HintPath>..\..\..\MinigameExt\src\dependencies\System.Text.Json.dll</HintPath>
+      </Reference>
+      <Reference Include="System.Threading.Channels" Condition="'$(TargetFramework)' == 'net48'">
+        <HintPath>..\..\..\MinigameExt\src\dependencies\System.Threading.Channels.dll</HintPath>
+      </Reference>
+      <Reference Include="System.Threading.Tasks.Extensions" Condition="'$(TargetFramework)' == 'net48'">
+        <HintPath>..\..\..\MinigameExt\src\dependencies\System.Threading.Tasks.Extensions.dll</HintPath>
+      </Reference>
+      <Reference Include="System.Transactions" Condition="'$(TargetFramework)' == 'net48'">
+        <HintPath>..\..\..\MinigameExt\src\dependencies\System.Transactions.dll</HintPath>
+      </Reference>
+      <Reference Include="System.Xml" Condition="'$(TargetFramework)' == 'net48'">
+        <HintPath>..\..\..\MinigameExt\src\dependencies\System.Xml.dll</HintPath>
+      </Reference>
+      <Reference Include="System.Xml.Linq" Condition="'$(TargetFramework)' == 'net48'">
+        <HintPath>..\..\..\MinigameExt\src\dependencies\System.Xml.Linq.dll</HintPath>
+      </Reference>
+      <Reference Include="TimeZoneConverter" Condition="'$(TargetFramework)' == 'net48'">
+        <HintPath>..\..\..\MinigameExt\src\dependencies\TimeZoneConverter.dll</HintPath>
+      </Reference>
+      <Reference Include="UIEffect" Condition="'$(TargetFramework)' == 'net48'">
+        <HintPath>..\..\..\MinigameExt\src\dependencies\UIEffect.dll</HintPath>
+      </Reference>
+      <Reference Include="Unity.AI.Navigation" Condition="'$(TargetFramework)' == 'net48'">
+        <HintPath>..\..\..\MinigameExt\src\dependencies\Unity.AI.Navigation.dll</HintPath>
+      </Reference>
+      <Reference Include="Unity.Burst" Condition="'$(TargetFramework)' == 'net48'">
+        <HintPath>..\..\..\MinigameExt\src\dependencies\Unity.Burst.dll</HintPath>
+      </Reference>
+      <Reference Include="Unity.Burst.Unsafe" Condition="'$(TargetFramework)' == 'net48'">
+        <HintPath>..\..\..\MinigameExt\src\dependencies\Unity.Burst.Unsafe.dll</HintPath>
+      </Reference>
+      <Reference Include="Unity.Collections" Condition="'$(TargetFramework)' == 'net48'">
+        <HintPath>..\..\..\MinigameExt\src\dependencies\Unity.Collections.dll</HintPath>
+      </Reference>
+      <Reference Include="Unity.Collections.LowLevel.ILSupport" Condition="'$(TargetFramework)' == 'net48'">
+        <HintPath>..\..\..\MinigameExt\src\dependencies\Unity.Collections.LowLevel.ILSupport.dll</HintPath>
+      </Reference>
+      <Reference Include="Unity.Formats.Fbx.Runtime" Condition="'$(TargetFramework)' == 'net48'">
+        <HintPath>..\..\..\MinigameExt\src\dependencies\Unity.Formats.Fbx.Runtime.dll</HintPath>
+      </Reference>
+      <Reference Include="Unity.Mathematics" Condition="'$(TargetFramework)' == 'net48'">
+        <HintPath>..\..\..\MinigameExt\src\dependencies\Unity.Mathematics.dll</HintPath>
+      </Reference>
+      <Reference Include="Unity.MemoryProfiler" Condition="'$(TargetFramework)' == 'net48'">
+        <HintPath>..\..\..\MinigameExt\src\dependencies\Unity.MemoryProfiler.dll</HintPath>
+      </Reference>
+      <Reference Include="Unity.Recorder" Condition="'$(TargetFramework)' == 'net48'">
+        <HintPath>..\..\..\MinigameExt\src\dependencies\Unity.Recorder.dll</HintPath>
+      </Reference>
+      <Reference Include="Unity.Recorder.Base" Condition="'$(TargetFramework)' == 'net48'">
+        <HintPath>..\..\..\MinigameExt\src\dependencies\Unity.Recorder.Base.dll</HintPath>
+      </Reference>
+      <Reference Include="Unity.TerrainTools" Condition="'$(TargetFramework)' == 'net48'">
+        <HintPath>..\..\..\MinigameExt\src\dependencies\Unity.TerrainTools.dll</HintPath>
+      </Reference>
+      <Reference Include="Unity.TextMeshPro" Condition="'$(TargetFramework)' == 'net48'">
+        <HintPath>..\..\..\MinigameExt\src\dependencies\Unity.TextMeshPro.dll</HintPath>
+      </Reference>
+      <Reference Include="Unity.Timeline" Condition="'$(TargetFramework)' == 'net48'">
+        <HintPath>..\..\..\MinigameExt\src\dependencies\Unity.Timeline.dll</HintPath>
+      </Reference>
       <Reference Include="UnityEngine">
         <HintPath>..\References\UnityEngine.dll</HintPath>
+      </Reference>
+      <Reference Include="UnityEngine" Condition="'$(TargetFramework)' == 'net48'">
+        <HintPath>..\..\..\MinigameExt\src\dependencies\UnityEngine.dll</HintPath>
+      </Reference>
+      <Reference Include="UnityEngine.AccessibilityModule" Condition="'$(TargetFramework)' == 'net48'">
+        <HintPath>..\..\..\MinigameExt\src\dependencies\UnityEngine.AccessibilityModule.dll</HintPath>
+      </Reference>
+      <Reference Include="UnityEngine.AIModule" Condition="'$(TargetFramework)' == 'net48'">
+        <HintPath>..\..\..\MinigameExt\src\dependencies\UnityEngine.AIModule.dll</HintPath>
+      </Reference>
+      <Reference Include="UnityEngine.AndroidJNIModule" Condition="'$(TargetFramework)' == 'net48'">
+        <HintPath>..\..\..\MinigameExt\src\dependencies\UnityEngine.AndroidJNIModule.dll</HintPath>
+      </Reference>
+      <Reference Include="UnityEngine.AnimationModule" Condition="'$(TargetFramework)' == 'net48'">
+        <HintPath>..\..\..\MinigameExt\src\dependencies\UnityEngine.AnimationModule.dll</HintPath>
+      </Reference>
+      <Reference Include="UnityEngine.ARModule" Condition="'$(TargetFramework)' == 'net48'">
+        <HintPath>..\..\..\MinigameExt\src\dependencies\UnityEngine.ARModule.dll</HintPath>
+      </Reference>
+      <Reference Include="UnityEngine.AssetBundleModule" Condition="'$(TargetFramework)' == 'net48'">
+        <HintPath>..\..\..\MinigameExt\src\dependencies\UnityEngine.AssetBundleModule.dll</HintPath>
+      </Reference>
+      <Reference Include="UnityEngine.AudioModule" Condition="'$(TargetFramework)' == 'net48'">
+        <HintPath>..\..\..\MinigameExt\src\dependencies\UnityEngine.AudioModule.dll</HintPath>
+      </Reference>
+      <Reference Include="UnityEngine.ClothModule" Condition="'$(TargetFramework)' == 'net48'">
+        <HintPath>..\..\..\MinigameExt\src\dependencies\UnityEngine.ClothModule.dll</HintPath>
+      </Reference>
+      <Reference Include="UnityEngine.ClusterInputModule" Condition="'$(TargetFramework)' == 'net48'">
+        <HintPath>..\..\..\MinigameExt\src\dependencies\UnityEngine.ClusterInputModule.dll</HintPath>
+      </Reference>
+      <Reference Include="UnityEngine.ClusterRendererModule" Condition="'$(TargetFramework)' == 'net48'">
+        <HintPath>..\..\..\MinigameExt\src\dependencies\UnityEngine.ClusterRendererModule.dll</HintPath>
+      </Reference>
+      <Reference Include="UnityEngine.ContentLoadModule" Condition="'$(TargetFramework)' == 'net48'">
+        <HintPath>..\..\..\MinigameExt\src\dependencies\UnityEngine.ContentLoadModule.dll</HintPath>
       </Reference>
       <Reference Include="UnityEngine.CoreModule">
         <HintPath>..\References\UnityEngine.CoreModule.dll</HintPath>
       </Reference>
+      <Reference Include="UnityEngine.CoreModule" Condition="'$(TargetFramework)' == 'net48'">
+        <HintPath>..\..\..\MinigameExt\src\dependencies\UnityEngine.CoreModule.dll</HintPath>
+      </Reference>
+      <Reference Include="UnityEngine.CrashReportingModule" Condition="'$(TargetFramework)' == 'net48'">
+        <HintPath>..\..\..\MinigameExt\src\dependencies\UnityEngine.CrashReportingModule.dll</HintPath>
+      </Reference>
+      <Reference Include="UnityEngine.DirectorModule" Condition="'$(TargetFramework)' == 'net48'">
+        <HintPath>..\..\..\MinigameExt\src\dependencies\UnityEngine.DirectorModule.dll</HintPath>
+      </Reference>
+      <Reference Include="UnityEngine.DSPGraphModule" Condition="'$(TargetFramework)' == 'net48'">
+        <HintPath>..\..\..\MinigameExt\src\dependencies\UnityEngine.DSPGraphModule.dll</HintPath>
+      </Reference>
+      <Reference Include="UnityEngine.GameCenterModule" Condition="'$(TargetFramework)' == 'net48'">
+        <HintPath>..\..\..\MinigameExt\src\dependencies\UnityEngine.GameCenterModule.dll</HintPath>
+      </Reference>
+      <Reference Include="UnityEngine.GIModule" Condition="'$(TargetFramework)' == 'net48'">
+        <HintPath>..\..\..\MinigameExt\src\dependencies\UnityEngine.GIModule.dll</HintPath>
+      </Reference>
+      <Reference Include="UnityEngine.GridModule" Condition="'$(TargetFramework)' == 'net48'">
+        <HintPath>..\..\..\MinigameExt\src\dependencies\UnityEngine.GridModule.dll</HintPath>
+      </Reference>
+      <Reference Include="UnityEngine.HotReloadModule" Condition="'$(TargetFramework)' == 'net48'">
+        <HintPath>..\..\..\MinigameExt\src\dependencies\UnityEngine.HotReloadModule.dll</HintPath>
+      </Reference>
+      <Reference Include="UnityEngine.ImageConversionModule" Condition="'$(TargetFramework)' == 'net48'">
+        <HintPath>..\..\..\MinigameExt\src\dependencies\UnityEngine.ImageConversionModule.dll</HintPath>
+      </Reference>
+      <Reference Include="UnityEngine.IMGUIModule" Condition="'$(TargetFramework)' == 'net48'">
+        <HintPath>..\..\..\MinigameExt\src\dependencies\UnityEngine.IMGUIModule.dll</HintPath>
+      </Reference>
+      <Reference Include="UnityEngine.InputLegacyModule" Condition="'$(TargetFramework)' == 'net48'">
+        <HintPath>..\..\..\MinigameExt\src\dependencies\UnityEngine.InputLegacyModule.dll</HintPath>
+      </Reference>
+      <Reference Include="UnityEngine.InputModule" Condition="'$(TargetFramework)' == 'net48'">
+        <HintPath>..\..\..\MinigameExt\src\dependencies\UnityEngine.InputModule.dll</HintPath>
+      </Reference>
+      <Reference Include="UnityEngine.JSONSerializeModule" Condition="'$(TargetFramework)' == 'net48'">
+        <HintPath>..\..\..\MinigameExt\src\dependencies\UnityEngine.JSONSerializeModule.dll</HintPath>
+      </Reference>
+      <Reference Include="UnityEngine.LocalizationModule" Condition="'$(TargetFramework)' == 'net48'">
+        <HintPath>..\..\..\MinigameExt\src\dependencies\UnityEngine.LocalizationModule.dll</HintPath>
+      </Reference>
+      <Reference Include="UnityEngine.NVIDIAModule" Condition="'$(TargetFramework)' == 'net48'">
+        <HintPath>..\..\..\MinigameExt\src\dependencies\UnityEngine.NVIDIAModule.dll</HintPath>
+      </Reference>
+      <Reference Include="UnityEngine.ParticleSystemModule" Condition="'$(TargetFramework)' == 'net48'">
+        <HintPath>..\..\..\MinigameExt\src\dependencies\UnityEngine.ParticleSystemModule.dll</HintPath>
+      </Reference>
+      <Reference Include="UnityEngine.PerformanceReportingModule" Condition="'$(TargetFramework)' == 'net48'">
+        <HintPath>..\..\..\MinigameExt\src\dependencies\UnityEngine.PerformanceReportingModule.dll</HintPath>
+      </Reference>
+      <Reference Include="UnityEngine.Physics2DModule" Condition="'$(TargetFramework)' == 'net48'">
+        <HintPath>..\..\..\MinigameExt\src\dependencies\UnityEngine.Physics2DModule.dll</HintPath>
+      </Reference>
+      <Reference Include="UnityEngine.PhysicsModule" Condition="'$(TargetFramework)' == 'net48'">
+        <HintPath>..\..\..\MinigameExt\src\dependencies\UnityEngine.PhysicsModule.dll</HintPath>
+      </Reference>
+      <Reference Include="UnityEngine.ProfilerModule" Condition="'$(TargetFramework)' == 'net48'">
+        <HintPath>..\..\..\MinigameExt\src\dependencies\UnityEngine.ProfilerModule.dll</HintPath>
+      </Reference>
+      <Reference Include="UnityEngine.PropertiesModule" Condition="'$(TargetFramework)' == 'net48'">
+        <HintPath>..\..\..\MinigameExt\src\dependencies\UnityEngine.PropertiesModule.dll</HintPath>
+      </Reference>
+      <Reference Include="UnityEngine.RuntimeInitializeOnLoadManagerInitializerModule" Condition="'$(TargetFramework)' == 'net48'">
+        <HintPath>..\..\..\MinigameExt\src\dependencies\UnityEngine.RuntimeInitializeOnLoadManagerInitializerModule.dll</HintPath>
+      </Reference>
+      <Reference Include="UnityEngine.ScreenCaptureModule" Condition="'$(TargetFramework)' == 'net48'">
+        <HintPath>..\..\..\MinigameExt\src\dependencies\UnityEngine.ScreenCaptureModule.dll</HintPath>
+      </Reference>
+      <Reference Include="UnityEngine.SharedInternalsModule" Condition="'$(TargetFramework)' == 'net48'">
+        <HintPath>..\..\..\MinigameExt\src\dependencies\UnityEngine.SharedInternalsModule.dll</HintPath>
+      </Reference>
+      <Reference Include="UnityEngine.SpriteMaskModule" Condition="'$(TargetFramework)' == 'net48'">
+        <HintPath>..\..\..\MinigameExt\src\dependencies\UnityEngine.SpriteMaskModule.dll</HintPath>
+      </Reference>
+      <Reference Include="UnityEngine.SpriteShapeModule" Condition="'$(TargetFramework)' == 'net48'">
+        <HintPath>..\..\..\MinigameExt\src\dependencies\UnityEngine.SpriteShapeModule.dll</HintPath>
+      </Reference>
+      <Reference Include="UnityEngine.StreamingModule" Condition="'$(TargetFramework)' == 'net48'">
+        <HintPath>..\..\..\MinigameExt\src\dependencies\UnityEngine.StreamingModule.dll</HintPath>
+      </Reference>
+      <Reference Include="UnityEngine.SubstanceModule" Condition="'$(TargetFramework)' == 'net48'">
+        <HintPath>..\..\..\MinigameExt\src\dependencies\UnityEngine.SubstanceModule.dll</HintPath>
+      </Reference>
+      <Reference Include="UnityEngine.SubsystemsModule" Condition="'$(TargetFramework)' == 'net48'">
+        <HintPath>..\..\..\MinigameExt\src\dependencies\UnityEngine.SubsystemsModule.dll</HintPath>
+      </Reference>
+      <Reference Include="UnityEngine.TerrainModule" Condition="'$(TargetFramework)' == 'net48'">
+        <HintPath>..\..\..\MinigameExt\src\dependencies\UnityEngine.TerrainModule.dll</HintPath>
+      </Reference>
+      <Reference Include="UnityEngine.TerrainPhysicsModule" Condition="'$(TargetFramework)' == 'net48'">
+        <HintPath>..\..\..\MinigameExt\src\dependencies\UnityEngine.TerrainPhysicsModule.dll</HintPath>
+      </Reference>
+      <Reference Include="UnityEngine.TextCoreFontEngineModule" Condition="'$(TargetFramework)' == 'net48'">
+        <HintPath>..\..\..\MinigameExt\src\dependencies\UnityEngine.TextCoreFontEngineModule.dll</HintPath>
+      </Reference>
+      <Reference Include="UnityEngine.TextCoreTextEngineModule" Condition="'$(TargetFramework)' == 'net48'">
+        <HintPath>..\..\..\MinigameExt\src\dependencies\UnityEngine.TextCoreTextEngineModule.dll</HintPath>
+      </Reference>
       <Reference Include="UnityEngine.TextRenderingModule">
         <HintPath>..\References\UnityEngine.TextRenderingModule.dll</HintPath>
       </Reference>
+      <Reference Include="UnityEngine.TextRenderingModule" Condition="'$(TargetFramework)' == 'net48'">
+        <HintPath>..\..\..\MinigameExt\src\dependencies\UnityEngine.TextRenderingModule.dll</HintPath>
+      </Reference>
+      <Reference Include="UnityEngine.TilemapModule" Condition="'$(TargetFramework)' == 'net48'">
+        <HintPath>..\..\..\MinigameExt\src\dependencies\UnityEngine.TilemapModule.dll</HintPath>
+      </Reference>
+      <Reference Include="UnityEngine.TLSModule" Condition="'$(TargetFramework)' == 'net48'">
+        <HintPath>..\..\..\MinigameExt\src\dependencies\UnityEngine.TLSModule.dll</HintPath>
+      </Reference>
       <Reference Include="UnityEngine.UI">
         <HintPath>..\References\UnityEngine.UI.dll</HintPath>
+      </Reference>
+      <Reference Include="UnityEngine.UI" Condition="'$(TargetFramework)' == 'net48'">
+        <HintPath>..\..\..\MinigameExt\src\dependencies\UnityEngine.UI.dll</HintPath>
+      </Reference>
+      <Reference Include="UnityEngine.UIElementsModule" Condition="'$(TargetFramework)' == 'net48'">
+        <HintPath>..\..\..\MinigameExt\src\dependencies\UnityEngine.UIElementsModule.dll</HintPath>
+      </Reference>
+      <Reference Include="UnityEngine.UIModule" Condition="'$(TargetFramework)' == 'net48'">
+        <HintPath>..\..\..\MinigameExt\src\dependencies\UnityEngine.UIModule.dll</HintPath>
+      </Reference>
+      <Reference Include="UnityEngine.UmbraModule" Condition="'$(TargetFramework)' == 'net48'">
+        <HintPath>..\..\..\MinigameExt\src\dependencies\UnityEngine.UmbraModule.dll</HintPath>
+      </Reference>
+      <Reference Include="UnityEngine.UnityAnalyticsCommonModule" Condition="'$(TargetFramework)' == 'net48'">
+        <HintPath>..\..\..\MinigameExt\src\dependencies\UnityEngine.UnityAnalyticsCommonModule.dll</HintPath>
+      </Reference>
+      <Reference Include="UnityEngine.UnityAnalyticsModule" Condition="'$(TargetFramework)' == 'net48'">
+        <HintPath>..\..\..\MinigameExt\src\dependencies\UnityEngine.UnityAnalyticsModule.dll</HintPath>
+      </Reference>
+      <Reference Include="UnityEngine.UnityConnectModule" Condition="'$(TargetFramework)' == 'net48'">
+        <HintPath>..\..\..\MinigameExt\src\dependencies\UnityEngine.UnityConnectModule.dll</HintPath>
+      </Reference>
+      <Reference Include="UnityEngine.UnityCurlModule" Condition="'$(TargetFramework)' == 'net48'">
+        <HintPath>..\..\..\MinigameExt\src\dependencies\UnityEngine.UnityCurlModule.dll</HintPath>
+      </Reference>
+      <Reference Include="UnityEngine.UnityTestProtocolModule" Condition="'$(TargetFramework)' == 'net48'">
+        <HintPath>..\..\..\MinigameExt\src\dependencies\UnityEngine.UnityTestProtocolModule.dll</HintPath>
+      </Reference>
+      <Reference Include="UnityEngine.UnityWebRequestAssetBundleModule" Condition="'$(TargetFramework)' == 'net48'">
+        <HintPath>..\..\..\MinigameExt\src\dependencies\UnityEngine.UnityWebRequestAssetBundleModule.dll</HintPath>
+      </Reference>
+      <Reference Include="UnityEngine.UnityWebRequestAudioModule" Condition="'$(TargetFramework)' == 'net48'">
+        <HintPath>..\..\..\MinigameExt\src\dependencies\UnityEngine.UnityWebRequestAudioModule.dll</HintPath>
+      </Reference>
+      <Reference Include="UnityEngine.UnityWebRequestModule" Condition="'$(TargetFramework)' == 'net48'">
+        <HintPath>..\..\..\MinigameExt\src\dependencies\UnityEngine.UnityWebRequestModule.dll</HintPath>
+      </Reference>
+      <Reference Include="UnityEngine.UnityWebRequestTextureModule" Condition="'$(TargetFramework)' == 'net48'">
+        <HintPath>..\..\..\MinigameExt\src\dependencies\UnityEngine.UnityWebRequestTextureModule.dll</HintPath>
+      </Reference>
+      <Reference Include="UnityEngine.UnityWebRequestWWWModule" Condition="'$(TargetFramework)' == 'net48'">
+        <HintPath>..\..\..\MinigameExt\src\dependencies\UnityEngine.UnityWebRequestWWWModule.dll</HintPath>
+      </Reference>
+      <Reference Include="UnityEngine.VehiclesModule" Condition="'$(TargetFramework)' == 'net48'">
+        <HintPath>..\..\..\MinigameExt\src\dependencies\UnityEngine.VehiclesModule.dll</HintPath>
+      </Reference>
+      <Reference Include="UnityEngine.VFXModule" Condition="'$(TargetFramework)' == 'net48'">
+        <HintPath>..\..\..\MinigameExt\src\dependencies\UnityEngine.VFXModule.dll</HintPath>
+      </Reference>
+      <Reference Include="UnityEngine.VideoModule" Condition="'$(TargetFramework)' == 'net48'">
+        <HintPath>..\..\..\MinigameExt\src\dependencies\UnityEngine.VideoModule.dll</HintPath>
+      </Reference>
+      <Reference Include="UnityEngine.VirtualTexturingModule" Condition="'$(TargetFramework)' == 'net48'">
+        <HintPath>..\..\..\MinigameExt\src\dependencies\UnityEngine.VirtualTexturingModule.dll</HintPath>
+      </Reference>
+      <Reference Include="UnityEngine.VRModule" Condition="'$(TargetFramework)' == 'net48'">
+        <HintPath>..\..\..\MinigameExt\src\dependencies\UnityEngine.VRModule.dll</HintPath>
+      </Reference>
+      <Reference Include="UnityEngine.WindModule" Condition="'$(TargetFramework)' == 'net48'">
+        <HintPath>..\..\..\MinigameExt\src\dependencies\UnityEngine.WindModule.dll</HintPath>
+      </Reference>
+      <Reference Include="UnityEngine.XRModule" Condition="'$(TargetFramework)' == 'net48'">
+        <HintPath>..\..\..\MinigameExt\src\dependencies\UnityEngine.XRModule.dll</HintPath>
+      </Reference>
+      <Reference Include="ZString" Condition="'$(TargetFramework)' == 'net48'">
+        <HintPath>..\..\..\MinigameExt\src\dependencies\ZString.dll</HintPath>
       </Reference>
     </ItemGroup>
     

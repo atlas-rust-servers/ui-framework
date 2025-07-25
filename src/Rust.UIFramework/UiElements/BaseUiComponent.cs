@@ -1,4 +1,5 @@
-﻿using Oxide.Ext.UiFramework.Json;
+﻿using Oxide.Ext.UiFramework.Extensions;
+using Oxide.Ext.UiFramework.Json;
 using Oxide.Ext.UiFramework.Offsets;
 using Oxide.Ext.UiFramework.Pooling;
 using Oxide.Ext.UiFramework.Positions;
@@ -26,7 +27,7 @@ public abstract class BaseUiComponent : BasePoolable
         writer.AddFieldRaw(JsonDefaults.Common.ComponentName, Reference.Name);
         writer.AddFieldRaw(JsonDefaults.Common.ParentName, Reference.Parent);
         writer.AddField(JsonDefaults.Common.FadeOutName, FadeOut, JsonDefaults.Common.FadeOut);
-            
+
         if (autoDestroy)
         {
             writer.AddFieldRaw(JsonDefaults.Common.AutoDestroy, Reference.Name);
@@ -93,6 +94,16 @@ public abstract class BaseUiComponent : BasePoolable
     public void SetFadeOut(float duration)
     {
         FadeOut = duration;
+    }
+
+    public void SetName(string name)
+    {
+        Reference = Reference.WithName(name);
+    }
+
+    public void SetParent(string parent)
+    {
+        Reference = Reference.WithParent(parent);
     }
 
     protected override void EnterPool()

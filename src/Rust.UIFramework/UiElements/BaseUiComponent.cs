@@ -9,7 +9,10 @@ namespace Oxide.Ext.UiFramework.UiElements;
 public abstract class BaseUiComponent : BasePoolable
 {
     public UiReference Reference;
+
+    public bool AutoDestroy;
     public float FadeOut;
+
     public UiPosition Position;
     public UiOffset Offset;
 
@@ -73,6 +76,9 @@ public abstract class BaseUiComponent : BasePoolable
         writer.AddFieldRaw(JsonDefaults.Common.ParentName, Reference.Parent);
         writer.AddField(JsonDefaults.Common.FadeOutName, FadeOut, JsonDefaults.Common.FadeOut);
 
+        if (AutoDestroy)
+            writer.AddFieldRaw(JsonDefaults.Common.AutoDestroy, Reference.Name);
+
         writer.WritePropertyName("components");
         writer.WriteStartArray();
         WriteComponents(writer);
@@ -89,6 +95,11 @@ public abstract class BaseUiComponent : BasePoolable
         writer.AddOffset(JsonDefaults.Offset.OffsetMinName, Offset.Min, JsonDefaults.Common.Min);
         writer.AddOffset(JsonDefaults.Offset.OffsetMaxName, Offset.Max, JsonDefaults.Common.Max);
         writer.WriteEndObject();
+    }
+
+    public void SetAutoDestroy(bool enabled)
+    {
+        AutoDestroy = enabled;
     }
 
     public void SetFadeOut(float duration)
@@ -109,6 +120,7 @@ public abstract class BaseUiComponent : BasePoolable
     protected override void EnterPool()
     {
         Reference = default;
+        AutoDestroy = false;
         FadeOut = 0;
         Position = default;
         Offset = default;

@@ -65,12 +65,7 @@ public partial class UiBuilder : BaseUiBuilder
 
     public CachedUiBuilder ToCachedBuilder(bool dispose = true)
     {
-        CachedUiBuilder cached = CachedUiBuilder.CreateCachedBuilder(this);
-        if (dispose && !Disposed)
-        {
-            Dispose();
-        }
-        return cached;
+        return CachedUiBuilder.CreateCachedBuilder(this, dispose);
     }
     #endregion
         

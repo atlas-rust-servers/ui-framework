@@ -37,5 +37,7 @@ public class OutlineComponent : BasePoolable, IComponent
     protected override void EnterPool()
     {
         Reset();
+        
+        base.EnterPool();
     }
 }

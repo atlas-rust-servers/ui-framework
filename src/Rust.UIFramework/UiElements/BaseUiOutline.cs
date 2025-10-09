@@ -45,6 +45,8 @@ public abstract class BaseUiOutline : BaseUiComponent
 
     protected override void EnterPool()
     {
+        base.EnterPool();
+        
         RemoveOutline();
     }
 }

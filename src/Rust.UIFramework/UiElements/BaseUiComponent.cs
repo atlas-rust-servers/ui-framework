@@ -124,6 +124,8 @@ public abstract class BaseUiComponent : BasePoolable
         FadeOut = 0;
         Position = default;
         Offset = default;
+
+        base.EnterPool();
     }
 
     public static implicit operator UiReference(BaseUiComponent component) => component.Reference;

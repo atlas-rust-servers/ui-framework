@@ -97,6 +97,12 @@ public abstract class BaseUiComponent : BasePoolable
         writer.WriteEndObject();
     }
 
+    public void SetReference(string parent, string name, bool autoDestroy = true)
+    {
+        Reference = new UiReference(parent, name);
+        AutoDestroy = autoDestroy;
+    }
+
     public void SetAutoDestroy(bool enabled)
     {
         AutoDestroy = enabled;

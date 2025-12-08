@@ -10,7 +10,7 @@ internal static class SendHandler
     private static readonly ConcurrentQueue<IUiRequest> Queue = new();
     private static readonly AutoResetEvent Reset = new(false);
     private static readonly Thread _thread;
-    
+
     static SendHandler()
     {
         _thread = new Thread(Send)
@@ -20,7 +20,7 @@ internal static class SendHandler
         };
         _thread.Start();
     }
-    
+
     internal static void Enqueue(IUiRequest request)
     {
         Queue.Enqueue(request);
@@ -48,7 +48,7 @@ internal static class SendHandler
             }
             catch (Exception ex)
             {
-                Interface.Oxide.LogException("An error occured during UI Send", ex);
+                Interface.Oxide.NextTick(() => { Interface.Oxide.LogException("An error occured during UI Send", ex); });
             }
             finally
             {

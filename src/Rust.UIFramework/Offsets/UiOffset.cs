@@ -26,11 +26,6 @@ public readonly struct UiOffset
         Max = new Vector2(xMax, yMax);
     }
 
-    public static UiOffset CreateRect(int x, int y, int width, int height)
-    {
-        return new UiOffset(x, y, x + width, y + height);
-    }
-
     public static UiOffset Horizontal(float xMin, float xMax) => new(xMin, 0, xMax, 0);
 
     public static UiOffset Vertical(float yMin, float yMax) => new(0, yMin, 0, yMax);
@@ -47,7 +42,14 @@ public readonly struct UiOffset
     public static UiOffset YMax(float yMax) => new(0, 0, 0, yMax);
     public static UiOffset YMax(float yMax, float height) => new(0, 0, 0, yMax - height);
     
+    public static UiOffset XYMin(float xMin, float yMin, float width, float height) => new(xMin, yMin, xMin + width, yMin + height);
+    public static UiOffset XYMax(float xMax, float yMax, float width, float height) => new(xMax - width, yMax - height, xMax, yMax);
+    public static UiOffset XMinYMax(float xMin, float yMax, float width, float height) => new(xMin, yMax - height, xMin + width, yMax);
+    public static UiOffset XMaxYMin(float xMax, float yMin, float width, float height) => new(xMax - width, yMin, xMax, yMin + height);
+    
     public static UiOffset FromPoint(float x, float y, float width, float height) => new(x, y, x + width, y + height);
+    
+    
 
     public override string ToString()
     {

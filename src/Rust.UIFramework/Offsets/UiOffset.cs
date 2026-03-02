@@ -41,15 +41,23 @@ public readonly struct UiOffset
 
     public static UiOffset YMax(float yMax) => new(0, 0, 0, yMax);
     public static UiOffset YMax(float yMax, float height) => new(0, 0, 0, yMax - height);
-    
+
     public static UiOffset XYMin(float xMin, float yMin) => new(xMin, yMin, 0, 0);
     public static UiOffset XYMax(float xMax, float yMax) => new(0, 0, xMax, yMax);
     public static UiOffset XMinYMax(float xMin, float yMax) => new(xMin, 0, 0, yMax);
     public static UiOffset XMaxYMin(float xMax, float yMin) => new(0, yMin, xMax, 0);
-    
-    public static UiOffset FromPoint(float x, float y, float width, float height) => new(x, y, x + width, y + height);
-    
-    
+
+    public static UiOffset FromXMinYMin(float xMin, float yMin, float width, float height) => new(xMin, yMin, xMin + width, yMin + height);
+    public static UiOffset FromXMinYMin(float xMin, float yMin, float size) => FromXMinYMin(xMin, yMin, size, size);
+
+    public static UiOffset FromXMinYMax(float xMin, float yMax, float width, float height) => new(xMin, yMax - height, xMin + width, yMax);
+    public static UiOffset FromXMinYMax(float xMin, float yMax, float size) => FromXMinYMax(xMin, yMax, size, size);
+
+    public static UiOffset FromXMaxYMin(float xMax, float yMin, float width, float height) => new(xMax - width, yMin, xMax, yMin + height);
+    public static UiOffset FromXMaxYMin(float xMax, float yMin, float size) => FromXMaxYMin(xMax, yMin, size, size);
+
+    public static UiOffset FromXMaxYMax(float xMax, float yMax, float width, float height) => new(xMax - width, yMax - height, xMax, yMax);
+    public static UiOffset FromXMaxYMax(float xMax, float yMax, float size) => FromXMaxYMax(xMax, yMax, size, size);
 
     public override string ToString()
     {

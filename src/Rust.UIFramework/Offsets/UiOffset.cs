@@ -1,34 +1,50 @@
-﻿using UnityEngine;
+﻿using JetBrains.Annotations;
+using UnityEngine;
 
 namespace Oxide.Ext.UiFramework.Offsets;
 
+[UsedImplicitly(ImplicitUseTargetFlags.WithMembers)]
 public readonly struct UiOffset
 {
     public static readonly UiOffset None = new(0, 0, 0, 0);
     public static readonly UiOffset Scaled = new(1280, 720);
-        
+
     public readonly Vector2 Min;
     public readonly Vector2 Max;
-        
+
     public Vector2 Size => Max - Min;
     public float Width => Max.x - Min.x;
     public float Height => Max.y - Min.y;
 
-    public UiOffset(int width, int height) : this(-width / 2f, -height / 2f, width / 2f, height / 2f) { }
-        
+    public UiOffset(int width, int height) : this(-width / 2f, -height / 2f, width / 2f, height / 2f)
+    {
+    }
+
     public UiOffset(float xMin, float yMin, float xMax, float yMax)
     {
-            Min = new Vector2(xMin, yMin);
-            Max = new Vector2(xMax, yMax);
-        }
+        Min = new Vector2(xMin, yMin);
+        Max = new Vector2(xMax, yMax);
+    }
 
     public static UiOffset CreateRect(int x, int y, int width, int height)
     {
-            return new UiOffset(x, y, x + width, y + height);
-        }
+        return new UiOffset(x, y, x + width, y + height);
+    }
+
+    public static UiOffset Horizontal(float xMin, float xMax) => new(xMin, 0, xMax, 0);
+
+    public static UiOffset Vertical(float yMin, float yMax) => new(0, yMin, 0, yMax);
+
+    public static UiOffset XMin(float xMin) => new(xMin, 0, 0, 0);
+    
+    public static UiOffset XMax(float xMax) => new(0, 0, xMax, 0);
+    
+    public static UiOffset YMin(float yMin) => new(0, yMin, 0, 0);
+    
+    public static UiOffset YMax(float yMax) => new(0, 0, 0, yMax);
 
     public override string ToString()
     {
-            return $"({Min.x:0}, {Min.y:0}) ({Max.x:0}, {Max.y:0}) WxH:({Width} x {Height})";
-        }
+        return $"({Min.x:0}, {Min.y:0}) ({Max.x:0}, {Max.y:0}) WxH:({Width} x {Height})";
+    }
 }

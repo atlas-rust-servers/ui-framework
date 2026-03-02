@@ -36,12 +36,18 @@ public readonly struct UiOffset
     public static UiOffset Vertical(float yMin, float yMax) => new(0, yMin, 0, yMax);
 
     public static UiOffset XMin(float xMin) => new(xMin, 0, 0, 0);
-    
+    public static UiOffset XMin(float xMin, float width) => new(xMin, 0, xMin + width, 0);
+
     public static UiOffset XMax(float xMax) => new(0, 0, xMax, 0);
-    
+    public static UiOffset XMax(float xMax, float width) => new(xMax - width, 0, xMax, 0);
+
     public static UiOffset YMin(float yMin) => new(0, yMin, 0, 0);
-    
+    public static UiOffset YMin(float yMin, float height) => new(0, yMin, 0, yMin + height);
+
     public static UiOffset YMax(float yMax) => new(0, 0, 0, yMax);
+    public static UiOffset YMax(float yMax, float height) => new(0, 0, 0, yMax - height);
+    
+    public static UiOffset FromPoint(float x, float y, float width, float height) => new(x, y, x + width, y + height);
 
     public override string ToString()
     {

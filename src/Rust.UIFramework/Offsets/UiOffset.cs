@@ -40,7 +40,7 @@ public readonly struct UiOffset
     public static UiOffset YMin(float yMin, float height) => new(0, yMin, 0, yMin + height);
 
     public static UiOffset YMax(float yMax) => new(0, 0, 0, yMax);
-    public static UiOffset YMax(float yMax, float height) => new(0, 0, 0, yMax - height);
+    public static UiOffset YMax(float yMax, float height) => new(0, yMax - height, 0, yMax);
 
     public static UiOffset XYMin(float xMin, float yMin) => new(xMin, yMin, 0, 0);
     public static UiOffset XYMax(float xMax, float yMax) => new(0, 0, xMax, yMax);

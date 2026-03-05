@@ -59,6 +59,9 @@ public readonly struct UiOffset
     public static UiOffset FromXMaxYMax(float xMax, float yMax, float width, float height) => new(xMax - width, yMax - height, xMax, yMax);
     public static UiOffset FromXMaxYMax(float xMax, float yMax, float size) => FromXMaxYMax(xMax, yMax, size, size);
 
+    public static UiOffset HorizontalPaddings(float padding) => new(padding, 0, -padding, 0);
+    public static UiOffset VerticalPaddings(float padding) => new(0, padding, 0, -padding);
+
     public override string ToString()
     {
         return $"({Min.x:0}, {Min.y:0}) ({Max.x:0}, {Max.y:0}) WxH:({Width} x {Height})";

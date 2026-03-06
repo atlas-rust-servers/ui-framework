@@ -61,6 +61,7 @@ public readonly struct UiOffset
 
     public static UiOffset HorizontalPaddings(float padding) => new(padding, 0, -padding, 0);
     public static UiOffset VerticalPaddings(float padding) => new(0, padding, 0, -padding);
+    public static UiOffset Paddings(float padding) => new(padding, padding, -padding, -padding);
 
     public override string ToString()
     {

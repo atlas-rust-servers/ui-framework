@@ -131,5 +131,38 @@ public readonly struct UiColor : IEquatable<UiColor>
         }
         return new UiColor(red, green, blue, alpha);
     }
+    
+    /// <summary>
+    /// <a href="https://docs.unity3d.com/ScriptReference/ColorUtility.TryParseHtmlString.html">Unity ColorUtility.TryParseHtmlString API reference</a>
+    /// Valid Hex Color Formats
+    /// #RGB
+    /// #RRGGBB
+    /// #RGBA
+    /// #RRGGBBAA
+    /// </summary>
+    /// <param name="hexColor"></param>
+    /// <param name="alpha"></param>
+    /// <returns></returns>
+    /// <exception cref="UiFrameworkException"></exception>
+    public static UiColor ParseHexColor(string hexColor, float alpha)
+    {
+        ReadOnlySpan<char> span = hexColor.AsSpan();
+        if (span[0] == '#')
+        {
+            span = span[1..];
+        }
+            
+        byte red = byte.Parse(span[..2], NumberStyles.HexNumber);
+        byte green = byte.Parse(span[2..4], NumberStyles.HexNumber);
+        byte blue = byte.Parse(span[4..6], NumberStyles.HexNumber);
+        
+        alpha = (byte)Mathf.Clamp(alpha * byte.MaxValue, 0.0f, byte.MaxValue);
+        if (span.Length == 8)
+        {
+            alpha = byte.Parse(span[6..8], NumberStyles.HexNumber);
+        }
+        return new UiColor(red, green, blue, alpha);
+    }
+    
     #endregion
 }

@@ -23,7 +23,7 @@ public class UiColorConverter : JsonConverter
                 return default(UiColor);
 
             case JsonToken.String:
-                return UiColor.ParseHexColor(reader.Value.ToString());
+                return UiColor.ParseHex(reader.Value.ToString());
         }
 
         return default(UiColor);

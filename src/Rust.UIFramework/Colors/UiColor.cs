@@ -58,7 +58,7 @@ public readonly struct UiColor : IEquatable<UiColor>
     #endregion
 
     #region Operators
-    public static implicit operator UiColor(string value) => ParseHexColor(value);
+    public static implicit operator UiColor(string value) => ParseHex(value);
     public static implicit operator UiColor(Color value) => new(value);
     public static implicit operator Color(UiColor value) => new(ToFloat(value._red), ToFloat(value._green), ToFloat(value._blue), ToFloat(value._alpha));
     public static bool operator ==(UiColor lhs, UiColor rhs) => lhs._red == rhs._red && lhs._green == rhs._green && lhs._blue == rhs._blue && lhs._alpha == rhs._alpha;
@@ -110,12 +110,12 @@ public readonly struct UiColor : IEquatable<UiColor>
     /// #RGBA
     /// #RRGGBBAA
     /// </summary>
-    /// <param name="hexColor"></param>
+    /// <param name="hex"></param>
     /// <returns></returns>
     /// <exception cref="UiFrameworkException"></exception>
-    public static UiColor ParseHexColor(string hexColor)
+    public static UiColor ParseHex(string hex)
     {
-        ReadOnlySpan<char> span = hexColor.AsSpan();
+        ReadOnlySpan<char> span = hex.AsSpan();
         if (span[0] == '#')
         {
             span = span[1..];
@@ -140,13 +140,13 @@ public readonly struct UiColor : IEquatable<UiColor>
     /// #RGBA
     /// #RRGGBBAA
     /// </summary>
-    /// <param name="hexColor"></param>
+    /// <param name="hex"></param>
     /// <param name="alpha"></param>
     /// <returns></returns>
     /// <exception cref="UiFrameworkException"></exception>
-    public static UiColor ParseHexColor(string hexColor, float alpha)
+    public static UiColor ParseHex(string hex, float alpha)
     {
-        ReadOnlySpan<char> span = hexColor.AsSpan();
+        ReadOnlySpan<char> span = hex.AsSpan();
         if (span[0] == '#')
         {
             span = span[1..];
@@ -162,6 +162,12 @@ public readonly struct UiColor : IEquatable<UiColor>
             alpha = byte.Parse(span[6..8], NumberStyles.HexNumber);
         }
         return new UiColor(red, green, blue, alpha);
+    }
+    
+    [Obsolete("Just use 'ParseHex'")]
+    public static UiColor ParseHexColor(string hexColor)
+    {
+        return ParseHex(hexColor);
     }
     
     #endregion

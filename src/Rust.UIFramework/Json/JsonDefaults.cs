@@ -162,9 +162,9 @@ public static class JsonDefaults
         public const string HighlightColorName = "highlightColor";
         public const string PressedColorName = "pressedColor";
         public const string TrackColorName = "trackColor";
-        public static readonly UiColor HandleColor = UiColor.ParseHexColor("#262626");
-        public static readonly UiColor HighlightColor = UiColor.ParseHexColor("#2B2B2B");
-        public static readonly UiColor PressedColor = UiColor.ParseHexColor("#333333");
-        public static readonly UiColor TrackColor = UiColor.ParseHexColor("#171717");
+        public static readonly UiColor HandleColor = UiColor.ParseHex("#262626");
+        public static readonly UiColor HighlightColor = UiColor.ParseHex("#2B2B2B");
+        public static readonly UiColor PressedColor = UiColor.ParseHex("#333333");
+        public static readonly UiColor TrackColor = UiColor.ParseHex("#171717");
     }
 }

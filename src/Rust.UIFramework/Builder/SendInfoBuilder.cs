@@ -13,14 +13,14 @@ internal static class SendInfoBuilder
     private const sbyte UiChannel = 3;
     private const sbyte AnimationsChannel = 4;
     private const sbyte PreCache = 5;
-    
+
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     internal static SendInfo Get(BasePlayer player)
     {
         if (!player) throw new ArgumentNullException(nameof(player));
         return Get(player.Connection);
     }
-    
+
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     internal static SendInfo GetForPrecache(BasePlayer player)
     {
@@ -30,7 +30,7 @@ internal static class SendInfoBuilder
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     internal static SendInfo Get(Connection connection) => Get(connection, UiChannel);
-    
+
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     internal static SendInfo Get(Connection connection, sbyte channel)
     {
@@ -53,7 +53,7 @@ internal static class SendInfoBuilder
                 pooledConnection.Add(connection);
             }
         }
-        
+
         return new SendInfo(pooledConnection)
         {
             channel = UiChannel
@@ -65,7 +65,7 @@ internal static class SendInfoBuilder
         sbyte channel = Singleton<AnimationTime>.Instance.AnimationsEnabled ? AnimationsChannel : UiChannel;
         return GetForChannel(info, channel);
     }
-    
+
     internal static SendInfo GetForUi(SendInfo info)
     {
         return GetForChannel(info, UiChannel);
@@ -89,7 +89,7 @@ internal static class SendInfoBuilder
                 connections.Add(connection);
             }
         }
-        
+
         return new SendInfo(connections)
         {
             channel = channel

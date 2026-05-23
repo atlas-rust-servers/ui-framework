@@ -52,11 +52,7 @@ internal class AnimationData : ISingleton
         AnimationException.ThrowIfMissingSend(animation);
         if (animation.TryGetSinglePlayer(out ulong playerId))
         {
-            if (!_playerAnimations.TryGetValue(playerId, out PlayerAnimationData animations))
-            {
-                _playerAnimations[playerId] = animations = PlayerAnimationData.Create(animation, playerId);
-            }
-
+            PlayerAnimationData animations = _playerAnimations.GetOrAdd(playerId, static (id, anim) => PlayerAnimationData.Create(anim, id), animation);
             animations.AddAnimation(animation);
             _animationPlayer[animation.Id] = animations;
             return;
@@ -99,13 +95,8 @@ internal class AnimationData : ISingleton
     {
         _animationPlayer.TryRemove(id, out _);
         playerAnimations.RemoveAnimation(sendable);
-        if (!playerAnimations.IsEmpty)
-        {
-            return;
-        }
-        
-        _playerAnimations.TryRemove(playerAnimations.PlayerId, out _);
-        playerAnimations.Dispose();
+        //Don't dispose PlayerAnimationData when empty - racy with concurrent OnAnimationQueued from the send thread.
+        //Empty PlayerAnimationData is bounded by max player count and disposed on disconnect.
     }
 
     public void CleanupCompletedAnimations()
@@ -138,12 +129,13 @@ internal class AnimationData : ISingleton
     
     public void OnPlayerDisconnected(ulong playerId)
     {
-        if(_playerAnimations.TryGetValue(playerId, out PlayerAnimationData animations))
+        if (_playerAnimations.TryRemove(playerId, out PlayerAnimationData animations))
         {
             foreach (KeyValuePair<AnimationId, ISendableAnimation> pair in animations.Animations)
             {
                 RemoveAnimation(pair.Key);
             }
+            animations.Dispose();
         }
 
         foreach (ISendableAnimation animation in _groupAnimations.Values)

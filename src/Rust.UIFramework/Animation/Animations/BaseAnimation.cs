@@ -13,7 +13,9 @@ public abstract class BaseAnimation : BasePoolable, IAnimation
 {
     public AnimationId Id { get; private set; }
     public IUiFrameworkPlugin Plugin { get; private set;  }
-    public AnimationState State { get; private set; }
+
+    private volatile AnimationState _state;
+    public AnimationState State => _state;
     public IAnimationDuration Duration { get; set; }
     public IAnimationRepeat Repeat { get; set; }
     public TimingFunction Timing { get; set; }
@@ -188,7 +190,7 @@ public abstract class BaseAnimation : BasePoolable, IAnimation
         }
         
         UiFrameworkExtension.GlobalLogger.Debug("Animation {0} changed state {1} -> {2}", Id, State, newState);
-        State = newState;
+        _state = newState;
         
         switch (State)
         {
@@ -299,7 +301,7 @@ public abstract class BaseAnimation : BasePoolable, IAnimation
         Singleton<AnimationTracker>.Instance.OnAnimationFinalized(Id);
         Id = default;
         Plugin = default;
-        State = default;
+        _state = default;
         Duration.TryReturnToPool();
         Duration = default;
         Repeat.TryReturnToPool();

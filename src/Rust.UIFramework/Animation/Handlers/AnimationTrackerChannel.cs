@@ -33,6 +33,12 @@ internal class AnimationTrackerChannel : BaseUiChannel<UiSendRequest>, ISingleto
                 }
             }
         }
+        else if (item.Builder is AnimationBuilder animBuilder)
+        {
+            // Track AnimationBuilder animations here (after UiBuilder cleanup above has already run
+            // for the same component names), so they aren't immediately cancelled by RemoveUiForSend.
+            animBuilder.TrackAnimations(item.Send);
+        }
 #endif
     }
 }

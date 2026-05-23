@@ -59,25 +59,32 @@ internal class AnimationHandler : ISingleton
         foreach (PlayerAnimationData playerAnimations in Singleton<AnimationData>.Instance.PlayerAnimations.GetEnumeratorPooled(UiFrameworkPlugin.Instance).Values)
         {
             JsonFrameworkWriter writer = Create();
+            bool hasAnimations = false;
             foreach (ISendableAnimation animation in playerAnimations.Animations.GetEnumeratorPooled(UiFrameworkPlugin.Instance).Values)
             {
-                ProcessAnimation(animation, writer);
+                if (ProcessAnimation(animation, writer))
+                    hasAnimations = true;
             }
 
-            SendAnimations(writer, playerAnimations.Send);
+            if (hasAnimations)
+                SendAnimations(writer, playerAnimations.Send);
+            else
+                writer.Dispose();
         }
         
         foreach (ISendableAnimation animation in Singleton<AnimationData>.Instance.GroupAnimations.GetEnumeratorPooled(UiFrameworkPlugin.Instance).Values)
         {
             JsonFrameworkWriter writer = Create();
-            ProcessAnimation(animation, writer);
-            SendAnimations(writer, animation.Send);
+            if (ProcessAnimation(animation, writer))
+                SendAnimations(writer, animation.Send);
+            else
+                writer.Dispose();
         }
 
         Singleton<AnimationData>.Instance.CleanupCompletedAnimations();
     }
 
-    private void ProcessAnimation(ISendableAnimation animation, JsonFrameworkWriter writer)
+    private bool ProcessAnimation(ISendableAnimation animation, JsonFrameworkWriter writer)
     {
         _logger.Debug("Processing Animation {0}", animation.Id);
 
@@ -87,7 +94,7 @@ internal class AnimationHandler : ISingleton
             {
                 if (animation.State == AnimationState.Pooled)
                 {
-                    return;
+                    return false;
                 }
                 
                 if (animation.State == AnimationState.Queued)
@@ -97,9 +104,10 @@ internal class AnimationHandler : ISingleton
                 
                 animation.OnTick();
                 UiFrameworkExtension.GlobalLogger.Debug($"{nameof(AnimationHandler)}.{nameof(ProcessAnimation)} ID: {{0}} HasChanged: {{1}}", animation.Id, animation.HasChanged);
-                if (animation.HasChanged)
+                if (animation.HasChanged && animation.State != AnimationState.Cancelled)
                 {
                     animation.Serialize(writer);
+                    return true;
                 }
             }
         }
@@ -115,6 +123,8 @@ internal class AnimationHandler : ISingleton
                 _logger.Exception("An error occured processing animation. Animation is DISPOSED.", ex);
             }
         }
+
+        return false;
     }
 
     private static JsonFrameworkWriter Create()

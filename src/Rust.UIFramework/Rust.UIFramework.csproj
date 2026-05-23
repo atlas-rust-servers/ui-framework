@@ -17,7 +17,7 @@
         <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
         <PlatformTarget>x64</PlatformTarget>
     </PropertyGroup>
-    
+
     <ItemGroup>
       <Reference Include="0Harmony">
         <HintPath>..\References\0Harmony.dll</HintPath>
@@ -110,7 +110,7 @@
         <HintPath>..\references\UnityEngine.UnityWebRequestModule.dll</HintPath>
       </Reference>
     </ItemGroup>
-    
+
     <ItemGroup>
       <Content Include="..\..\.gitattributes">
         <Link>.gitattributes</Link>
@@ -133,7 +133,7 @@
       <Compile Remove="$(CompilerGeneratedFilesOutputPath)/**/*.cs" />
       <Content Include="$(CompilerGeneratedFilesOutputPath)/Rust.UiFramework.SourceGenerators/**/*.cs" />
     </ItemGroup>
-    
+
     <ItemGroup>
       <PackageReference Include="ErrorProne.NET.CoreAnalyzers" Version="0.1.2">
         <PrivateAssets>all</PrivateAssets>
@@ -160,7 +160,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\Rust.UiFramework.SourceGenerators\Rust.UiFramework.SourceGenerators.csproj" 
+      <ProjectReference Include="..\Rust.UiFramework.SourceGenerators\Rust.UiFramework.SourceGenerators.csproj"
                         OutputItemType="Analyzer" ReferenceOutputAssembly="false"/>
     </ItemGroup>
 
@@ -230,10 +230,5 @@
     <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|Unit Tests' ">
       <DefineConstants>TRACE;UNIT_TESTS</DefineConstants>
     </PropertyGroup>
-
-
-    <Target Name="PostBuild" AfterTargets="PostBuildEvent">
-      <Exec Command="if '$(TargetFramework)' == 'net48' copy /Y &quot;$(TargetDir)$(TargetName).dll&quot; &quot;D:\Servers\Full\Rust-Main\steamapps\common\rust_dedicated\RustDedicated_Data\Managed&quot;" />
-    </Target>
 
 </Project>

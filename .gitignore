@@ -360,4 +360,4 @@ src/References/*.dll
 **/PolySharp.SourceGenerators/**
 
 # Source Generator output
-Rust.UIFramework/Generated/**
+src/Rust.UIFramework/Generated/**

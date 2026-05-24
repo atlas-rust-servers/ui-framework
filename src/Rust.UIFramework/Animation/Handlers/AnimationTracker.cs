@@ -10,16 +10,16 @@ internal class AnimationTracker : ISingleton
 {
     private readonly ConcurrentDictionary<PlayerPanel, List<AnimationId>> _playerPanels = new();
     private readonly ConcurrentDictionary<AnimationId, List<PlayerPanel>> _animatedPlayers = new();
-    
+
     private AnimationTracker() { }
-    
+
     public void OnAnimationQueued(IAnimation animation, SendInfo send, string rootName)
     {
         if (animation is IElementAnimation { Tracked: false })
         {
             return;
         }
-        
+
         if (send.connection != null)
         {
             OnAnimationQueued(animation, send.connection.userid, rootName);
@@ -33,7 +33,7 @@ internal class AnimationTracker : ISingleton
             OnAnimationQueued(animation, connection.userid, rootName);
         }
     }
-    
+
     private void OnAnimationQueued(IAnimation animation, ulong playerId, string rootName)
     {
         List<PlayerPanel> animationPanels = GetAnimationPanels(animation.Id);
@@ -67,7 +67,7 @@ internal class AnimationTracker : ISingleton
         }
         animationPanels.Add(playerPanel);
     }
-    
+
     public void GetAnimations(ulong playerId, string name, List<AnimationRef<ISendableAnimation>> animations)
     {
         PlayerPanel playerPanel = new(playerId, name);
@@ -96,14 +96,15 @@ internal class AnimationTracker : ISingleton
 
     public void OnAnimationFinalized(AnimationId id)
     {
-        if (_animatedPlayers.TryGetValue(id, out List<PlayerPanel> playerPanels))
+        if (_animatedPlayers.TryRemove(id, out List<PlayerPanel> playerPanels))
         {
             for (int index = 0; index < playerPanels.Count; index++)
             {
                 PlayerPanel playerPanel = playerPanels[index];
                 if (_playerPanels.TryGetValue(playerPanel, out List<AnimationId> animations))
                 {
-                    if (animations.Remove(id) && animations.Count == 0 && _animatedPlayers.Remove(id, out _))
+                    animations.Remove(id);
+                    if (animations.Count == 0 && _playerPanels.TryRemove(playerPanel, out _))
                     {
                         UiPool.Internal.FreeList(animations);
                     }
@@ -113,7 +114,7 @@ internal class AnimationTracker : ISingleton
             UiPool.Internal.FreeList(playerPanels);
         }
     }
-    
+
     public void RemoveUiForSend(SendInfo send, string name)
     {
         if (send.connections == null)
@@ -140,6 +141,7 @@ internal class AnimationTracker : ISingleton
                 AnimationId id = ids[index];
                 Singleton<AnimationData>.Instance.GetSendableAnimation(id)?.RemovePlayer(playerId);
             }
+            UiPool.Internal.FreeList(ids);
         }
     }
 

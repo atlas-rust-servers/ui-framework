@@ -178,9 +178,11 @@ public abstract class BaseAnimation : BasePoolable, IAnimation
 
     public void ChangeState(AnimationState newState)
     {
-        InvalidAnimationStateException.ThrowIfInvalidState(State, newState);
-
-        //Don't allow changing states once we hit Completed, Canceled, or Timeout
+        //Don't allow changing states once we hit Completed, Canceled, or Timeout.
+        //This must run before validation: an animation can reach a terminal state on
+        //another thread (e.g. cancellation) between the time a caller checks State and
+        //calls ChangeState, so transitioning out of a terminal state is a silent no-op
+        //rather than an invalid-state exception.
         switch (State)
         {
             case AnimationState.Completed:
@@ -188,6 +190,8 @@ public abstract class BaseAnimation : BasePoolable, IAnimation
             case AnimationState.Timeout:
                 return;
         }
+
+        InvalidAnimationStateException.ThrowIfInvalidState(State, newState);
         
         UiFrameworkExtension.GlobalLogger.Debug("Animation {0} changed state {1} -> {2}", Id, State, newState);
         _state = newState;

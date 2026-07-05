@@ -28,7 +28,7 @@ internal abstract class BaseUiRequest : BasePoolable, IChannelObject
     {
         if (Send.connections != null)
         {
-            UiPool.Internal.FreeList(Send.connections);
+            UiPool.Connections.FreeList(Send.connections);
         }
         Send = default;
     }

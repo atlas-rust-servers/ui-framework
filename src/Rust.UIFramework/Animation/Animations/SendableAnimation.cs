@@ -1,6 +1,7 @@
 ﻿using Network;
 using Oxide.Ext.UiFramework.Exceptions;
 using Oxide.Ext.UiFramework.Json;
+using Oxide.Ext.UiFramework.Libraries;
 
 namespace Oxide.Ext.UiFramework.Animation;
 
@@ -56,19 +57,29 @@ public abstract class SendableAnimation : BaseAnimation, ISendableAnimation
 
     public void RemovePlayer(ulong playerId)
     {
-        if (Send.connections != null)
+        //RemovePlayer can be called from the AnimationTrackerChannel thread while the animation
+        //is concurrently being pooled on the animation thread (EnterPool resets _send to default
+        //and clears IsSending). Bail out if we're no longer sending and snapshot the struct once
+        //so a concurrent reset can't null out connection/connections mid-method.
+        if (!IsSending)
         {
-            for (int index = Send.connections.Count - 1; index >= 0; index--)
+            return;
+        }
+
+        SendInfo send = Send;
+        if (send.connections != null)
+        {
+            for (int index = send.connections.Count - 1; index >= 0; index--)
             {
-                Connection connection = Send.connections[index];
+                Connection connection = send.connections[index];
                 if (connection.userid == playerId)
                 {
-                    Send.connections.RemoveAt(index);
+                    send.connections.RemoveAt(index);
                     break;
                 }
             }
 
-            if (Send.connections.Count == 0)
+            if (send.connections.Count == 0)
             {
                 CancelAnimation();
             }
@@ -76,7 +87,7 @@ public abstract class SendableAnimation : BaseAnimation, ISendableAnimation
             return;
         }
 
-        if (Send.connection.userid == playerId)
+        if (send.connection != null && send.connection.userid == playerId)
         {
             CancelAnimation();
         }
@@ -89,7 +100,11 @@ public abstract class SendableAnimation : BaseAnimation, ISendableAnimation
         base.EnterPool();
         if (Send.connections != null)
         {
-            PluginPool.FreeList(Send.connections);
+            // The connections list is rented from the dedicated UiPool.Connections pool in
+            // SendInfoBuilder, so it must be returned there. Freeing it to PluginPool (or any
+            // other pool) corrupts pool accounting and can lead to the same list instance being
+            // handed out twice (aliasing) -> "Collection was modified" during the next send copy.
+            UiPool.Connections.FreeList(Send.connections);
         }
         _send = default;
         IsSending = false;

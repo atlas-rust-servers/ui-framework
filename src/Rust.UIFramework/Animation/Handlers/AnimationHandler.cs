@@ -35,6 +35,26 @@ internal class AnimationHandler : ISingleton
     public void EnqueueAnimation(ISendableAnimation animation, SendInfo send)
     {
         if (animation == null) throw new ArgumentNullException(nameof(animation));
+
+        //A valid enqueue always transitions Init -> Queued, so the animation must be in the Init
+        //state here. Any other state means it has already been processed and we must not enqueue
+        //it again. This covers two cases:
+        // 1. Terminal states (Cancelled / Completed / Timeout / Pooled): the animation may have
+        //    been cancelled / completed / disposed before reaching the SendHandler thread (e.g.
+        //    ImageDownloadAnimationHandler.CancelPreviousUpdates cancels a prior image animation
+        //    when a new one is queued for the same player+panel). It was never visible to the
+        //    client, so there is nothing to send.
+        // 2. Already-sending states (Queued / Delayed / Running): the same animation instance was
+        //    enqueued more than once (e.g. a builder containing animations sent via multiple
+        //    AddUi calls, the same animation added twice, or shared across combined sub-builders).
+        //    Re-enqueuing would set Send a second time while IsSending is true and throw.
+        //In both cases skip instead of throwing so one animation can't crash the send channel.
+        if (animation.State != AnimationState.Init)
+        {
+            _logger.Debug("Skipping EnqueueAnimation for ID: {0} Plugin: {1} - not in the {2} state (current state: {3})", animation.Id, animation.Plugin, AnimationState.Init, animation.State);
+            return;
+        }
+
         animation.Send = send;
         animation.ChangeState(AnimationState.Queued);
         AnimationException.ThrowIfMissingSend(animation);

@@ -71,6 +71,14 @@ public class UiImageStorage : BaseUiFrameworkLibrary, ISingleton
             {
                 return Get(pluginId, options.FallbackImageNameOrUrl, null);
             }
+
+            // The not found image is itself a URL. If it fails to download we must not recurse back into
+            // Get(..., NotFound) or we will loop forever and cause a StackOverflowException.
+            if (string.Equals(nameOrUrl, UiImageDefaults.NotFound, StringComparison.OrdinalIgnoreCase))
+            {
+                _logger.Warning("Failed to download the not found fallback image from url: {0}. Returning the url directly.", nameOrUrl);
+                return nameOrUrl;
+            }
             
             _logger.Debug("Image had an error downloading and no fallback image registered for plugin: {0} name: {1}. Using not found image.", pluginId.FullName(), nameOrUrl);
             

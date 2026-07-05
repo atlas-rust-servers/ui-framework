@@ -11,16 +11,24 @@ namespace Oxide.Ext.UiFramework.Libraries;
 public class UiPool : BaseUiFrameworkLibrary, ISingleton
 {
     public static readonly UiPluginPool Internal = Singleton<UiPool>.Instance._internal;
-    
+
+    // Dedicated, framework-only pool for the Connection lists that back a SendInfo. It is kept
+    // separate from the publicly accessible Internal pool so external plugins renting/freeing
+    // List<Connection> from Internal can never share (alias) an instance with the lists we hand
+    // to SendInfo, which previously caused "Collection was modified" during the send copy.
+    internal static readonly UiPluginPool Connections = Singleton<UiPool>.Instance._connections;
+
     private readonly Dictionary<PluginId, PluginPoolId> _pluginPoolIds = new();
     private UiPluginPool[] _pluginPools = new UiPluginPool[32];
     private readonly UiPluginPool _internal;
+    private readonly UiPluginPool _connections;
     private readonly IUiLogger<UiPool> _logger = Singleton<UiLoggerFactory>.Instance.CreateExtensionLogger<UiPool>();
     private readonly object _lock = new();
 
     private UiPool()
     {
         _internal = CreatePoolInternal(new PluginId(UiFrameworkExtension.Instance.Name), PoolSettings.CreateInternal());
+        _connections = CreatePoolInternal(PluginId.CreateInternal($"{UiFrameworkExtension.Instance.Name}.Connections"), PoolSettings.CreateInternal());
     }
     
     internal UiPluginPool CreateObsoletePool()

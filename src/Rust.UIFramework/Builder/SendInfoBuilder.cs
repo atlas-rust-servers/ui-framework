@@ -45,14 +45,8 @@ internal static class SendInfoBuilder
     internal static SendInfo Get(IEnumerable<Connection> connections)
     {
         if (connections == null) throw new ArgumentNullException(nameof(connections));
-        List<Connection> pooledConnection = UiPool.Internal.GetList<Connection>();
-        foreach (Connection connection in connections)
-        {
-            if (connection is { connected: true })
-            {
-                pooledConnection.Add(connection);
-            }
-        }
+        List<Connection> pooledConnection = RentDistinct(connections);
+        CopyConnected(connections, pooledConnection);
 
         return new SendInfo(pooledConnection)
         {
@@ -81,18 +75,71 @@ internal static class SendInfoBuilder
             };
         }
 
-        List<Connection> connections = UiPool.Internal.GetList<Connection>();
-        foreach (Connection connection in info.connections)
-        {
-            if (connection is { connected: true })
-            {
-                connections.Add(connection);
-            }
-        }
+        List<Connection> connections = RentDistinct(info.connections);
+        CopyConnected(info.connections, connections);
 
         return new SendInfo(connections)
         {
             channel = channel
         };
+    }
+
+    // Rents a destination list from the dedicated, framework-only Connections pool. Because that
+    // pool is never exposed to plugins, the list can't already be owned by external code that is
+    // passing it in as the source. As defense in depth we still ensure the rented list is a
+    // different instance than the source; copying source -> destination into the same list would
+    // otherwise throw "Collection was modified" (deterministically, single-threaded). If that
+    // ever happens we leave the aliased list alone (the caller owns it) and rent another.
+    private static List<Connection> RentDistinct(IEnumerable<Connection> source)
+    {
+        List<Connection> list = UiPool.Connections.GetList<Connection>();
+        if (ReferenceEquals(list, source))
+        {
+            list = UiPool.Connections.GetList<Connection>();
+        }
+
+        return list;
+    }
+
+    // Copies only connected connections into the destination list. `destination` is guaranteed by
+    // RentDistinct to be a different instance than `source`, so adding here never mutates what we
+    // iterate. The source may still be mutated concurrently by another thread (e.g. the animation
+    // tracker thread calling RemovePlayer/AddPlayer on a shared connections list), so we:
+    //   1. Prefer index iteration for IList/IReadOnlyList sources, avoiding List<T>.Enumerator's
+    //      version check that throws "Collection was modified".
+    //   2. Snapshot the count once and bound-check each access so a concurrent removal can't run
+    //      us past the end, and wrap everything so any remaining race degrades to "send to who we
+    //      already gathered" instead of throwing up through the caller's update loop.
+    // A torn read is harmless here: every candidate is re-checked for `connected`.
+    private static void CopyConnected(IEnumerable<Connection> source, List<Connection> destination)
+    {
+        try
+        {
+            if (source is IReadOnlyList<Connection> list)
+            {
+                for (int i = 0, count = list.Count; i < count && i < list.Count; i++)
+                {
+                    Connection connection = list[i];
+                    if (connection is { connected: true })
+                    {
+                        destination.Add(connection);
+                    }
+                }
+
+                return;
+            }
+
+            foreach (Connection connection in source)
+            {
+                if (connection is { connected: true })
+                {
+                    destination.Add(connection);
+                }
+            }
+        }
+        catch (Exception ex) when (ex is InvalidOperationException or ArgumentOutOfRangeException)
+        {
+            // Source was mutated mid-copy by another thread; keep what we already gathered.
+        }
     }
 }

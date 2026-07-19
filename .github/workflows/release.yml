@@ -11,8 +11,17 @@ jobs:
     runs-on: windows-latest
 
     steps:
-      - name: Checkout
+      - name: Checkout main
         uses: actions/checkout@v4
+        with:
+          ref: main
+          path: main
+
+      - name: Checkout atlas-hub
+        uses: actions/checkout@v4
+        with:
+          ref: atlas-hub
+          path: atlas-hub
 
       - name: Setup .NET
         uses: actions/setup-dotnet@v4
@@ -23,25 +32,36 @@ jobs:
       - name: Set VERSION variable from tag
         run: echo "VERSION=${{github.ref_name}}" | Out-File -FilePath $env:GITHUB_ENV
 
-      - name: Download References
+      - name: Download References - main
         shell: pwsh
+        working-directory: main
         run: |
           .\Download-References.ps1
 
-      - name: Build DLLs - Oxide
+      - name: Build DLLs - Oxide (main)
         run: dotnet build Rust.UIFramework.csproj -c Release /p:Platform=Oxide /p:Version=${{ env.VERSION }} -f net48
-        working-directory: src/Rust.UIFramework
+        working-directory: main/src/Rust.UIFramework
+
+      - name: Download References - atlas-hub
+        shell: pwsh
+        working-directory: atlas-hub
+        run: |
+          .\Download-References.ps1
+
+      - name: Build DLLs - Oxide (atlas-hub)
+        run: dotnet build Rust.UIFramework.csproj -c Release /p:Platform=Oxide /p:Version=${{ env.VERSION }} -f net48
+        working-directory: atlas-hub/src/Rust.UIFramework
 
       - name: Move DLLs
         run: |
           mkdir -p bin
-          mv Rust.UIFramework/bin/Oxide/Release/net48/Oxide.Ext.UiFramework.dll bin/
-        working-directory: src
+          mv main/src/Rust.UIFramework/bin/Oxide/Release/net48/Oxide.Ext.UiFramework.dll bin/Oxide.Ext.UiFramework.dll
+          mv atlas-hub/src/Rust.UIFramework/bin/Oxide/Release/net48/Oxide.Ext.UiFramework.dll bin/atlas-hub_Oxide.Ext.UiFramework.dll
 
       - name: Upload Release Assets
         run: |
           $TAG=($env:GITHUB_REF -replace 'refs/tags/', '')
-          $dllPath = Get-ChildItem -Path src/bin -Filter *.dll -File | Select-Object -ExpandProperty FullName
+          $dllPath = Get-ChildItem -Path bin -Filter *.dll -File | Select-Object -ExpandProperty FullName
           gh release upload $TAG $dllPath
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

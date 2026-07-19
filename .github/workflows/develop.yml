@@ -59,6 +59,10 @@ jobs:
         run: |
           $TAG=($env:GITHUB_REF -replace 'refs/tags/', '')
           $dllPath = Get-ChildItem -Path bin -Filter *.dll -File | Select-Object -ExpandProperty FullName
+          gh release view $TAG -R ${{ github.repository }} *> $null
+          if ($LASTEXITCODE -ne 0) {
+            gh release create $TAG --title $TAG --notes "Automated build" -R ${{ github.repository }} --prerelease
+          }
           gh release upload $TAG $dllPath -R ${{ github.repository }} --clobber
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

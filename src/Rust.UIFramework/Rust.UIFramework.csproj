@@ -9,7 +9,7 @@
         <Platforms>Oxide;Carbon</Platforms>
         <AssemblyVersion>$(VERSION)</AssemblyVersion>
         <FileVersion>$(VERSION)</FileVersion>
-        <TargetFrameworks>net48;netstandard2.1;netcoreapp3.0</TargetFrameworks>
+        <TargetFrameworks>net48;</TargetFrameworks>
         <GenerateAssemblyInfo>true</GenerateAssemblyInfo>
     </PropertyGroup>
 

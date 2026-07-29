@@ -14,21 +14,23 @@ internal class UiSendRequest : BaseUiRequest, IUiRequest
         request.Init(builder, send);
         return request;
     }
-    
+
     private void Init(BaseBuilder builder, SendInfo send)
     {
         base.Init(send);
         Builder = builder;
     }
-    
+
     public void SendUi()
     {
         Builder.SendUi(Send);
     }
-    
+
     protected override void EnterPool()
     {
         base.EnterPool();
+
+        Builder?.Dispose();
         Builder = null;
     }
 }

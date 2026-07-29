@@ -2,12 +2,10 @@
 using Oxide.Ext.UiFramework.Animation;
 using Oxide.Ext.UiFramework.Builder;
 using Oxide.Ext.UiFramework.Libraries;
-using Oxide.Ext.UiFramework.Threading.UiChannel;
-using Oxide.Ext.UiFramework.Types;
 
 namespace Oxide.Ext.UiFramework.Threading;
 
-internal class UiSendRequest : BaseUiRequest, IUiRequest
+internal class UiSendRequest : BaseUiRequest
 {
     public BaseBuilder Builder;
     public UiDebugOptions? Options;
@@ -19,33 +17,38 @@ internal class UiSendRequest : BaseUiRequest, IUiRequest
         return request;
     }
 
-    protected void Init(BaseBuilder builder, SendInfo send, in UiDebugOptions? options)
+    private void Init(BaseBuilder builder, SendInfo send, in UiDebugOptions? options)
     {
         base.Init(send);
         Builder = builder;
         Options = options;
     }
     
-    public virtual void SendRequest()
+    public override ProcessResult Process()
     {
         Builder.SendUi(Send, Options);
         Builder.SendAnimations(Send);
+        return ProcessResult.Success;
     }
     
-    public override IUiChannel GetChannel(int index)
+    public override void OnCompleted()
     {
-        return base.GetChannel(index) ?? index switch
+        if (Builder.Plugin != null)
         {
-            1 => (IUiChannel)Singleton<AnimationTrackerChannel>.Instance,
-            _ => null
-        };
+            UiTrackerRequest.Create(Builder.Plugin, Builder, Send).Enqueue();
+        }
+        else
+        {
+            Builder.TryDispose();
+        }
+
+        Dispose();
     }
     
     protected override void EnterPool()
     {
-        base.EnterPool();
-        Builder.TryDispose();
-        Builder = null;
         Options = null;
+        Builder = null;
+        Send = default;
     }
 }

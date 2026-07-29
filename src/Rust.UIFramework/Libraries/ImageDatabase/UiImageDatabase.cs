@@ -62,6 +62,11 @@ internal class UiImageDatabase : BaseUiFrameworkLibrary, ISingleton, IImageDatab
         return bytes;
     }
 
+    public bool Exists(ImageId id)
+    {
+        return _db.Query<bool, uint>("SELECT EXISTS(SELECT 1 FROM data WHERE crc = ? LIMIT 1);", id.Id);
+    }
+
     public ImageId Store(byte[] image)
     {
         if (_db == null)
@@ -84,7 +89,7 @@ internal class UiImageDatabase : BaseUiFrameworkLibrary, ISingleton, IImageDatab
         return id;
     }
 
-    public SaveVersion GetSaveVersion(CommunityEntity entity) => new(ulong.MaxValue);
+    public SaveVersion GetSaveVersion(ICommunityEntity entity) => new(ulong.MaxValue);
     
     public void OnImageRegistered(ImageId id)
     {
@@ -114,7 +119,7 @@ internal class UiImageDatabase : BaseUiFrameworkLibrary, ISingleton, IImageDatab
         }
     }
 
-    protected override void OnCommunityEntitySpawned(CommunityEntity entity)
+    protected override void OnCommunityEntitySpawned(ICommunityEntity entity)
     {
         FileStorage_Get_Prefix_Patch.Patch(entity);
     }

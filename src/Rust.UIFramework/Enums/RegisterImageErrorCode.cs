@@ -2,9 +2,8 @@
 
 public enum RegisterImageErrorCode : byte
 {
-    None,
-    AlreadyRegistered,
-    EmptyImage,
+    InvalidByteArray,
     InvalidImageType,
-    DbStorageFailed
+    DbStorageFailed,
+    ImageNotFound
 }

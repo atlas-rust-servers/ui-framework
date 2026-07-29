@@ -21,12 +21,11 @@ public class SymbolCache
     public readonly SpecialSymbolCache String = new(SpecialType.System_String);
     public readonly DotNetSymbolCache Action = new("System.Action");
     public readonly DotNetSymbolCache Func = new("System.Func`1");
-    public readonly DotNetSymbolCache Task = new("System.Threading.Tasks.Task");
-    public readonly DotNetSymbolCache ValueTask = new("System.Threading.Tasks.ValueTask");
     public readonly DotNetSymbolCache Vector2 = new("UnityEngine.Vector2");
     public readonly DotNetSymbolCache Vector3 = new("UnityEngine.Vector3");
     public readonly DotNetSymbolCache Vector4 = new("UnityEngine.Vector4");
     public readonly DotNetSymbolCache MethodImpl = new("System.Runtime.CompilerServices.MethodImplAttribute");
+    public readonly DotNetSymbolCache Exception = new("System.Exception");
     public readonly DotNetSymbolCache MethodImplOptions = new("System.Runtime.CompilerServices.MethodImplOptions");
 
     public readonly AnimationCache Animations;
@@ -37,6 +36,7 @@ public class SymbolCache
     public readonly PluginsCache Plugins;
     public readonly TypesCache Types;
     public readonly UiElementsCache UiElements;
+    public readonly UniTaskCache UniTask;
 
     public static SymbolCache Instance;
 
@@ -50,6 +50,7 @@ public class SymbolCache
         Types = new TypesCache(compilation);
         Enums = new EnumCache(compilation);
         UiElements = new UiElementsCache(compilation);
+        UniTask = new UniTaskCache(compilation);
 
         InitializeSymbols(this, compilation);
     }
@@ -126,6 +127,7 @@ public class SymbolCache
             public readonly FrameworkSymbolCache ICommandParserData = new("Libraries.ICommandParserData");
             public readonly FrameworkSymbolCache BaseCommandParser = new("Libraries.BaseCommandParser");
             public readonly FrameworkSymbolCache CommandParser = new("Libraries.CommandParser");
+            public readonly FrameworkSymbolCache CommandParserAsync = new("Libraries.CommandParserAsync");
             public readonly FrameworkSymbolCache RegisteredCommand = new("Libraries.RegisteredCommand");
             public readonly FrameworkSymbolCache ArgWriterIterator = new("Libraries.ArgWriterIterator");
             public readonly FrameworkSymbolCache ArgReaderIterator = new("Libraries.ArgReaderIterator");
@@ -171,6 +173,19 @@ public class SymbolCache
         public readonly FrameworkSymbolCache BaseUiComponent = new("UiElements.BaseUiComponent");
 
         public UiElementsCache(Compilation compilation)
+        {
+            InitializeSymbols(this, compilation);
+        }
+    }
+    
+    public class UniTaskCache
+    {
+        private const string BaseNamespace = "Cysharp.Threading.Tasks";
+        
+        public readonly DotNetSymbolCache UniTask = new($"{BaseNamespace}.UniTask");
+        public readonly DotNetSymbolCache UniTaskVoid = new($"{BaseNamespace}.UniTaskVoid");
+
+        public UniTaskCache(Compilation compilation)
         {
             InitializeSymbols(this, compilation);
         }

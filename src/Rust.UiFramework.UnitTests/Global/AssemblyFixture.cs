@@ -1,14 +1,20 @@
 ﻿using Argon;
+using Cysharp.Threading.Tasks;
+using DiffEngine;
 using Oxide.Ext.UiFramework;
+using Oxide.Ext.UiFramework.Cache;
 using Oxide.Ext.UiFramework.Config;
 using Oxide.Ext.UiFramework.Data;
 using Oxide.Ext.UiFramework.Libraries;
 using Oxide.Ext.UiFramework.Logging;
+using Oxide.Ext.UiFramework.Plugins;
 using Oxide.Ext.UiFramework.Positions;
 using Oxide.Ext.UiFramework.Types;
 using Rust.UiFramework.UnitTests.Global;
 using Rust.UiFramework.UnitTests.Global.Verify.IgnoreMembers;
 using Rust.UiFramework.UnitTests.Global.XUnit.Serializers;
+using Rust.UiFramework.UnitTests.Mocks.Libraries;
+using Rust.UiFramework.UnitTests.Mocks.Libraries.ImageDb;
 using Xunit.Sdk;
 using Xunit.v3;
 
@@ -23,11 +29,13 @@ public class AssemblyFixture : XunitTestFramework
         ConfigureXUnit();
         ConfigureVerify();
         ConfigureExtension();
+        ConfigureUniTask();
     }
 
     private static void ConfigureXUnit()
     {
         SerializationHelper.Instance.AddRegisteredSerializers(typeof(AssemblyFixture).Assembly);
+        DiffTools.UseOrder(DiffTool.Rider, DiffTool.VisualStudio);
     }
 
     private static void ConfigureVerify()
@@ -72,14 +80,31 @@ public class AssemblyFixture : XunitTestFramework
 
     private static void ConfigureExtension()
     {
-        UiFrameworkExtension ext = new UiFrameworkExtension(null);
+        UiFrameworkExtension ext = new(null);
         if(UiFrameworkConfig.Instance == null) Singleton<DataHandler>.Instance.LoadAll();
         UiFrameworkExtension.GlobalLogger = Singleton<UiLoggerFactory>.Instance.CreateGlobalLogger();
         Singleton<DataHandler>.Instance.LoadAll();
+        OxideLibrary.RegisterLibrary(nameof(IImageDatabase), new ImageDatabaseMock());
+        OxideLibrary.RegisterLibrary(nameof(UiImageStorage), Singleton<UiImageStorage>.Instance);
+        UiFrameworkPlugin.Instance = UnitTestHelpers.CorePlugin;
+
+        //new UiFrameworkPlugin().Init();
+        BaseUiFrameworkLibrary.ProcessOnCommunityEntitySpawned(new CommunityEntityMock());
         // var plugin = new UiFrameworkPlugin();
         // plugin.Init();
         // plugin.OnServerInitialized();
         AvatarData.Instance.AddAvatar(UnitTestsConstants.AvatarSteamId, "Test Avatar");
+    }
+
+    private static void ConfigureUniTask()
+    {
+        static void OnUniTaskSchedulerOnUnobservedTaskException(Exception ex)
+        {
+            UiFrameworkExtension.GlobalLogger.Exception("UniTask UnobservedTaskException", ex);
+        }
+
+        UniTaskScheduler.UnobservedTaskException += OnUniTaskSchedulerOnUnobservedTaskException;
+        UniTaskScheduler.DispatchUnityMainThread = false;
     }
 
     public override async ValueTask DisposeAsync()

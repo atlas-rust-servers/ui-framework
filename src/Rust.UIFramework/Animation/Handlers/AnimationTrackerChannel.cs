@@ -1,6 +1,6 @@
-﻿using Oxide.Ext.UiFramework.Config;
+﻿using Oxide.Ext.UiFramework.Libraries;
+using Oxide.Ext.UiFramework.Plugins;
 using Oxide.Ext.UiFramework.Threading;
-using Oxide.Ext.UiFramework.Threading.UiChannel;
 using Oxide.Ext.UiFramework.Types;
 
 #if SERVER
@@ -13,32 +13,18 @@ using Oxide.Ext.UiFramework.UiElements;
 
 namespace Oxide.Ext.UiFramework.Animation;
 
-internal class AnimationTrackerChannel : BaseUiChannel<UiSendRequest>, ISingleton
+internal class AnimationTrackerChannel : ISingleton
 {
-    private AnimationTrackerChannel() : base(UiFrameworkConfig.Instance.Threading.EnableAnimationThread) { }
-    
-    protected override void ProcessItem(UiSendRequest item)
+    private readonly UiChannel<UiTrackerRequest> _channel = Singleton<UiChannels>.Instance.Create<UiTrackerRequest>(UiFrameworkPlugin.Instance, new UiChannelOptions(true, 2));
+
+    private AnimationTrackerChannel() { }
+
+    public void Enqueue(UiTrackerRequest item)
     {
-#if SERVER
-        if (item.Builder is BaseUiBuilder builder)
-        {
-            SendInfo send = item.Send;
-            ReadOnlySpan<BaseUiComponent> span = builder.ComponentAsReadonly();
-            for (int index = 0; index < span.Length; index++)
-            {
-                BaseUiComponent component = span[index];
-                if (component.Update is not UpdateMode.Update || component.ActiveTracked.HasChanged && !component.ActiveTracked.Value)
-                {
-                    Singleton<AnimationTracker>.Instance.RemoveUiForSend(send, component.Name);
-                }
-            }
-        }
-        else if (item.Builder is AnimationBuilder animBuilder)
-        {
-            // Track AnimationBuilder animations here (after UiBuilder cleanup above has already run
-            // for the same component names), so they aren't immediately cancelled by RemoveUiForSend.
-            animBuilder.TrackAnimations(item.Send);
-        }
-#endif
+        _channel.Enqueue(item);
     }
+
+#if UNIT_TESTS || BENCHMARKS
+    public void WaitUntilFinished() => _channel.WaitUntilFinished();
+#endif
 }

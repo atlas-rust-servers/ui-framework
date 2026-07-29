@@ -1,11 +1,12 @@
 ﻿using System.Collections.Generic;
 using Network;
+using Oxide.Ext.UiFramework.Helpers;
 using Oxide.Ext.UiFramework.Libraries;
 using Oxide.Game.Rust.Cui;
 
 namespace Oxide.Ext.UiFramework.Threading;
 
-internal class OxideCuiElementsRequest : BaseUiRequest, IUiRequest
+internal class OxideCuiElementsRequest : BaseUiRequest
 {
     private List<CuiElement> _elements;
     
@@ -18,9 +19,10 @@ internal class OxideCuiElementsRequest : BaseUiRequest, IUiRequest
         return this;
     }
     
-    public void SendRequest()
+    public override ProcessResult Process()
     {
-        CommunityEntity.ServerInstance.ClientRPC(RpcTarget.SendInfo("AddUI", Send), CuiHelper.ToJson(_elements));
+        RpcFunctions.SendAddUi(Send, CuiHelper.ToJson(_elements));
+        return ProcessResult.Success;
     }
 
     protected override void EnterPool()

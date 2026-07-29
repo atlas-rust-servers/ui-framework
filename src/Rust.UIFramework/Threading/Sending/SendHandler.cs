@@ -1,17 +1,16 @@
-﻿using Oxide.Ext.UiFramework.Config;
-using Oxide.Ext.UiFramework.Threading.UiChannel;
+﻿using Oxide.Ext.UiFramework.Libraries;
+using Oxide.Ext.UiFramework.Plugins;
 using Oxide.Ext.UiFramework.Types;
 
 namespace Oxide.Ext.UiFramework.Threading;
 
-internal class SendHandler : BaseUiChannel<IUiRequest>, ISingleton
+internal class SendHandler : ISingleton
 {
-    private SendHandler() : base(UiFrameworkConfig.Instance.Threading.EnableUiSendingThread) { }
-    
-    protected override void ProcessItem(IUiRequest item)
-    {
-#if SERVER
-        item.SendRequest();
+    internal readonly UiChannel<IUiRequest> Channel = Singleton<UiChannels>.Instance.Create<IUiRequest>(UiFrameworkPlugin.Instance, new UiChannelOptions(ThreadingHelper.UiMultiThreaded, 1));
+
+    private SendHandler() { }
+
+#if UNIT_TESTS || BENCHMARKS
+    public void WaitUntilFinished() => Channel.WaitUntilFinished();
 #endif
-    }
 }

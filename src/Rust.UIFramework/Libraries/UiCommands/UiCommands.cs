@@ -2,8 +2,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using Facepunch;
 using Oxide.Ext.UiFramework.Exceptions;
 using Oxide.Ext.UiFramework.Extensions;
+using Oxide.Ext.UiFramework.Guards;
 using Oxide.Ext.UiFramework.Logging;
 using Oxide.Ext.UiFramework.Plugins;
 using Oxide.Ext.UiFramework.Types;
@@ -36,8 +38,8 @@ public partial class UiCommands : BaseUiFrameworkLibrary, ISingleton
 
     private RegisteredCommand ParseCommand(IUiFrameworkPlugin plugin, Delegate @delegate, IArgHandler[] handlers)
     {
-        if (plugin == null) throw new ArgumentNullException(nameof(plugin));
-        if (@delegate == null) throw new ArgumentNullException(nameof(@delegate));
+        Guard.IsNotNull(plugin);
+        Guard.IsNotNull(@delegate);
         PluginId pluginId = plugin.Id();
         MethodInfo method = @delegate.Method;
         UiCommandAttribute attribute = method.GetCustomAttribute<UiCommandAttribute>();
@@ -66,6 +68,7 @@ public partial class UiCommands : BaseUiFrameworkLibrary, ISingleton
 
     private PluginCallbacks GetCallbacks(IUiFrameworkPlugin plugin)
     {
+        Guard.IsNotNull(plugin);
         PluginId pluginId = plugin.Id();
         if (!_callbacks.TryGetValue(pluginId, out PluginCallbacks callbacks))
         {
@@ -77,6 +80,8 @@ public partial class UiCommands : BaseUiFrameworkLibrary, ISingleton
     
     public void RegisterCustomParser<T>(IUiFrameworkPlugin plugin, IArgHandler<T> handler)
     {
+        Guard.IsNotNull(plugin);
+        Guard.IsNotNull(handler);
         PluginId pluginId = plugin.Id();
         ArgCreator.RegisterPluginHandler(pluginId, handler);
     }
@@ -96,8 +101,8 @@ public partial class UiCommands : BaseUiFrameworkLibrary, ISingleton
     internal void OnCommandReceived(BasePlayer player, UiCommandTokenizer tokenizer)
     {
         tokenizer.GetNext(); // Skip UiCommandName
-        ReadOnlySpan<char> span = tokenizer.GetNext();
-        if (!uint.TryParse(span, out uint id))
+        UiStringView span = tokenizer.GetNext();
+        if (!uint.TryParse(span.AsSpan(), out uint id))
         {
             _logger.Debug($"{nameof(OnCommandReceived)} Invalid command id: {{0}}", span.ToString());
             return;

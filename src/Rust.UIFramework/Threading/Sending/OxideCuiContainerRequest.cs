@@ -1,10 +1,11 @@
 ﻿using Network;
+using Oxide.Ext.UiFramework.Helpers;
 using Oxide.Ext.UiFramework.Libraries;
 using Oxide.Game.Rust.Cui;
 
 namespace Oxide.Ext.UiFramework.Threading;
 
-internal class OxideCuiContainerRequest : BaseUiRequest, IUiRequest
+internal class OxideCuiContainerRequest : BaseUiRequest
 {
     private CuiElementContainer _container;
     private string _destroyUiName;
@@ -18,14 +19,15 @@ internal class OxideCuiContainerRequest : BaseUiRequest, IUiRequest
         _destroyUiName = destroyUiName;
         return this;
     }
-    
-    public void SendRequest()
+
+    public override ProcessResult Process()
     {
         if (!string.IsNullOrEmpty(_destroyUiName))
         {
-            CommunityEntity.ServerInstance.ClientRPC(RpcTarget.SendInfo("DestroyUI", Send));
+            RpcFunctions.SendDestroyUi(Send, _destroyUiName);
         }
-        CommunityEntity.ServerInstance.ClientRPC(RpcTarget.SendInfo("AddUI", Send), _container.ToJson());
+        RpcFunctions.SendAddUi(Send, _container.ToJson());
+        return ProcessResult.Success;
     }
 
     protected override void EnterPool()

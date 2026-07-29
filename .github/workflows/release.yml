@@ -11,6 +11,9 @@ jobs:
     runs-on: windows-latest
 
     steps:
+      - name: Enable long paths
+        run: git config --system core.longpaths true
+
       - name: Checkout main
         uses: actions/checkout@v4
         with:
@@ -49,14 +52,14 @@ jobs:
           .\Download-References.ps1
 
       - name: Build DLLs - Oxide (atlas-hub)
-        run: dotnet build Rust.UIFramework.csproj -c Release /p:Platform=Oxide /p:Version=${{ env.VERSION }} -f net48
+        run: dotnet build Rust.UIFramework.csproj -c Release /p:Platform=UiFramework /p:Version=${{ env.VERSION }} -f net48
         working-directory: atlas-hub/src/Rust.UIFramework
 
       - name: Move DLLs
         run: |
           mkdir -p bin
           mv main/src/Rust.UIFramework/bin/Oxide/Release/net48/Oxide.Ext.UiFramework.dll bin/Oxide.Ext.UiFramework.dll
-          mv atlas-hub/src/Rust.UIFramework/bin/Oxide/Release/net48/Oxide.Ext.UiFramework.dll bin/atlas-hub_Oxide.Ext.UiFramework.dll
+          mv atlas-hub/src/Rust.UIFramework/bin/UiFramework/Release/net48/Oxide.Ext.UiFramework.dll bin/atlas-hub_Oxide.Ext.UiFramework.dll
 
       - name: Upload Release Assets
         run: |

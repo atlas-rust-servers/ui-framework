@@ -1,9 +1,10 @@
 ﻿using Network;
+using Oxide.Ext.UiFramework.Helpers;
 using Oxide.Ext.UiFramework.Libraries;
 
 namespace Oxide.Ext.UiFramework.Threading;
 
-internal class OxideCuiJsonRequest : BaseUiRequest, IUiRequest
+internal class OxideCuiJsonRequest : BaseUiRequest
 {
     private string _json;
     
@@ -16,9 +17,10 @@ internal class OxideCuiJsonRequest : BaseUiRequest, IUiRequest
         return this;
     }
     
-    public void SendRequest()
+    public override ProcessResult Process()
     {
-        CommunityEntity.ServerInstance.ClientRPC(RpcTarget.SendInfo("AddUI", Send), _json);
+        RpcFunctions.SendAddUi(Send, _json);
+        return ProcessResult.Success;
     }
 
     protected override void EnterPool()

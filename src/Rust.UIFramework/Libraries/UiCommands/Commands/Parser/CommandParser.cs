@@ -1,37 +1,56 @@
 ﻿using System;
-using System.Threading.Tasks;
-using Oxide.Ext.UiFramework.Extensions;
+using Cysharp.Threading.Tasks;
 
 namespace Oxide.Ext.UiFramework.Libraries;
 
 internal class CommandParser(ICommandParserData command) : BaseCommandParser(command)
 {
+    private readonly Action<ExecutionData> _command = (Action<ExecutionData>)command.Delegate;
+
     protected override void RunCommandInternal(ExecutionData data, UiCommandTokenizer args)
     {
-        switch (Command.Mode)
+        RunCommand(data);
+    }
+
+    private void RunCommand(ExecutionData data)
+    {
+        try
         {
-            case ExecutorMode.Void:
-                try
-                {
-                    ((Action<ExecutionData>)Command.Delegate)(data);
-                }
-                catch (Exception ex)
-                {
-                    LogException(ex);
-                }
-                finally
-                {
-                    data.TryDispose();
-                }
-                break;
-            case ExecutorMode.Task:
-                TaskExt.RunSafely(((Func<ExecutionData, Task>)Command.Delegate)(data), LogException, data);
-                break;
-            case ExecutorMode.ValueTask:
-                TaskExt.RunSafely(((Func<ExecutionData, ValueTask>)Command.Delegate)(data), LogException, data);
-                break;
-            case ExecutorMode.UniTask:
-                break;
+            _command(data);
+        }
+        catch (Exception ex)
+        {
+            LogException(ex);
+        }
+        finally
+        {
+            data.TryDispose();
+        }
+    }
+}
+
+internal class CommandParserAsync(ICommandParserData command) : BaseCommandParser(command)
+{
+    private readonly Func<ExecutionData, UniTask> _command = (Func<ExecutionData, UniTask>)command.Delegate;
+
+    protected override void RunCommandInternal(ExecutionData data, UiCommandTokenizer args)
+    {
+        RunCommand(data).Forget();
+    }
+
+    private async UniTaskVoid RunCommand(ExecutionData data)
+    {
+        try
+        {
+            await _command(data);
+        }
+        catch (Exception ex)
+        {
+            LogException(ex);
+        }
+        finally
+        {
+            data.TryDispose();
         }
     }
 }

@@ -49,9 +49,9 @@ public abstract class SendableAnimation : BaseAnimation, ISendableAnimation
             throw new AnimationException($"{nameof(ISendableAnimation)}.{nameof(AddPlayer)} cannot be called on a single player animation.");
         }
 
-        if (!Send.connections.Contains(connection))
+        if (!_send.connections.Contains(connection))
         {
-            Send.connections.Add(connection);
+            _send.connections.Add(connection);
         }
     }
 
@@ -98,7 +98,7 @@ public abstract class SendableAnimation : BaseAnimation, ISendableAnimation
     protected override void EnterPool()
     {
         base.EnterPool();
-        if (Send.connections != null)
+        if (_send.connections != null)
         {
             // The connections list is rented from the dedicated UiPool.Connections pool in
             // SendInfoBuilder, so it must be returned there. Freeing it to PluginPool (or any

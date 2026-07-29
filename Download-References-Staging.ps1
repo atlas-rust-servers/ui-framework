@@ -1,6 +1,6 @@
 # Clear the current directory (except the script itself)
 
-$resourcesDir = Join-Path -Path $PSScriptRoot -ChildPath "src/references"
+$resourcesDir = Join-Path -Path $PSScriptRoot -ChildPath "src/references/Rust"
 
 New-Item -ItemType Directory -Force -Path $resourcesDir
 
@@ -35,13 +35,13 @@ Move-Item -Path "$rustDir\RustDedicated_Data\Managed\*.dll" -Destination $resour
 
 # Download and extract Carbon (presumably for Windows)
 $carbonDir = Join-Path -Path $tmpDir -ChildPath "Carbon"
-New-Item -ItemType Directory -Force -Path $carbonDir
-Invoke-WebRequest -Uri "https://github.com/CarbonCommunity/Carbon/releases/download/production_build/Carbon.Windows.Release.zip" -OutFile "$carbonDir\Carbon.zip"
-Expand-Archive -Path "$carbonDir\Carbon.zip" -DestinationPath $carbonDir -Force
-Remove-Item -Path "$carbonDir\Carbon.zip"
+#New-Item -ItemType Directory -Force -Path $carbonDir
+#Invoke-WebRequest -Uri "https://github.com/CarbonCommunity/Carbon/releases/download/production_build/Carbon.Windows.Release.zip" -OutFile "$carbonDir\Carbon.zip"
+#Expand-Archive -Path "$carbonDir\Carbon.zip" -DestinationPath $carbonDir -Force
+#Remove-Item -Path "$carbonDir\Carbon.zip"
 
 # Move .dll files from Carbon to the current directory
-Move-Item -Path "$carbonDir\carbon\managed\*.dll" -Destination $resourcesDir -Force
+#Move-Item -Path "$carbonDir\carbon\managed\*.dll" -Destination $resourcesDir -Force
 
 # Download and extract Oxide (presumably for Windows)
 $oxideDir = Join-Path -Path $tmpDir -ChildPath "Oxide"

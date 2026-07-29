@@ -42,9 +42,9 @@ public class AnimationBuilder : BaseBuilder, IAnimationBuilder
         }
     }
 
-    // Called from AnimationTrackerChannel after UiBuilder tracker cleanup runs,
-    // so our animations aren't cancelled by AnimationTrackerChannel processing
-    // a UiBuilder that contains the same panel components.
+    // Called from UiTrackerRequest after UiBuilder tracker cleanup runs, so our animations
+    // aren't cancelled by the tracker processing a UiBuilder that contains the same panel
+    // components.
     internal void TrackAnimations(SendInfo send)
     {
         for (int index = 0; index < _animations.Count; index++)

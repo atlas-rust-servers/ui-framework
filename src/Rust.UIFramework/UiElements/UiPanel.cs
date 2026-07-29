@@ -2,6 +2,8 @@
 using Oxide.Ext.UiFramework.Colors;
 using Oxide.Ext.UiFramework.Components;
 using Oxide.Ext.UiFramework.Interfaces;
+using Oxide.Ext.UiFramework.Libraries;
+using Oxide.Ext.UiFramework.Types;
 using Rust.UiFramework.SourceGenerators.Attributes;
 using ImageType = UnityEngine.UI.Image.Type;
 
@@ -18,6 +20,7 @@ public partial class UiPanel : BaseUiComponent, IImageType<UiPanel>, ISprite<UiP
     public partial string Material { get; set; }
     public partial float FadeIn { get; set; }
     public partial UiColor Color { get; set; }
+    public partial string Png { get; set; }
     
     public readonly ImageComponent Image;
 

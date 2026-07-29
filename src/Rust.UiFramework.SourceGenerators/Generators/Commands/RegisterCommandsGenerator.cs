@@ -29,14 +29,13 @@ public class RegisterCommandsGenerator : BaseGenerator, IIncrementalGenerator
     {
         var methods = Enum.GetValues(typeof(ExecutorMode))
             .Cast<ExecutorMode>()
-            .Where(mode => mode != ExecutorMode.UniTask)
             .SelectMany(
                 _ => Enumerable.Range(0, UiCommands.MaxArgs + 1),
                 (mode, arg) => new { mode, arg }
             );
         
         return new CodeBuilder()
-            .Usings(["System","System.Threading.Tasks","Oxide.Ext.UiFramework.Extensions", "Oxide.Ext.UiFramework.Types"])
+            .Usings(["Oxide.Ext.UiFramework.Extensions"])
             .Namespace(classSymbol.ContainingNamespace)
             .Add(t => t.Public().Partial().Class().Name("UiCommands")
                 .Methods(methods, (d, m) =>
@@ -60,12 +59,8 @@ public class RegisterCommandsGenerator : BaseGenerator, IIncrementalGenerator
         {
             case ExecutorMode.Void:
                 return SymbolCache.Instance.Action.Symbol.AsGeneric([SymbolCache.Instance.Libraries.UiCommands.ExecutionData.Symbol.ToString(), ..generics]);
-            case ExecutorMode.Task:
-                return SymbolCache.Instance.Func.Symbol.AsGeneric([SymbolCache.Instance.Libraries.UiCommands.ExecutionData.Symbol.ToString(), ..generics, SymbolCache.Instance.Task.Symbol.ToString()]);
-            case ExecutorMode.ValueTask:
-                return SymbolCache.Instance.Func.Symbol.AsGeneric([SymbolCache.Instance.Libraries.UiCommands.ExecutionData.Symbol.ToString(), ..generics, SymbolCache.Instance.ValueTask.Symbol.ToString()]);
-            //case ExecutorMode.UniTask:
-               // break;
+            case ExecutorMode.UniTask:
+                return SymbolCache.Instance.Func.Symbol.AsGeneric([SymbolCache.Instance.Libraries.UiCommands.ExecutionData.Symbol.ToString(), ..generics, SymbolCache.Instance.UniTask.UniTask.Symbol.ToString()]);
             default:
                 throw new ArgumentOutOfRangeException(nameof(mode), mode, null);
         }
@@ -81,7 +76,14 @@ public class RegisterCommandsGenerator : BaseGenerator, IIncrementalGenerator
         
         StringBuilder sb = new();
         sb.AppendLine($"{SymbolCache.Instance.Libraries.UiCommands.RegisteredCommand.Symbol} command = ParseCommand(plugin, method, ArgCreator.CreateArgHandler{argHandlerGenerics}(plugin.Id()));");
-        sb.AppendLine($"_commands[command.Id] = new {SymbolCache.Instance.Libraries.UiCommands.CommandParser.Symbol.AsGeneric(generics)}(command);");
+        sb.AppendLine("if(command.Mode == ExecutorMode.Void)");
+        sb.AppendLine("{");
+        sb.AppendLine($"\t_commands[command.Id] = new {SymbolCache.Instance.Libraries.UiCommands.CommandParser.Symbol.AsGeneric(generics)}(command);");
+        sb.AppendLine("}");
+        sb.AppendLine("else");
+        sb.AppendLine("{");
+        sb.AppendLine($"\t_commands[command.Id] = new {SymbolCache.Instance.Libraries.UiCommands.CommandParserAsync.Symbol.AsGeneric(generics)}(command);");
+        sb.AppendLine("}");
         sb.AppendLine($"{SymbolCache.Instance.Libraries.UiCommands.ICommandBuilder.Symbol.AsGeneric(generics)} builder = new {SymbolCache.Instance.Libraries.UiCommands.CommandBuilder.Symbol.AsGeneric(generics)}(command);");
         sb.AppendLine($"return {SymbolCache.Instance.Types.StaticUiTuple.Symbol}.Create(command, builder);");
         return sb.ToString();

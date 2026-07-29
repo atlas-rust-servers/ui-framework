@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using Network;
 using Oxide.Ext.UiFramework.Animation;
+using Oxide.Ext.UiFramework.Guards;
 using Oxide.Ext.UiFramework.Libraries;
 using Oxide.Ext.UiFramework.Types;
 
@@ -17,14 +18,14 @@ internal static class SendInfoBuilder
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     internal static SendInfo Get(BasePlayer player)
     {
-        if (!player) throw new ArgumentNullException(nameof(player));
+        Guard.IsEntityNotNull(player);
         return Get(player.Connection);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     internal static SendInfo GetForPrecache(BasePlayer player)
     {
-        if (!player) throw new ArgumentNullException(nameof(player));
+        Guard.IsEntityNotNull(player);
         return Get(player.Connection, PreCache);
     }
 
@@ -34,7 +35,7 @@ internal static class SendInfoBuilder
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     internal static SendInfo Get(Connection connection, sbyte channel)
     {
-        if (connection == null) throw new ArgumentNullException(nameof(connection));
+        Guard.IsNotNull(connection);
         return new SendInfo(connection)
         {
             channel = channel
@@ -44,9 +45,43 @@ internal static class SendInfoBuilder
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     internal static SendInfo Get(IEnumerable<Connection> connections)
     {
-        if (connections == null) throw new ArgumentNullException(nameof(connections));
+        Guard.IsNotNull(connections);
         List<Connection> pooledConnection = RentDistinct(connections);
         CopyConnected(connections, pooledConnection);
+
+        return new SendInfo(pooledConnection)
+        {
+            channel = UiChannel
+        };
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    internal static SendInfo Get(IEnumerable<BasePlayer> players)
+    {
+        Guard.IsNotNull(players);
+        List<Connection> pooledConnection = UiPool.Connections.GetList<Connection>();
+        if (players is IList<BasePlayer> list)
+        {
+            //Fast Path
+            for (int index = 0; index < list.Count; index++)
+            {
+                BasePlayer player = list[index];
+                if(player && player.Connection is { connected: true })
+                {
+                    pooledConnection.Add(player.Connection);
+                }
+            }
+        }
+        else
+        {
+            foreach (BasePlayer player in players)
+            {
+                if (player && player.Connection is { connected: true })
+                {
+                    pooledConnection.Add(player.Connection);
+                }
+            }
+        }
 
         return new SendInfo(pooledConnection)
         {
@@ -84,8 +119,8 @@ internal static class SendInfoBuilder
         };
     }
 
-    // Rents a destination list from the dedicated, framework-only Connections pool. Because that
-    // pool is never exposed to plugins, the list can't already be owned by external code that is
+    // Rents a destination list from the dedicated Connections pool. Because that pool is only ever
+    // used for the lists backing a SendInfo, the list can't already be owned by the code that is
     // passing it in as the source. As defense in depth we still ensure the rented list is a
     // different instance than the source; copying source -> destination into the same list would
     // otherwise throw "Collection was modified" (deterministically, single-threaded). If that

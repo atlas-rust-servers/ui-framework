@@ -5,7 +5,7 @@
         <RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
         <AssemblyName>Oxide.Ext.UiFramework</AssemblyName>
         <RootNamespace>Oxide.Ext.UiFramework</RootNamespace>
-        <Configurations>Debug;Release</Configurations>
+        <Configurations>Debug;Release;Trace Leaks</Configurations>
         <Platforms>Unit Tests;UiFramework;Benchmarks</Platforms>
         <AssemblyVersion>$(VERSION)</AssemblyVersion>
         <FileVersion>$(VERSION)</FileVersion>
@@ -20,94 +20,118 @@
 
     <ItemGroup>
       <Reference Include="0Harmony">
-        <HintPath>..\References\0Harmony.dll</HintPath>
+        <HintPath>..\references\Rust\0Harmony.dll</HintPath>
       </Reference>
       <Reference Include="Assembly-CSharp">
-        <HintPath>..\References\Assembly-CSharp.dll</HintPath>
+        <HintPath>..\references\Rust\Assembly-CSharp.dll</HintPath>
       </Reference>
       <Reference Include="Assembly-CSharp-firstpass">
-        <HintPath>..\References\Assembly-CSharp-firstpass.dll</HintPath>
+        <HintPath>..\references\Rust\Assembly-CSharp-firstpass.dll</HintPath>
       </Reference>
       <Reference Include="Facepunch.Console">
-        <HintPath>..\References\Facepunch.Console.dll</HintPath>
+        <HintPath>..\references\Rust\Facepunch.Console.dll</HintPath>
       </Reference>
       <Reference Include="Facepunch.Network">
-        <HintPath>..\References\Facepunch.Network.dll</HintPath>
+        <HintPath>..\references\Rust\Facepunch.Network.dll</HintPath>
       </Reference>
       <Reference Include="Facepunch.Sqlite">
-        <HintPath>..\references\Facepunch.Sqlite.dll</HintPath>
+        <HintPath>..\references\Rust\Facepunch.Sqlite.dll</HintPath>
       </Reference>
       <Reference Include="Facepunch.System">
-        <HintPath>..\References\Facepunch.System.dll</HintPath>
+        <HintPath>..\references\Rust\Facepunch.System.dll</HintPath>
       </Reference>
       <Reference Include="Facepunch.UnityEngine">
-        <HintPath>..\References\Facepunch.UnityEngine.dll</HintPath>
+        <HintPath>..\references\Rust\Facepunch.UnityEngine.dll</HintPath>
       </Reference>
       <Reference Include="Ionic.Zip.Reduced">
-        <HintPath>..\references\Ionic.Zip.Reduced.dll</HintPath>
+        <HintPath>..\references\Rust\Ionic.Zip.Reduced.dll</HintPath>
       </Reference>
       <Reference Include="mscorlib">
-        <HintPath>..\References\mscorlib.dll</HintPath>
+        <HintPath>..\references\Rust\mscorlib.dll</HintPath>
+      </Reference>
+      <Reference Include="netstandard" Condition="'$(TargetFramework)' == 'net48'">
+        <HintPath>..\references\Rust\netstandard.dll</HintPath>
       </Reference>
       <Reference Include="Oxide.Core">
-        <HintPath>..\References\Oxide.Core.dll</HintPath>
+        <HintPath>..\references\Rust\Oxide.Core.dll</HintPath>
       </Reference>
       <Reference Include="Oxide.CSharp">
-        <HintPath>..\References\Oxide.CSharp.dll</HintPath>
+        <HintPath>..\references\Rust\Oxide.CSharp.dll</HintPath>
       </Reference>
       <Reference Include="Oxide.References">
-        <HintPath>..\References\Oxide.References.dll</HintPath>
+        <HintPath>..\references\Rust\Oxide.References.dll</HintPath>
       </Reference>
       <Reference Include="Oxide.Rust">
-        <HintPath>..\References\Oxide.Rust.dll</HintPath>
+        <HintPath>..\references\Rust\Oxide.Rust.dll</HintPath>
       </Reference>
       <Reference Include="Oxide.SQLite">
-        <HintPath>..\References\Oxide.SQLite.dll</HintPath>
+        <HintPath>..\references\Rust\Oxide.SQLite.dll</HintPath>
       </Reference>
       <Reference Include="Oxide.Unity">
-        <HintPath>..\References\Oxide.Unity.dll</HintPath>
+        <HintPath>..\references\Rust\Oxide.Unity.dll</HintPath>
       </Reference>
       <Reference Include="Rust.Data">
-        <HintPath>..\References\Rust.Data.dll</HintPath>
+        <HintPath>..\references\Rust\Rust.Data.dll</HintPath>
       </Reference>
       <Reference Include="Rust.Global">
-        <HintPath>..\References\Rust.Global.dll</HintPath>
+        <HintPath>..\references\Rust\Rust.Global.dll</HintPath>
       </Reference>
       <Reference Include="Rust.UI">
-        <HintPath>..\references\Rust.UI.dll</HintPath>
+        <HintPath>..\references\Rust\Rust.UI.dll</HintPath>
       </Reference>
       <Reference Include="System">
-        <HintPath>..\references\System.dll</HintPath>
+        <HintPath>..\references\Rust\System.dll</HintPath>
       </Reference>
       <Reference Include="System.Core">
-        <HintPath>..\references\System.Core.dll</HintPath>
+        <HintPath>..\references\Rust\System.Core.dll</HintPath>
+      </Reference>
+      <Reference Include="System.Drawing" Condition="'$(Platform)' != 'UiFramework'">
+        <HintPath>..\references\Rust\System.Drawing.dll</HintPath>
       </Reference>
       <Reference Include="System.Net.Http">
-        <HintPath>..\references\System.Net.Http.dll</HintPath>
+        <HintPath>..\references\Rust\System.Net.Http.dll</HintPath>
       </Reference>
       <Reference Include="System.Runtime.CompilerServices.Unsafe">
-        <HintPath>..\references\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
+        <HintPath>..\references\Rust\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
       </Reference>
       <Reference Include="System.Threading.Channels">
-        <HintPath>..\references\System.Threading.Channels.dll</HintPath>
+        <HintPath>..\references\Rust\System.Threading.Channels.dll</HintPath>
       </Reference>
       <Reference Include="System.Threading.Tasks.Extensions">
-        <HintPath>..\references\System.Threading.Tasks.Extensions.dll</HintPath>
+        <HintPath>..\references\Rust\System.Threading.Tasks.Extensions.dll</HintPath>
+      </Reference>
+      <Reference Include="UniTask">
+        <HintPath>..\references\Rust\UniTask.dll</HintPath>
+      </Reference>
+      <Reference Include="UniTask.Linq">
+        <HintPath>..\references\Rust\UniTask.Linq.dll</HintPath>
+      </Reference>
+      <Reference Include="Unity.Burst">
+        <HintPath>..\references\Rust\Unity.Burst.dll</HintPath>
+      </Reference>
+      <Reference Include="Unity.Mathematics">
+        <HintPath>..\references\Rust\Unity.Mathematics.dll</HintPath>
       </Reference>
       <Reference Include="UnityEngine">
-        <HintPath>..\References\UnityEngine.dll</HintPath>
+        <HintPath>..\references\Rust\UnityEngine.dll</HintPath>
+      </Reference>
+      <Reference Include="UnityEngine.AssetBundleModule">
+        <HintPath>..\references\Rust\UnityEngine.AssetBundleModule.dll</HintPath>
       </Reference>
       <Reference Include="UnityEngine.CoreModule">
-        <HintPath>..\References\UnityEngine.CoreModule.dll</HintPath>
+        <HintPath>..\references\Rust\UnityEngine.CoreModule.dll</HintPath>
+      </Reference>
+      <Reference Include="UnityEngine.ImageConversionModule">
+        <HintPath>..\references\Rust\UnityEngine.ImageConversionModule.dll</HintPath>
       </Reference>
       <Reference Include="UnityEngine.TextRenderingModule">
-        <HintPath>..\References\UnityEngine.TextRenderingModule.dll</HintPath>
+        <HintPath>..\references\Rust\UnityEngine.TextRenderingModule.dll</HintPath>
       </Reference>
       <Reference Include="UnityEngine.UI">
-        <HintPath>..\References\UnityEngine.UI.dll</HintPath>
+        <HintPath>..\references\Rust\UnityEngine.UI.dll</HintPath>
       </Reference>
       <Reference Include="UnityEngine.UnityWebRequestModule">
-        <HintPath>..\references\UnityEngine.UnityWebRequestModule.dll</HintPath>
+        <HintPath>..\references\Rust\UnityEngine.UnityWebRequestModule.dll</HintPath>
       </Reference>
     </ItemGroup>
 
@@ -132,6 +156,14 @@
       </Content>
       <Compile Remove="$(CompilerGeneratedFilesOutputPath)/**/*.cs" />
       <Content Include="$(CompilerGeneratedFilesOutputPath)/Rust.UiFramework.SourceGenerators/**/*.cs" />
+      <Compile Remove="Libraries\ImageStorage\Download\ThreadedImageDownloader.cs" />
+      <Compile Remove="Threading\UiChannel\BaseUiChannel.cs" />
+      <Compile Remove="Threading\UiChannel\IUiChannel.cs" />
+      <Compile Remove="Threading\UiChannel\IUiChannelObject.cs" />
+      <Compile Remove="Libraries\ImageStorage\Download\ImageDownloadQueue.cs" />
+      <Compile Remove="Libraries\ImageStorage\Download\ImageDownloadRequest.cs" />
+      <Compile Remove="Threading\UiChannel\BaseUniTaskChannel.cs" />
+      <Compile Remove="Threading\UiChannel\IUniTaskChannelObject.cs" />
     </ItemGroup>
 
     <ItemGroup>
@@ -143,7 +175,7 @@
         <PrivateAssets>all</PrivateAssets>
         <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       </PackageReference>
-      <PackageReference Include="PolySharp" Version="1.15.0">
+      <PackageReference Include="PolySharp" Version="1.16.0">
         <PrivateAssets>all</PrivateAssets>
         <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       </PackageReference>
@@ -212,7 +244,7 @@
     </PropertyGroup>
 
     <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|UiFramework' ">
-      <DefineConstants>TRACE;DEBUG</DefineConstants>
+      <DefineConstants>TRACE;DEBUG;SERVER</DefineConstants>
     </PropertyGroup>
 
     <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|Unit Tests' ">
@@ -229,6 +261,18 @@
 
     <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|Unit Tests' ">
       <DefineConstants>TRACE;UNIT_TESTS</DefineConstants>
+    </PropertyGroup>
+
+    <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Trace Leaks|Benchmarks' ">
+      <DefineConstants>TRACE;DEBUG;TRACE_LEAKS;BENCHMARKS</DefineConstants>
+    </PropertyGroup>
+
+    <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Trace Leaks|UiFramework' ">
+      <DefineConstants>TRACE;DEBUG;TRACE_LEAKS</DefineConstants>
+    </PropertyGroup>
+
+    <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Trace Leaks|Unit Tests' ">
+      <DefineConstants>TRACE;DEBUG;TRACE_LEAKS;UNIT_TESTS</DefineConstants>
     </PropertyGroup>
 
 </Project>

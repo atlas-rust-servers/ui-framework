@@ -1,28 +1,21 @@
 using Network;
 using Oxide.Ext.UiFramework.Libraries;
 using Oxide.Ext.UiFramework.Pooling;
-using Oxide.Ext.UiFramework.Threading.UiChannel;
 using Oxide.Ext.UiFramework.Types;
 
 namespace Oxide.Ext.UiFramework.Threading;
 
-internal abstract class BaseUiRequest : BasePoolable, IChannelObject
+internal abstract class BaseUiRequest : BasePoolable, IUiRequest
 {
     public SendInfo Send;
+    private static readonly UiChannel<IUiRequest> Channel = Singleton<SendHandler>.Instance.Channel;
 
     protected void Init(SendInfo send)
     {
         Send = send;
     }
-    
-    public virtual IUiChannel GetChannel(int index)
-    {
-        return index switch
-        {
-            0 => (IUiChannel)Singleton<SendHandler>.Instance,
-            _ => null
-        };
-    }
+
+    public abstract ProcessResult Process();
 
     protected override void EnterPool()
     {
@@ -31,5 +24,15 @@ internal abstract class BaseUiRequest : BasePoolable, IChannelObject
             UiPool.Connections.FreeList(Send.connections);
         }
         Send = default;
+    }
+
+    public void Enqueue()
+    {
+        Channel.Enqueue(this);
+    }
+
+    public virtual void OnCompleted()
+    {
+        Dispose();
     }
 }

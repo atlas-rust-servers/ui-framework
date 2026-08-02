@@ -98,7 +98,7 @@ public sealed class UiChannel<T> : IUiChannel where T : IBaseUiChannelObject
             }
             catch (Exception ex)
             {
-                _logger.Error("An error occured processing channel item", ex);
+                _logger.Exception("An error occured processing channel item", ex);
                 result = ProcessResult.Failed;
             }
 
@@ -106,7 +106,7 @@ public sealed class UiChannel<T> : IUiChannel where T : IBaseUiChannelObject
         }
         catch (Exception ex)
         {
-            _logger.Error("An error occured processing channel item", ex);
+            _logger.Exception("An error occured processing channel item", ex);
             await OnException(item, ex);
         }
         finally
@@ -207,7 +207,7 @@ public sealed class UiChannel<T> : IUiChannel where T : IBaseUiChannelObject
         }
         catch (Exception inner)
         {
-            _logger.Error("An error occured processing channel item exception", inner);
+            _logger.Exception("An error occured processing channel item exception", inner);
         }
     }
 

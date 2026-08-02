@@ -275,4 +275,14 @@
       <DefineConstants>TRACE;DEBUG;TRACE_LEAKS;UNIT_TESTS</DefineConstants>
     </PropertyGroup>
 
+    <PropertyGroup>
+        <AtlasServerManagedDir>D:\Servers\Atlas_MiniGamePlugins\server\RustDedicated_Data\Managed</AtlasServerManagedDir>
+        <AtlasPluginsDependenciesDir>D:\CodeProjects\Atlas\atlas-mini-games\src\dependencies</AtlasPluginsDependenciesDir>
+    </PropertyGroup>
+
+    <Target Name="PostBuild" AfterTargets="PostBuildEvent" Condition="'$(TargetFramework)' == 'net48' AND '$(Platform)' == 'UiFramework' AND '$(GITHUB_ACTIONS)' != 'true'">
+      <Copy SourceFiles="$(TargetPath)" DestinationFolder="$(AtlasServerManagedDir)" Condition="Exists('$(AtlasServerManagedDir)')" />
+      <Copy SourceFiles="$(TargetPath)" DestinationFolder="$(AtlasPluginsDependenciesDir)" Condition="Exists('$(AtlasPluginsDependenciesDir)')" />
+    </Target>
+
 </Project>

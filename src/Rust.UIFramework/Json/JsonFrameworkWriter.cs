@@ -426,6 +426,12 @@ public sealed partial class JsonFrameworkWriter : BasePoolable
             WriteEmptyString();
             return;
         }
+
+        if (!NeedsTextEscape(value))
+        {
+            WriteValue(value);
+            return;
+        }
         
         _writer.WriteChar(QuoteChar);
         int i = 0;
@@ -468,6 +474,29 @@ public sealed partial class JsonFrameworkWriter : BasePoolable
             i += 1;
         }
         _writer.WriteChar(QuoteChar);
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    private static bool NeedsTextEscape(string value)
+    {
+        for (int index = 0; index < value.Length; index++)
+        {
+            char character = value[index];
+            if (character is '\"' or '\\')
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    public void AddQuotedNumberField(Utf8String name, ulong value)
+    {
+        WritePropertyName(name);
+        WriteQuote();
+        WriteValue(value);
+        WriteQuote();
     }
 
     private void WriteEnumInternal<T>(T value) where T : unmanaged, Enum

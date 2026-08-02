@@ -1,5 +1,4 @@
-﻿using Oxide.Ext.UiFramework.Cache;
-using Oxide.Ext.UiFramework.Enums;
+﻿using Oxide.Ext.UiFramework.Enums;
 using Oxide.Ext.UiFramework.Json;
 using Oxide.Ext.UiFramework.Libraries;
 using Oxide.Ext.UiFramework.Plugins;
@@ -27,7 +26,7 @@ public partial class PlayerAvatarComponent : RawImageComponent
             {
                 case AvatarType.Small:
                 case AvatarType.Medium:
-                    writer.AddField(JsonDefaults.PlayerAvatar.SteamIdName, StringCache<ulong>.ToString(SteamId));
+                    writer.AddQuotedNumberField(JsonDefaults.PlayerAvatar.SteamIdName, SteamId);
                     break;
             
                 case AvatarType.Large:
@@ -37,23 +36,21 @@ public partial class PlayerAvatarComponent : RawImageComponent
                         string img = Singleton<UiImageStorage>.Instance.Get(UiFrameworkPlugin.Instance, avatarUrl);
                         if (img.StartsWith("http") || uint.TryParse(img, out uint _))
                         {
-                            //Set the image so the RawImageComponent will use the URL.
                             Image = img;
                         }
                         else
                         {
-                            writer.AddField(JsonDefaults.PlayerAvatar.SteamIdName, StringCache<ulong>.ToString(SteamId));
+                            writer.AddQuotedNumberField(JsonDefaults.PlayerAvatar.SteamIdName, SteamId);
                         }
                     }
                     else
                     {
-                        writer.AddField(JsonDefaults.PlayerAvatar.SteamIdName, StringCache<ulong>.ToString(SteamId));
+                        writer.AddQuotedNumberField(JsonDefaults.PlayerAvatar.SteamIdName, SteamId);
                     }
 
                     break;
             }
             
-            //Needs to be after so we don't duplicate URL fields.
             base.WriteComponentFields(writer, mode);
         }
     }

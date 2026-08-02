@@ -165,7 +165,7 @@ public sealed class JsonUtf8Writer
     }
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    private void Flush(int rentSize = SegmentSize)
+    private void Flush()
     {
         if (_byteIndex == 0)
         {
@@ -175,7 +175,7 @@ public sealed class JsonUtf8Writer
         _size += (uint)_byteIndex;
         _segments.Add(new SizedArray(_buffer, _byteIndex));
         _byteIndex = 0;
-        _buffer = ArrayPool<byte>.Shared.Rent(rentSize);
+        _buffer = ArrayPool<byte>.Shared.Rent(SegmentSize);
     }
 
     public int WriteToArray(byte[] bytes)
@@ -233,6 +233,18 @@ public sealed class JsonUtf8Writer
 
     public byte[] ToArray()
     {
+        if (_segments.Count == 0)
+        {
+            int size = _byteIndex;
+            byte[] single = new byte[size];
+            if (size > 0)
+            {
+                Buffer.BlockCopy(_buffer, 0, single, 0, size);
+            }
+
+            return single;
+        }
+
         Flush();
         byte[] bytes = new byte[_size];
         WriteToArray(bytes);
@@ -265,12 +277,20 @@ public sealed class JsonUtf8Writer
 
     public void WriteRaw(ReadOnlySpan<byte> span)
     {
-        Flush(span.Length);
-        if (span.TryCopyTo(_buffer))
+        while (!span.IsEmpty)
         {
-            _byteIndex += span.Length;
+            int available = SegmentSize - _byteIndex;
+            if (available <= 0)
+            {
+                Flush();
+                available = SegmentSize;
+            }
+
+            int toCopy = Math.Min(available, span.Length);
+            span.Slice(0, toCopy).CopyTo(_buffer.AsSpan(_byteIndex));
+            _byteIndex += toCopy;
+            span = span.Slice(toCopy);
         }
-        Flush();
     }
 
     private readonly struct SizedArray(byte[] array, int size)

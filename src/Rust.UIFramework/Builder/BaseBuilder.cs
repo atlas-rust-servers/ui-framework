@@ -60,6 +60,7 @@ public abstract class BaseBuilder : BasePoolable
     public void AddUi(in UiDebugOptions? options = default) => AddUi(SendInfoBuilder.Get(Net.sv.connections), options);
     public void AddUi(SendInfo send, in UiDebugOptions? options = default)
     {
+        ThrowIfPooled("Can't send a builder that was already sent");
         UiSendRequest.Create(this, send, options).Enqueue();
     }
 

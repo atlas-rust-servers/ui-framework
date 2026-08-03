@@ -65,6 +65,18 @@ public abstract class BasePoolable : IPoolable
             Dispose();
         }
     }
+
+    /// <summary>
+    /// Throws if the object was already returned to the pool.
+    /// Reading a pooled object races with whoever owns it now, so this turns a use after free into an error that names the owning plugin.
+    /// </summary>
+    internal void ThrowIfPooled(string usage)
+    {
+        if (IsPooled)
+        {
+            throw new ObjectDisposedException(GetType().Name, $"{usage}. The object was already returned to the pool. Plugin: {PluginPool?.PluginName ?? "Unknown"}");
+        }
+    }
     
     public void Dispose()
     {

@@ -36,6 +36,11 @@ public class UiTrackerRequest : BasePoolable, IUiChannelObject
     public ProcessResult Process()
     {
 #if SERVER
+        if (Builder.IsPooled)
+        {
+            return ProcessResult.Success;
+        }
+
         if (Builder is BaseUiBuilder builder)
         {
             SendInfo send = Send;

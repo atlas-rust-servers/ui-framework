@@ -26,13 +26,20 @@ internal class UiSendRequest : BaseUiRequest
     
     public override ProcessResult Process()
     {
+        Builder.ThrowIfPooled("Can't send a builder that was disposed after it was queued");
         Builder.SendUi(Send, Options);
         Builder.SendAnimations(Send);
         return ProcessResult.Success;
     }
-    
+
     public override void OnCompleted()
     {
+        if (Builder.IsPooled)
+        {
+            Dispose();
+            return;
+        }
+
         if (Builder.Plugin != null)
         {
             UiTrackerRequest.Create(Builder.Plugin, Builder, Send).Enqueue();

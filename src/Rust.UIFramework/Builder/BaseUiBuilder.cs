@@ -67,13 +67,24 @@ public abstract partial class BaseUiBuilder : BaseBuilder
         WriteComponents(writer, Anchors);
     }
 
+    // Snapshot the backing array before the count so a concurrent FreeComponents can't hand us an index past the
+    // end of the array we are reading. List.Clear nulls the elements before it resets the size, so a null entry
+    // means the list was emptied mid write: stop instead of dereferencing it. The builder should never be pooled
+    // while it is being written - ThrowIfPooled on the send path reports whoever did it - this only keeps the
+    // race from turning into a NullReferenceException on the ui sending thread.
     private static void WriteComponents<T>(JsonFrameworkWriter writer, List<T> components) where T : BaseUiComponent
     {
-        int count = components.Count;
         T[] array = components.GetInternalArray();
+        int count = Math.Min(components.Count, array.Length);
         for (int index = 0; index < count; index++)
         {
-            array[index].WriteElement(writer);
+            T component = array[index];
+            if (component is null)
+            {
+                return;
+            }
+
+            component.WriteElement(writer);
         }
     }
     

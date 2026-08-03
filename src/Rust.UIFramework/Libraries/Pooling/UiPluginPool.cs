@@ -82,11 +82,13 @@ public class UiPluginPool : IDebugLoggable
         Array.Resize(ref pools, newSize);
     }
 
+    // Init before publishing into the array: GetPool reads pools[poolId] outside the lock, so a pool that is
+    // stored first is visible to other threads while PluginPool and the pool size are still unset.
     private TPool CreatePool<TPool>(BasePool[] pools, int poolId) where TPool : BasePool, new()
     {
         TPool newPool = new();
-        pools[poolId] = newPool;
         newPool.InitPool(this);
+        pools[poolId] = newPool;
         return newPool;
     }
 

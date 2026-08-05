@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading;
 using Network;
 using Oxide.Ext.UiFramework.Animation;
 using Oxide.Ext.UiFramework.Helpers;
@@ -20,10 +21,14 @@ namespace Oxide.Ext.UiFramework.Builder;
 public abstract class BaseBuilder : BasePoolable
 {
     protected string RootName;
-    
+
+    private int _queuedForSend;
+
     public string GetRootName() => RootName;
-    
+
     public IUiFrameworkPlugin Plugin { get; protected set; }
+
+    internal override bool IsOwnedByCaller => _queuedForSend == 0;
 
     protected void Init(IUiFrameworkPlugin plugin)
     {
@@ -60,8 +65,27 @@ public abstract class BaseBuilder : BasePoolable
     public void AddUi(in UiDebugOptions? options = default) => AddUi(SendInfoBuilder.Get(Net.sv.connections), options);
     public void AddUi(SendInfo send, in UiDebugOptions? options = default)
     {
-        ThrowIfPooled("Can't send a builder that was already sent");
+        TakeSendOwnership();
         UiSendRequest.Create(this, send, options).Enqueue();
+    }
+
+    /// <summary>
+    /// Hands the builder over to the ui send queue, which owns it until the ui has been written and sent.
+    /// A pooled builder is returned to the pool once that is done, so it can only ever be queued once.
+    /// </summary>
+    private void TakeSendOwnership()
+    {
+        ThrowIfPooled("Can't send a builder that was already returned to the pool");
+        if (!CanPool)
+        {
+            return;
+        }
+
+        if (Interlocked.Exchange(ref _queuedForSend, 1) != 0)
+        {
+            throw new InvalidOperationException($"{GetType().Name} was already sent and is now owned by the ui send queue. Plugin: {PluginPool?.PluginName ?? "Unknown"}. " +
+                                                $"Pass every player to a single {nameof(AddUi)} call, or use UiBuilder.ToCachedBuilder() when the same ui has to be sent more than once.");
+        }
     }
 
     internal abstract void SendUi(SendInfo send, in UiDebugOptions? options);
@@ -171,6 +195,15 @@ public abstract class BaseBuilder : BasePoolable
     #endregion
 
     #region Pooling
+    /// <summary>
+    /// Called by the send path once the builder has been sent and is no longer read by any thread.
+    /// </summary>
+    internal void ReleaseAfterSend()
+    {
+        Interlocked.Exchange(ref _queuedForSend, 0);
+        TryDispose();
+    }
+
     protected static void ClearAnimationList(List<ISendableAnimation> animations)
     {
         int count = animations.Count;
@@ -190,6 +223,12 @@ public abstract class BaseBuilder : BasePoolable
     {
         RootName = null;
         Plugin = null;
+    }
+
+    protected override void LeavePool()
+    {
+        base.LeavePool();
+        _queuedForSend = 0;
     }
     #endregion
 }

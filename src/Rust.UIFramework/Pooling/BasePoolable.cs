@@ -58,9 +58,15 @@ public abstract class BasePoolable : IPoolable
     internal void TestLeavePool() => LeavePool();
 #endif
 
+    /// <summary>
+    /// False while another owner is responsible for returning this object to the pool.
+    /// Freeing it from the caller in that window would hand the object out again while the owner is still reading it.
+    /// </summary>
+    internal virtual bool IsOwnedByCaller => true;
+
     public void TryDispose()
     {
-        if (CanPool && !IsPooled)
+        if (CanPool && IsOwnedByCaller)
         {
             Dispose();
         }
@@ -80,11 +86,11 @@ public abstract class BasePoolable : IPoolable
     
     public void Dispose()
     {
-        if (_pool == null)
+        if (_pool == null || !IsOwnedByCaller)
         {
             return;
         }
-        
+
         if (IsPooled)
         {
             throw new ObjectDisposedException(GetType().Name);

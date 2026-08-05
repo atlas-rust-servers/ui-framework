@@ -36,11 +36,6 @@ public class UiTrackerRequest : BasePoolable, IUiChannelObject
     public ProcessResult Process()
     {
 #if SERVER
-        if (Builder.IsPooled)
-        {
-            return ProcessResult.Success;
-        }
-
         if (Builder is BaseUiBuilder builder)
         {
             SendInfo send = Send;
@@ -74,7 +69,7 @@ public class UiTrackerRequest : BasePoolable, IUiChannelObject
     {
         base.EnterPool();
         Send = default;
-        Builder?.TryDispose();
+        Builder?.ReleaseAfterSend();
         Builder = null;
     }
 }

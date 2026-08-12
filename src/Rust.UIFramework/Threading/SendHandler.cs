@@ -44,15 +44,12 @@ internal static class SendHandler
             {
 #if !BENCHMARKS
                 request.SendUi();
+                request.Dispose();
 #endif
             }
             catch (Exception ex)
             {
                 Interface.Oxide.NextTick(() => { Interface.Oxide.LogException("An error occured during UI Send", ex); });
-            }
-            finally
-            {
-                request.Dispose();
             }
         }
     }

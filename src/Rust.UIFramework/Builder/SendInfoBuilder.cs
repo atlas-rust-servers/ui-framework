@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using Network;
-using Oxide.Ext.UiFramework.Animation;
 using Oxide.Ext.UiFramework.Guards;
 using Oxide.Ext.UiFramework.Libraries;
 using Oxide.Ext.UiFramework.Types;
@@ -12,7 +11,6 @@ namespace Oxide.Ext.UiFramework.Builder;
 internal static class SendInfoBuilder
 {
     private const sbyte UiChannel = 3;
-    private const sbyte AnimationsChannel = 4;
     private const sbyte PreCache = 5;
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -89,10 +87,13 @@ internal static class SendInfoBuilder
         };
     }
 
+    // Animation frames share the ui channel. Ordering is only guaranteed within a RakNet
+    // ordering channel, so on a channel of their own the single frame carrying an Active
+    // flip can overtake the AddUi that creates the element; the client then drops that
+    // frame whole and the element stays hidden until the ui is drawn again.
     internal static SendInfo GetForAnimations(SendInfo info)
     {
-        sbyte channel = Singleton<AnimationTime>.Instance.AnimationsEnabled ? AnimationsChannel : UiChannel;
-        return GetForChannel(info, channel);
+        return GetForChannel(info, UiChannel);
     }
 
     internal static SendInfo GetForUi(SendInfo info)

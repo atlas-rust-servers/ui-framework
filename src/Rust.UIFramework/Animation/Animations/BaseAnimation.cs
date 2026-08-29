@@ -170,7 +170,10 @@ public abstract class BaseAnimation : BasePoolable, IAnimation
             }
         }
 
-        if (State is AnimationState.Running or AnimationState.Delayed && (Duration is { IsCompleted : true } || Interpolator == null) && _children.Count == 0)
+        // Only a running animation may be completed here. A delayed one has not had Duration.OnStarted called yet,
+        // so its start time is still zero and IsCompleted answers true against the clock's current time - the
+        // cleanup pass would finish every delayed animation on the tick right after it was queued.
+        if (State is AnimationState.Running && (Duration is { IsCompleted : true } || Interpolator == null) && _children.Count == 0)
         {
             CompleteAnimation();
         }

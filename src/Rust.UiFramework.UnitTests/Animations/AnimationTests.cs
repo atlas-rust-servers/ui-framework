@@ -115,4 +115,31 @@ public class AnimationTests : BaseAnimationTests
         timeoutCalled.Should().BeTrue();
         animation.IsValid.Should().BeFalse();
     }
+
+    [Fact]
+    public void Animation_Delayed_SurvivesTheCleanupPass()
+    {
+        // Arrange
+        AnimationRef<IElementAnimation<UiPanel>> animation = CreateElementAnimation<UiPanel>("name");
+        AnimationRef<IFieldAnimation<UiColor>> color = animation.AnimateColor();
+        // A live server has been up for a while, so the clock is far past any animation duration.
+        UnitTestAnimationTime time = new();
+        time.AddSeconds(1000f);
+        animation.WithTime(time);
+        color.Delay(2f).Duration(5f).Lerp(UiColors.Red, UiColors.Blue);
+
+        // Act
+        UnitTestAnimationHelpers.QueueAnimation(animation);
+        UnitTestAnimationHelpers.StartAnimation(animation);
+
+        // The cleanup pass reaches every queued, delayed and running animation once per send tick.
+        animation.Animation.TickCleanup();
+        color.Animation.TickCleanup();
+
+        // Assert
+        color.Animation.State.Should().Be(AnimationState.Delayed);
+        animation.Animation.State.Should().Be(AnimationState.Running);
+
+        animation.Animation.Dispose();
+    }
 }

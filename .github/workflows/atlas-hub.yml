@@ -8,6 +8,7 @@ on:
     branches: [ "atlas-hub" ]
     paths:
       - ".github/workflows/atlas-hub.yml"
+      - "Download-References.ps1"
 
 permissions:
   contents: read
@@ -47,7 +48,7 @@ jobs:
           "VERSION=$version" | Out-File -FilePath $env:GITHUB_ENV -Append
 
       - name: Download references
-        run: ./Download-References.ps1
+        run: ./Download-References.ps1 -Linux
 
       - name: Build DLL
         run: dotnet build src/Rust.UIFramework/Rust.UIFramework.csproj -c Release /p:Platform=UiFramework /p:Version=$env:VERSION -f net48
@@ -60,6 +61,10 @@ jobs:
 
       - name: Package DLL and references
         run: |
+          if (-not (Test-Path 'src/references/Rust/Facepunch.Steamworks.Posix.dll'))
+          {
+              throw 'Linux references are required for the atlas-hub release.'
+          }
           New-Item -ItemType Directory -Path bin -Force | Out-Null
           $assetName = 'atlas-hub_Oxide.Ext.UiFramework.dll'
           Copy-Item 'src/Rust.UIFramework/bin/UiFramework/Release/net48/Oxide.Ext.UiFramework.dll' "bin/$assetName"
@@ -89,6 +94,7 @@ jobs:
                   sha256 = (Get-FileHash "bin/$assetName" -Algorithm SHA256).Hash.ToLowerInvariant()
               }
               references = [ordered]@{
+                  platform = 'linux'
                   file = 'atlas-hub.references.zip'
                   sha256 = (Get-FileHash 'bin/atlas-hub.references.zip' -Algorithm SHA256).Hash.ToLowerInvariant()
                   assemblies = $references

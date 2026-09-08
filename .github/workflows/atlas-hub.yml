@@ -2,16 +2,17 @@ name: atlas-hub Release
 
 on:
   push:
-    tags:
-      - "atlas-hub-[0-9]+.[0-9]+.[0-9]+"
+    branches: [atlas-hub]
+  workflow_dispatch:
   pull_request:
     branches: [ "atlas-hub" ]
-    paths:
-      - ".github/workflows/atlas-hub.yml"
-      - "Download-References.ps1"
 
 permissions:
   contents: read
+
+concurrency:
+  group: ui-atlas-hub-${{ github.event_name == 'pull_request' && github.ref || 'publish' }}
+  cancel-in-progress: false
 
 jobs:
   build:
@@ -35,17 +36,9 @@ jobs:
             10.0.x
 
       - name: Resolve version
-        run: |
-          $version = '0.0.0'
-          if ($env:GITHUB_REF_TYPE -eq 'tag')
-          {
-              if ($env:GITHUB_REF_NAME -notmatch '^atlas-hub-([0-9]+\.[0-9]+\.[0-9]+)$')
-              {
-                  throw "Invalid atlas-hub release tag: $env:GITHUB_REF_NAME"
-              }
-              $version = $Matches[1]
-          }
-          "VERSION=$version" | Out-File -FilePath $env:GITHUB_ENV -Append
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: ./scripts/Resolve-ReleaseVersion.ps1 -Prefix 'atlas-hub-'
 
       - name: Download references
         run: ./Download-References.ps1 -Linux
@@ -68,36 +61,17 @@ jobs:
           New-Item -ItemType Directory -Path bin -Force | Out-Null
           $assetName = 'atlas-hub_Oxide.Ext.UiFramework.dll'
           Copy-Item 'src/Rust.UIFramework/bin/UiFramework/Release/net48/Oxide.Ext.UiFramework.dll' "bin/$assetName"
-          $references = @(foreach ($file in Get-ChildItem 'src/references/Rust' -Filter '*.dll' -File | Sort-Object Name)
-          {
-              [ordered]@{
-                  file = $file.Name
-                  sha256 = (Get-FileHash -LiteralPath $file.FullName -Algorithm SHA256).Hash.ToLowerInvariant()
-              }
-          })
-          if ($references.Count -eq 0)
-          {
-              throw 'No Rust/Oxide references found.'
-          }
-          Compress-Archive -Path 'src/references/Rust/*.dll' -DestinationPath 'bin/atlas-hub.references.zip'
           $manifest = [ordered]@{
               schema = 1
               repository = $env:GITHUB_REPOSITORY
               branch = 'atlas-hub'
               commit = (git rev-parse HEAD)
-              tag = $env:GITHUB_REF_NAME
+              tag = $env:RELEASE_TAG
               version = $env:VERSION
               sdk = (dotnet --version)
               targetFramework = 'net48'
               asset = [ordered]@{
                   file = $assetName
-                  sha256 = (Get-FileHash "bin/$assetName" -Algorithm SHA256).Hash.ToLowerInvariant()
-              }
-              references = [ordered]@{
-                  platform = 'linux'
-                  file = 'atlas-hub.references.zip'
-                  sha256 = (Get-FileHash 'bin/atlas-hub.references.zip' -Algorithm SHA256).Hash.ToLowerInvariant()
-                  assemblies = $references
               }
           }
           $manifest | ConvertTo-Json -Depth 6 | Set-Content 'bin/atlas-hub.build.json' -Encoding utf8
@@ -110,7 +84,7 @@ jobs:
           if-no-files-found: error
 
   publish:
-    if: github.event_name == 'push' && github.ref_type == 'tag'
+    if: github.event_name == 'push' || github.event_name == 'workflow_dispatch'
     needs: build
     runs-on: ubuntu-latest
     permissions:
@@ -124,11 +98,11 @@ jobs:
           path: bin
 
       - name: Publish versioned prerelease
+        shell: pwsh
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          gh release create "$GITHUB_REF_NAME" bin/* \
-            --repo "$GITHUB_REPOSITORY" \
-            --verify-tag --prerelease --latest=false \
-            --title "$GITHUB_REF_NAME" \
-            --notes "UiFramework atlas-hub build from commit $GITHUB_SHA. Build metadata and the Rust/Oxide reference snapshot are attached."
+          $manifest = Get-Content bin/atlas-hub.build.json -Raw | ConvertFrom-Json
+          $assets = @(Get-ChildItem bin -File | Select-Object -ExpandProperty FullName)
+          gh release create $manifest.tag @assets --repo $env:GITHUB_REPOSITORY --target $manifest.commit --prerelease --latest=false --title $manifest.tag --notes 'UiFramework atlas-hub build with current Linux Rust/Oxide references.'
+          if ($LASTEXITCODE -ne 0) { throw 'Prerelease publication failed.' }

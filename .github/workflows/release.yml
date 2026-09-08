@@ -2,51 +2,72 @@ name: Create Release
 
 on:
   push:
-    tags:
-      - "[0-9]+.[0-9]+.[0-9]+"
+    branches: [main]
+    tags: ['[0-9]+.[0-9]+.[0-9]+']
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+    inputs:
+      publish:
+        type: boolean
+        default: true
+        description: Publish after a successful build
+
+permissions:
+  contents: write
+
+concurrency:
+  group: ui-main-release-${{ github.event_name == 'pull_request' && github.ref || 'publish' }}
+  cancel-in-progress: false
+
+defaults:
+  run:
+    shell: pwsh
 
 jobs:
   build:
-
     runs-on: windows-latest
-
+    timeout-minutes: 20
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Setup .NET
-        uses: actions/setup-dotnet@v4
-
-      - name: Display .NET version
-        run: dotnet --version
-
-      - name: Set VERSION variable from tag
-        run: echo "VERSION=${{github.ref_name}}" | Out-File -FilePath $env:GITHUB_ENV
-
-      - name: Download References
-        shell: pwsh
-        run: |
-          .\Download-References.ps1
-
-      - name: Build DLLs - Oxide
-        run: dotnet build Rust.UIFramework.csproj -c Release /p:Platform=Oxide /p:Version=${{ env.VERSION }} -f net48
-        working-directory: src/Rust.UIFramework
-
-      - name: Build DLLs - Carbon
-        run: dotnet build Rust.UIFramework.csproj -c Release /p:Platform=Carbon /p:Version=${{ env.VERSION }} -f net48
-        working-directory: src/Rust.UIFramework
-
-      - name: Move DLLs
-        run: |
-          mkdir -p bin
-          mv Rust.UIFramework/bin/Oxide/Release/net48/Oxide.Ext.UiFramework.dll bin/
-          mv Rust.UIFramework/bin/Carbon/Release/net48/Carbon.Ext.UiFramework.dll bin/
-        working-directory: src
-
-      - name: Upload Release Assets
-        run: |
-          $TAG=($env:GITHUB_REF -replace 'refs/tags/', '')
-          $dllPath = Get-ChildItem -Path src/bin -Filter *.dll -File | Select-Object -ExpandProperty FullName
-          gh release upload $TAG $dllPath
+      - name: Enable long paths
+        run: git config --system core.longpaths true
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 10.0.x
+      - name: Resolve release version
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_TOKEN: ${{ github.token }}
+        run: ./scripts/Resolve-ReleaseVersion.ps1
+      - name: Download current references
+        run: ./Download-References.ps1
+      - name: Build Oxide
+        run: dotnet build src/Rust.UIFramework/Rust.UIFramework.csproj -c Release /p:Platform=Oxide /p:Version=$env:VERSION -f net48
+      - name: Build Carbon
+        run: dotnet build src/Rust.UIFramework/Rust.UIFramework.csproj -c Release /p:Platform=Carbon /p:Version=$env:VERSION -f net48
+      - name: Package release
+        run: |
+          New-Item -ItemType Directory -Path bin -Force | Out-Null
+          Copy-Item src/Rust.UIFramework/bin/Oxide/Release/net48/Oxide.Ext.UiFramework.dll bin/
+          Copy-Item src/Rust.UIFramework/bin/Carbon/Release/net48/Carbon.Ext.UiFramework.dll bin/
+          [ordered]@{
+              repository = $env:GITHUB_REPOSITORY
+              branch = 'main'
+              commit = (git rev-parse HEAD)
+              tag = $env:RELEASE_TAG
+              version = $env:VERSION
+              asset = @{ file = 'Oxide.Ext.UiFramework.dll' }
+          } | ConvertTo-Json -Depth 4 | Set-Content bin/main.build.json -Encoding utf8
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ui-main-build
+          path: bin/*
+          if-no-files-found: error
+      - name: Publish release
+        if: github.event_name == 'push' || (github.event_name == 'workflow_dispatch' && inputs.publish)
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          $assets = @(Get-ChildItem bin -File | Select-Object -ExpandProperty FullName)
+          gh release create $env:RELEASE_TAG @assets --repo $env:GITHUB_REPOSITORY --target $env:GITHUB_SHA --latest --title $env:RELEASE_TAG --notes 'UiFramework main build with current game references.'
+          if ($LASTEXITCODE -ne 0) { throw 'Release publication failed.' }

@@ -1,0 +1,128 @@
+name: atlas-hub Release
+
+on:
+  push:
+    tags:
+      - "atlas-hub-[0-9]+.[0-9]+.[0-9]+"
+  pull_request:
+    branches: [ "atlas-hub" ]
+    paths:
+      - ".github/workflows/atlas-hub.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: windows-latest
+    defaults:
+      run:
+        shell: pwsh
+
+    steps:
+      - name: Enable long paths
+        run: git config --system core.longpaths true
+
+      - name: Checkout source commit
+        uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: |
+            9.0.x
+            10.0.x
+
+      - name: Resolve version
+        run: |
+          $version = '0.0.0'
+          if ($env:GITHUB_REF_TYPE -eq 'tag')
+          {
+              if ($env:GITHUB_REF_NAME -notmatch '^atlas-hub-([0-9]+\.[0-9]+\.[0-9]+)$')
+              {
+                  throw "Invalid atlas-hub release tag: $env:GITHUB_REF_NAME"
+              }
+              $version = $Matches[1]
+          }
+          "VERSION=$version" | Out-File -FilePath $env:GITHUB_ENV -Append
+
+      - name: Download references
+        run: ./Download-References.ps1
+
+      - name: Build DLL
+        run: dotnet build src/Rust.UIFramework/Rust.UIFramework.csproj -c Release /p:Platform=UiFramework /p:Version=$env:VERSION -f net48
+
+      - name: Build unit tests
+        run: dotnet build src/Rust.UiFramework.UnitTests/Rust.UiFramework.UnitTests.csproj -c Release '/p:Platform=Unit Tests' /p:Version=$env:VERSION
+
+      - name: Run unit tests
+        run: '& "src/Rust.UiFramework.UnitTests/bin/Unit Tests/Release/net9.0/Rust.UiFramework.UnitTests.exe" -culture en-US'
+
+      - name: Package DLL and references
+        run: |
+          New-Item -ItemType Directory -Path bin -Force | Out-Null
+          $assetName = 'atlas-hub_Oxide.Ext.UiFramework.dll'
+          Copy-Item 'src/Rust.UIFramework/bin/UiFramework/Release/net48/Oxide.Ext.UiFramework.dll' "bin/$assetName"
+          $references = @(foreach ($file in Get-ChildItem 'src/references/Rust' -Filter '*.dll' -File | Sort-Object Name)
+          {
+              [ordered]@{
+                  file = $file.Name
+                  sha256 = (Get-FileHash -LiteralPath $file.FullName -Algorithm SHA256).Hash.ToLowerInvariant()
+              }
+          })
+          if ($references.Count -eq 0)
+          {
+              throw 'No Rust/Oxide references found.'
+          }
+          Compress-Archive -Path 'src/references/Rust/*.dll' -DestinationPath 'bin/atlas-hub.references.zip'
+          $manifest = [ordered]@{
+              schema = 1
+              repository = $env:GITHUB_REPOSITORY
+              branch = 'atlas-hub'
+              commit = (git rev-parse HEAD)
+              tag = $env:GITHUB_REF_NAME
+              version = $env:VERSION
+              sdk = (dotnet --version)
+              targetFramework = 'net48'
+              asset = [ordered]@{
+                  file = $assetName
+                  sha256 = (Get-FileHash "bin/$assetName" -Algorithm SHA256).Hash.ToLowerInvariant()
+              }
+              references = [ordered]@{
+                  file = 'atlas-hub.references.zip'
+                  sha256 = (Get-FileHash 'bin/atlas-hub.references.zip' -Algorithm SHA256).Hash.ToLowerInvariant()
+                  assemblies = $references
+              }
+          }
+          $manifest | ConvertTo-Json -Depth 6 | Set-Content 'bin/atlas-hub.build.json' -Encoding utf8
+
+      - name: Upload build
+        uses: actions/upload-artifact@v4
+        with:
+          name: atlas-hub-build
+          path: bin/*
+          if-no-files-found: error
+
+  publish:
+    if: github.event_name == 'push' && github.ref_type == 'tag'
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Download build
+        uses: actions/download-artifact@v4
+        with:
+          name: atlas-hub-build
+          path: bin
+
+      - name: Publish versioned prerelease
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh release create "$GITHUB_REF_NAME" bin/* \
+            --repo "$GITHUB_REPOSITORY" \
+            --verify-tag --prerelease --latest=false \
+            --title "$GITHUB_REF_NAME" \
+            --notes "UiFramework atlas-hub build from commit $GITHUB_SHA. Build metadata and the Rust/Oxide reference snapshot are attached."

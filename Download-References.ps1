@@ -1,5 +1,8 @@
 param(
-    [switch]$Linux
+    [switch]$Linux,
+    [string]$RustManifest = '',
+    [string]$OxideUrl = '',
+    [string]$OxideSha256 = ''
 )
 
 $ErrorActionPreference = 'Stop'
@@ -26,14 +29,35 @@ try
     Expand-Archive -LiteralPath "$depotDir/DepotDownloader.zip" -DestinationPath $depotDir
     $fileListPath = Join-Path $rustDir 'filelist.txt'
     'regex:RustDedicated_Data/Managed/.*\.dll' | Set-Content -LiteralPath $fileListPath
-    & "$depotDir/DepotDownloader.exe" -app 258550 -depot $depot -filelist $fileListPath -dir $rustDir
+    $arguments = @('-app', '258550', '-depot', $depot, '-filelist', $fileListPath, '-dir', $rustDir)
+    if ($RustManifest)
+    {
+        if ($RustManifest -notmatch '^\d+$')
+        {
+            throw 'Invalid Rust depot manifest.'
+        }
+        $arguments += @('-manifest', $RustManifest)
+    }
+    & "$depotDir/DepotDownloader.exe" @arguments
     if ($LASTEXITCODE -ne 0)
     {
         throw "DepotDownloader failed with exit code $LASTEXITCODE."
     }
 
     $managedDir = Join-Path $rustDir 'RustDedicated_Data/Managed'
-    Invoke-WebRequest -Uri "https://github.com/OxideMod/Oxide.Rust/releases/latest/download/$oxideAsset" -OutFile "$oxideDir/Oxide.Rust.zip"
+    if (-not $OxideUrl)
+    {
+        $OxideUrl = "https://github.com/OxideMod/Oxide.Rust/releases/latest/download/$oxideAsset"
+    }
+    if ($OxideUrl -notmatch '^https://github\.com/OxideMod/Oxide\.Rust/releases/(latest/download|download/[^/]+)/Oxide\.Rust(-linux)?\.zip$')
+    {
+        throw 'Invalid Oxide release URL.'
+    }
+    Invoke-WebRequest -Uri $OxideUrl -OutFile "$oxideDir/Oxide.Rust.zip"
+    if ($OxideSha256 -and ($OxideSha256 -notmatch '^[a-fA-F0-9]{64}$' -or (Get-FileHash "$oxideDir/Oxide.Rust.zip").Hash -ne $OxideSha256))
+    {
+        throw 'Oxide reference archive SHA256 mismatch.'
+    }
     Expand-Archive -LiteralPath "$oxideDir/Oxide.Rust.zip" -DestinationPath $oxideDir
     Copy-Item -Path "$oxideDir/RustDedicated_Data/Managed/*.dll" -Destination $managedDir -Force
     if (-not (Test-Path -LiteralPath (Join-Path $managedDir $steamworksAssembly) -PathType Leaf))

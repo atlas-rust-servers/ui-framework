@@ -6,10 +6,10 @@ namespace Oxide.Ext.UiFramework.Animation;
 public class TimeDelayAnimation : BasePoolable, ITimedDelayAnimation, IAnimationComponent
 {
     public float Delay { get; set; }
-    public bool IsDelayed => Owner.Time.CurrentTime - _startTime < Delay;
+    public bool IsDelayed => Owner.Time.CurrentTimeAsDouble - _startTime < Delay;
     public IAnimation Owner { get; private set; }
 
-    private float _startTime;
+    private double _startTime;
     
     public static TimeDelayAnimation Create(IUiFrameworkPlugin plugin, IAnimation owner, float delay) => plugin.PluginPool.Get<TimeDelayAnimation>().Init(owner, delay); 
     
@@ -20,7 +20,10 @@ public class TimeDelayAnimation : BasePoolable, ITimedDelayAnimation, IAnimation
         return this;
     }
     
-    public void OnStarted() => _startTime = Owner.Time.CurrentTime;
+    public void OnStarted()
+    {
+        _startTime = Owner.Time.CurrentTimeAsDouble;
+    }
     public void OnTick() { }
 
     protected override void EnterPool()

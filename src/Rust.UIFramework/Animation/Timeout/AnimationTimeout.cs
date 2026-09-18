@@ -6,11 +6,11 @@ public class AnimationTimeout : BasePoolable, IAnimationTimeout, IAnimationCompo
 {
     public float Timeout { get; set; }
     public AnimationTimeoutAction Action { get; set; } = AnimationTimeoutAction.CancelAnimation;
-    public bool HasTimedOut => Owner.Time.CurrentTime - _startTime >= Timeout;
+    public bool HasTimedOut => Owner.Time.CurrentTimeAsDouble - _startTime >= Timeout;
     
     public IAnimation Owner { get; private set; }
     
-    private float _startTime;
+    private double _startTime;
     
     public static AnimationTimeout Create(IAnimation owner, float timeout, AnimationTimeoutAction action) => owner.Plugin.PluginPool.Get<AnimationTimeout>().Init(owner, timeout, action);
     
@@ -26,7 +26,7 @@ public class AnimationTimeout : BasePoolable, IAnimationTimeout, IAnimationCompo
 
     public void OnStarted()
     {
-        _startTime = Owner.Time.CurrentTime;
+        _startTime = Owner.Time.CurrentTimeAsDouble;
     }
     
     protected override void EnterPool()

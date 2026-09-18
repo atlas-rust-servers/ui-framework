@@ -5,7 +5,8 @@ namespace Oxide.Ext.UiFramework.Animation;
 
 public class AnimationTime : IAnimationTime, ISingleton
 {
-    public float CurrentTime { get; private set; }
+    public float CurrentTime => (float)CurrentTimeAsDouble;
+    public double CurrentTimeAsDouble { get; private set; }
     public float DeltaTime { get; private set; }
     public int CurrentFrame { get; private set; }
     public float UpdateRate => _config.UpdateRate;
@@ -15,10 +16,10 @@ public class AnimationTime : IAnimationTime, ISingleton
 
     private AnimationTime() { }
     
-    internal void UpdateTime(float currentTime, bool wasPaused)
+    internal void UpdateTime(double currentTime, bool wasPaused)
     {
-        DeltaTime = wasPaused ? float.Epsilon : currentTime - CurrentTime;
-        CurrentTime = currentTime;
+        DeltaTime = wasPaused ? float.Epsilon : (float)(currentTime - CurrentTimeAsDouble);
+        CurrentTimeAsDouble = currentTime;
         ++CurrentFrame;
     }
 }

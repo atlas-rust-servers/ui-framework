@@ -3,6 +3,7 @@
 public interface IAnimationTime
 {
     float CurrentTime { get; }
+    double CurrentTimeAsDouble => CurrentTime;
     float DeltaTime { get; }
     int CurrentFrame { get; }
     float UpdateRate { get; }

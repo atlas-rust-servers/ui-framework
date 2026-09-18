@@ -85,13 +85,13 @@ internal class AnimationHandler : ISingleton
     
     internal float TickAnimation()
     {
-        float startTime = Time.realtimeSinceStartup;
+        double startTime = Time.realtimeSinceStartupAsDouble;
         Singleton<AnimationTime>.Instance.UpdateTime(startTime, _isPaused);
         _logger.Debug("Processing {0} animations. Delta: {1:0.0000} seconds", Singleton<AnimationData>.Instance.Count, Singleton<AnimationTime>.Instance.DeltaTime);
         ProcessAnimations();
         _logger.Debug("Processed animations. {0} remaining", Singleton<AnimationData>.Instance.Count);
-        float endTime = Time.realtimeSinceStartup;
-        return endTime - startTime;
+        double endTime = Time.realtimeSinceStartupAsDouble;
+        return (float)(endTime - startTime);
     }
 
     internal void DelayTillNextAnimationFrame(float timeTaken)

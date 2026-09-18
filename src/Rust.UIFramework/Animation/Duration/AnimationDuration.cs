@@ -5,11 +5,11 @@ namespace Oxide.Ext.UiFramework.Animation;
 
 public class AnimationDuration : BasePoolable, IAnimationDuration, IAnimationComponent
 {
-    public float ElapsedPercentage => Mathf.Clamp01((Owner.Time.CurrentTime - _startTime) / Duration);
+    public float ElapsedPercentage => Mathf.Clamp01((float)((Owner.Time.CurrentTimeAsDouble - _startTime) / Duration));
     public float Duration { get; set; }
     public IAnimation Owner { get; private set; }
 
-    private float _startTime;
+    private double _startTime;
     
     public static AnimationDuration Create(IAnimation owner, float duration) => owner.Plugin.PluginPool.Get<AnimationDuration>().Init(owner, duration);
 
@@ -22,14 +22,14 @@ public class AnimationDuration : BasePoolable, IAnimationDuration, IAnimationCom
     
     public void OnStarted()
     {
-        _startTime = Owner.Time.CurrentTime;
+        _startTime = Owner.Time.CurrentTimeAsDouble;
     }
     
     public void OnTick() { }
 
     public void Restart(float delay = 0f)
     {
-        _startTime = Owner.Time.CurrentTime + delay;
+        _startTime = Owner.Time.CurrentTimeAsDouble + delay;
     }
 
     protected override void EnterPool()

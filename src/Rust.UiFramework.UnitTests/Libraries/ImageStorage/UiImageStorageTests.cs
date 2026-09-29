@@ -46,25 +46,28 @@ public class UiImageStorageTests
     [Fact]
     public async Task UiImageStorage_RegisterUrlImage_Success_Callbacks()
     {
-        // Arrange
         UiImageStorage storage = Singleton<UiImageStorage>.Instance;
-
-        //Act
         IDownloadImageRequest request = storage.RegisterImage(UnitTestHelpers.Plugin, UiImageDefaults.NotFound);
         bool success = false;
         bool failed = false;
-        request.OnSuccess(_ =>
+        TaskCompletionSource completion = new(TaskCreationOptions.RunContinuationsAsynchronously);
+
+        void OnSuccess(RegisterSuccessEventArgs args)
         {
             success = true;
-        });
-        request.OnFailed(_ =>
+            completion.TrySetResult();
+        }
+
+        void OnFailed(IRegisterImageException exception)
         {
             failed = true;
-        });
-        CancellationTokenSource cts = new(TimeSpan.FromSeconds(5));
-        await WaitForCompletion(request, cts.Token);
+            completion.TrySetResult();
+        }
 
-        // Assert
+        request.OnSuccess(OnSuccess);
+        request.OnFailed(OnFailed);
+        await completion.Task.WaitAsync(TimeSpan.FromSeconds(5), TestContext.Current.CancellationToken);
+
         Assert.True(success);
         Assert.False(failed);
     }
@@ -72,25 +75,28 @@ public class UiImageStorageTests
     [Fact]
     public async Task UiImageStorage_RegisterUrlImage_Failed_Callbacks()
     {
-        // Arrange
         UiImageStorage storage = Singleton<UiImageStorage>.Instance;
-
-        //Act
         IDownloadImageRequest request = storage.RegisterImage(UnitTestHelpers.Plugin, $"{UiImageDefaults.NotFound}123");
         bool success = false;
         bool failed = false;
-        request.OnSuccess(_ =>
+        TaskCompletionSource completion = new(TaskCreationOptions.RunContinuationsAsynchronously);
+
+        void OnSuccess(RegisterSuccessEventArgs args)
         {
             success = true;
-        });
-        request.OnFailed(_ =>
+            completion.TrySetResult();
+        }
+
+        void OnFailed(IRegisterImageException exception)
         {
             failed = true;
-        });
-        CancellationTokenSource cts = new(TimeSpan.FromSeconds(5));
-        await WaitForCompletion(request, cts.Token);
+            completion.TrySetResult();
+        }
 
-        // Assert
+        request.OnSuccess(OnSuccess);
+        request.OnFailed(OnFailed);
+        await completion.Task.WaitAsync(TimeSpan.FromSeconds(5), TestContext.Current.CancellationToken);
+
         Assert.False(success);
         Assert.True(failed);
     }

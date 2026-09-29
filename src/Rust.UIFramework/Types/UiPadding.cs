@@ -12,7 +12,7 @@ namespace Oxide.Ext.UiFramework.Types;
 public readonly record struct UiPadding(float Left, float Bottom, float Right, float Top)
 {
     public static readonly UiPadding None = new(0);
-    
+
     public bool IsSingleValue => Mathf.Approximately(Left, Bottom) && Mathf.Approximately(Left, Right) && Mathf.Approximately(Left, Top);
 
     public UiPadding(float horizontal, float vertical) : this(horizontal, vertical, horizontal, vertical) {}
@@ -32,7 +32,7 @@ public readonly record struct UiPadding(float Left, float Bottom, float Right, f
     public static bool TryParse(ReadOnlySpan<char> input, out UiPadding padding, ReadOnlySpan<char> token = " ")
     {
         bool success = input.TryParseFourFloats(token, out (float left, float top, float right, float bottom) parsed);
-        padding = success ? new UiPadding(parsed.left, parsed.top, parsed.right, parsed.bottom) : default;
+        padding = success ? new UiPadding(parsed.left, parsed.bottom, parsed.right, parsed.top) : default;
         return success;
     }
     
@@ -40,11 +40,14 @@ public readonly record struct UiPadding(float Left, float Bottom, float Right, f
     {
         return new UiPadding(
             Mathf.LerpUnclamped(start.Left, end.Left, progress), 
-            Mathf.LerpUnclamped(start.Top, end.Top, progress), 
+            Mathf.LerpUnclamped(start.Bottom, end.Bottom, progress),
             Mathf.LerpUnclamped(start.Right, end.Right, progress), 
-            Mathf.LerpUnclamped(start.Bottom, end.Bottom, progress));
+            Mathf.LerpUnclamped(start.Top, end.Top, progress));
     }
-    
+
+    public static implicit operator UiOffset(in UiPadding padding) => padding.ToOffset();
+    public static implicit operator UiPosition(in UiPadding padding) => padding.ToPosition();
+
 #pragma warning disable EPS05
     public static UiPadding Lerp(UiPadding start, UiPadding end, float progress) => Lerp(in start, in end, progress);
 #pragma warning restore EPS05

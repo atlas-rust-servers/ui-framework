@@ -60,22 +60,40 @@ public partial class UiScrollView : BaseUiComponent
 
     public void UpdateContentTransform(in UiPosition? position = null, in UiOffset? offset = null, in Vector2? pivot = null) => ScrollView.UpdateContentTransform(position, offset, pivot);
 
+    public (ScrollbarComponent horizontal, ScrollbarComponent vertical) AddScrollBars(bool invert, bool autoHide, string handleSprite, string trackSprite, float size,
+        UiColor? handleColor, UiColor? highlightColor, UiColor? pressedColor, UiColor? trackColor)
+    {
+        return AddScrollBars(invert, autoHide, handleSprite, trackSprite, size, handleColor, highlightColor, pressedColor, trackColor, JsonDefaults.ScrollBar.FadeDuration);
+    }
+
     public (ScrollbarComponent horizontal, ScrollbarComponent vertical) AddScrollBars(bool invert = false, bool autoHide = false, string handleSprite = null, string trackSprite = null, float size = JsonDefaults.ScrollBar.Size,
-        UiColor? handleColor = null, UiColor? highlightColor = null, UiColor? pressedColor = null, UiColor? trackColor = null)
+        UiColor? handleColor = null, UiColor? highlightColor = null, UiColor? pressedColor = null, UiColor? trackColor = null, float fadeDuration = JsonDefaults.ScrollBar.FadeDuration)
     {
-        return ScrollView.AddScrollBars(invert, autoHide, handleSprite, trackSprite, size, handleColor, highlightColor, pressedColor, trackColor);
+        return ScrollView.AddScrollBars(invert, autoHide, handleSprite, trackSprite, size, handleColor, highlightColor, pressedColor, trackColor, fadeDuration);
     }
     
-    public ScrollbarComponent AddHorizontalScrollBar(bool invert = false, bool autoHide = false, string handleSprite = null, string trackSprite = null, float size = JsonDefaults.ScrollBar.Size, 
-        UiColor? handleColor = null, UiColor? highlightColor = null, UiColor? pressedColor = null, UiColor? trackColor = null)
+    public ScrollbarComponent AddHorizontalScrollBar(bool invert, bool autoHide, string handleSprite, string trackSprite, float size,
+        UiColor? handleColor, UiColor? highlightColor, UiColor? pressedColor, UiColor? trackColor)
     {
-        return ScrollView.AddHorizontalScrollBar(invert, autoHide, handleSprite, trackSprite, size, handleColor, highlightColor, pressedColor, trackColor);
+        return AddHorizontalScrollBar(invert, autoHide, handleSprite, trackSprite, size, handleColor, highlightColor, pressedColor, trackColor, JsonDefaults.ScrollBar.FadeDuration);
+    }
+
+    public ScrollbarComponent AddHorizontalScrollBar(bool invert = false, bool autoHide = false, string handleSprite = null, string trackSprite = null, float size = JsonDefaults.ScrollBar.Size,
+        UiColor? handleColor = null, UiColor? highlightColor = null, UiColor? pressedColor = null, UiColor? trackColor = null, float fadeDuration = JsonDefaults.ScrollBar.FadeDuration)
+    {
+        return ScrollView.AddHorizontalScrollBar(invert, autoHide, handleSprite, trackSprite, size, handleColor, highlightColor, pressedColor, trackColor, fadeDuration);
     }
     
-    public ScrollbarComponent AddVerticalScrollBar(bool invert = false, bool autoHide = false, string handleSprite = null, string trackSprite = null, float size = JsonDefaults.ScrollBar.Size, 
-        UiColor? handleColor = null, UiColor? highlightColor = null, UiColor? pressedColor = null, UiColor? trackColor = null)
+    public ScrollbarComponent AddVerticalScrollBar(bool invert, bool autoHide, string handleSprite, string trackSprite, float size,
+        UiColor? handleColor, UiColor? highlightColor, UiColor? pressedColor, UiColor? trackColor)
     {
-        return ScrollView.AddVerticalScrollBar(invert, autoHide, handleSprite, trackSprite, size, handleColor, highlightColor, pressedColor, trackColor);
+        return AddVerticalScrollBar(invert, autoHide, handleSprite, trackSprite, size, handleColor, highlightColor, pressedColor, trackColor, JsonDefaults.ScrollBar.FadeDuration);
+    }
+
+    public ScrollbarComponent AddVerticalScrollBar(bool invert = false, bool autoHide = false, string handleSprite = null, string trackSprite = null, float size = JsonDefaults.ScrollBar.Size,
+        UiColor? handleColor = null, UiColor? highlightColor = null, UiColor? pressedColor = null, UiColor? trackColor = null, float fadeDuration = JsonDefaults.ScrollBar.FadeDuration)
+    {
+        return ScrollView.AddVerticalScrollBar(invert, autoHide, handleSprite, trackSprite, size, handleColor, highlightColor, pressedColor, trackColor, fadeDuration);
     }
 
     public UiScrollView SetHorizontalScrollbar()

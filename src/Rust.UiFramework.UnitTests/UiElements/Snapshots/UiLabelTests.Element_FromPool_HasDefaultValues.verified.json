@@ -1,9 +1,11 @@
 ﻿{
   "Active": true,
+  "AllowRaycast": true,
   "Color": "#FFFFFFFF",
   "Enabled": true,
   "FontSize": 14,
   "Text": {
+    "AllowRaycast": true,
     "Color": "#FFFFFFFF",
     "ComponentType": "Text",
     "Enabled": true,

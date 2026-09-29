@@ -20,7 +20,7 @@ public class PoolResetAnalyzer : DiagnosticAnalyzer
         "Poolable object member not reset",
         "Member '{0}' is not reset or disposed in any lifecycle method (EnterPool, LeavePool, OnReset)",
         "Usage",
-        DiagnosticSeverity.Warning,
+        DiagnosticSeverity.Error,
         isEnabledByDefault: true);
 
     public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => [Rule];
@@ -173,7 +173,7 @@ public class PoolResetAnalyzer : DiagnosticAnalyzer
         };
     }
 
-    private static bool IsCleanupMethod(string name) => name.Contains("Dispose") || name.Contains("Free") || name.Contains("TryReturnToPool");
+    private static bool IsCleanupMethod(string name) => name == "Clear" || name.Contains("Dispose") || name.Contains("Free") || name.Contains("TryReturnToPool");
     private static bool IgnoredType(ITypeSymbol symbol) => symbol.HasInterface("IComponent") || InheritsFrom(symbol, "BaseUiComponent") || InheritsFrom(symbol, "BaseUiControl");
 
     private static bool InheritsFrom(ITypeSymbol symbol, string baseName)

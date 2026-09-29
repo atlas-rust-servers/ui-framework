@@ -28,6 +28,7 @@ internal class AnimationHandler : ISingleton
     {
         Thread thread = new(AnimationLoop)
         {
+            Name = $"{UiFrameworkExtension.Instance.Name} {nameof(AnimationHandler)}",
             IsBackground = true
         };
         thread.Start();
@@ -212,12 +213,12 @@ internal class AnimationHandler : ISingleton
     {
         try
         {
-            await UniTask.SwitchToMainThread();
+            await UniTaskExt.SwitchToMainThread();
             SendAnimations(writer, send);
         }
         finally
         {
-            await UniTask.SwitchToThreadPool();
+            await UniTaskExt.SwitchToThreadPool();
             writer.TryDispose();
         }
     }

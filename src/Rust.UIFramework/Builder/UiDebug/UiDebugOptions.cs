@@ -6,7 +6,7 @@ public readonly struct UiDebugOptions(string identifier, UiDebugModes modes = Ui
 {
     public readonly string Identifier = identifier;
     public readonly UiDebugModes Mode = modes;
-    
+
     [Pure]
     public UiDebugOptions WithModes(UiDebugModes mode) => new(Identifier, mode);
     

@@ -1,6 +1,8 @@
 ﻿{
   "Active": true,
+  "AllowRaycast": true,
   "Avatar": {
+    "AllowRaycast": true,
     "AvatarType": "Medium",
     "ComponentType": "PlayerAvatar",
     "Enabled": true,

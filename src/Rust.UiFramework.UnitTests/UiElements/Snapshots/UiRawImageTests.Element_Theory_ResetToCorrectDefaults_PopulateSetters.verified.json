@@ -1,7 +1,9 @@
 ﻿{
   "Active": true,
+  "AllowRaycast": true,
   "Enabled": true,
   "RawImage": {
+    "AllowRaycast": true,
     "ComponentType": "RawImage",
     "Enabled": true,
     "Type": "UnityEngine.UI.RawImage"

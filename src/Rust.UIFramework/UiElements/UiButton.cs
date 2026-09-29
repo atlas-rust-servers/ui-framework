@@ -36,6 +36,8 @@ public partial class UiButton : BaseUiComponent, IImageType<UiButton>, ISprite<U
     public partial string Material { get; set; }
     public partial float FadeIn { get; set; }
     public partial UiColor Color { get; set; }
+    public partial bool Interactable { get; set; }
+    public partial bool AllowRaycast { get; set; }
     
     public readonly ButtonComponent Button;
     public ColorBlockComponent ColorBlock => Button.ColorBlock;
@@ -82,7 +84,12 @@ public partial class UiButton : BaseUiComponent, IImageType<UiButton>, ISprite<U
     
     public ColorBlockComponent AddColorBlock(in UiColor? highlightColor = null, in UiColor? pressedColor = null, in UiColor? selectedColor = null, in float? colorMultiplier = null, in float? fadeDuration = null)
     {
-        return Button.AddColorBlock(highlightColor, pressedColor, selectedColor, colorMultiplier, fadeDuration);
+        return AddColorBlock(highlightColor, pressedColor, selectedColor, null, colorMultiplier, fadeDuration);
+    }
+
+    public ColorBlockComponent AddColorBlock(in UiColor? highlightColor, in UiColor? pressedColor, in UiColor? selectedColor, in UiColor? disabledColor, in float? colorMultiplier, in float? fadeDuration)
+    {
+        return Button.AddColorBlock(highlightColor, pressedColor, selectedColor, disabledColor, colorMultiplier, fadeDuration);
     }
 
     public ColorBlockComponent GetOrAddColorBlock() => Button.GetOrCreateColorBlock();

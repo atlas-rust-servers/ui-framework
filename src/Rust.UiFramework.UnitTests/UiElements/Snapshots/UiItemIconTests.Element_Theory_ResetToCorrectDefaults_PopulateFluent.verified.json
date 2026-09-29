@@ -1,12 +1,15 @@
 ﻿{
   "Active": true,
+  "AllowRaycast": true,
   "Color": "#FFFFFFFF",
   "Enabled": true,
   "Icon": {
+    "AllowRaycast": true,
     "Color": "#FFFFFFFF",
     "ComponentType": "ItemIcon",
     "Enabled": true,
     "FillCenter": true,
+    "PixelPerUnitMultiplier": 1.0,
     "Type": "UnityEngine.UI.Image"
   }
 }

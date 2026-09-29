@@ -1,6 +1,8 @@
 ﻿{
   "Active": true,
+  "AllowRaycast": true,
   "Avatar": {
+    "AllowRaycast": true,
     "Color": "#808080FF",
     "ComponentType": "PlayerAvatar",
     "Enabled": true,

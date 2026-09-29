@@ -241,6 +241,15 @@ public sealed partial class JsonFrameworkWriter : BasePoolable
             WriteCommandValue(value.Value);
         }
     }
+
+    public void AddField(Utf8String name, Tracked<UiPadding> value, SerializeMode mode, UiPaddingFormat format)
+    {
+        if (value.ShouldSerialize(mode))
+        {
+            WritePropertyName(name);
+            WriteValue(value.Value, format);
+        }
+    }
     #endregion
         
     #region Writing
@@ -383,6 +392,26 @@ public sealed partial class JsonFrameworkWriter : BasePoolable
     
     public void WriteValue(in UiPadding padding)
     {
+        WriteValue(padding, UiPaddingFormat.LTRB);
+    }
+
+    public void WriteValue(in UiPadding padding, UiPaddingFormat format)
+    {
+        switch (format)
+        {
+           case UiPaddingFormat.LTRB:
+               WriteValueLTRB(padding);
+               break;
+           case UiPaddingFormat.LBRT:
+               WriteValueLBRT(padding);
+               break;
+           default:
+               throw new ArgumentOutOfRangeException(nameof(format), format, null);
+        }
+    }
+
+    private void WriteValueLTRB(in UiPadding padding)
+    {
         _writer.WriteChar(QuoteChar);
         _writer.Write(padding.Left);
         _writer.WriteChar(Space);
@@ -391,6 +420,19 @@ public sealed partial class JsonFrameworkWriter : BasePoolable
         _writer.Write(padding.Right);
         _writer.WriteChar(Space);
         _writer.Write(padding.Bottom);
+        _writer.WriteChar(QuoteChar);
+    }
+
+    private void WriteValueLBRT(in UiPadding padding)
+    {
+        _writer.WriteChar(QuoteChar);
+        _writer.Write(padding.Left);
+        _writer.WriteChar(Space);
+        _writer.Write(padding.Bottom);
+        _writer.WriteChar(Space);
+        _writer.Write(padding.Right);
+        _writer.WriteChar(Space);
+        _writer.Write(padding.Top);
         _writer.WriteChar(QuoteChar);
     }
     
@@ -404,6 +446,15 @@ public sealed partial class JsonFrameworkWriter : BasePoolable
         _writer.Write(border.Right);
         _writer.WriteChar(Space);
         _writer.Write(border.Top);
+        _writer.WriteChar(QuoteChar);
+    }
+
+    public void WriteValue(UiCanvasGroupFade fade)
+    {
+        _writer.WriteChar(QuoteChar);
+        _writer.Write(fade.ToAlpha);
+        _writer.WriteChar(Space);
+        _writer.Write(fade.Duration);
         _writer.WriteChar(QuoteChar);
     }
     

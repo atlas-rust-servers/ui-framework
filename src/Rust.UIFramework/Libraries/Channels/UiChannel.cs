@@ -50,25 +50,28 @@ public sealed class UiChannel<T> : IUiChannel where T : IBaseUiChannelObject
             int workersToStart = Math.Min(_options.MaxConcurrency - _activeWorkerCount, _queue.Count);
             for (int i = 0; i < workersToStart; i++)
             {
-                UniTask.RunOnThreadPool(Run, false, _cancellationTokenSource.Token);
                 Interlocked.Increment(ref _activeWorkerCount);
                 _logger.Debug("Started new worker task. Active workers: {0}/{1}", _activeWorkerCount, _options.MaxConcurrency);
+                Run().Forget();
             }
         }
     }
 
     private bool CanStartNewWorkers()
     {
-        // Only start new workers if we're below the maximum and queue has items
-        return _activeWorkerCount < _options.MaxConcurrency && !_queue.IsEmpty;
+        return !_cancellationTokenSource.IsCancellationRequested && _activeWorkerCount < _options.MaxConcurrency && !_queue.IsEmpty;
     }
 
     private async UniTaskVoid Run()
     {
-        if (!_options.EnableMultithreading)
+        if (_options.EnableMultithreading)
+        {
+            await UniTaskExt.SwitchToThreadPool();
+        }
+        else
         {
 #if SERVER
-            await UniTask.SwitchToMainThread();
+            await UniTaskExt.SwitchToMainThread();
 #endif
         }
 
@@ -82,9 +85,6 @@ public sealed class UiChannel<T> : IUiChannel where T : IBaseUiChannelObject
         }
         finally
         {
-            // Free the worker slot before anything that can throw, then look at the queue again.
-            // An item enqueued between the failed TryDequeue and the decrement found the channel at
-            // max concurrency and started no worker, so without this the queue would never be drained.
             Interlocked.Decrement(ref _activeWorkerCount);
             _logger.Debug("Worker task shutting down due to empty queue. Active workers: {0}", _activeWorkerCount);
             StartWorkers();

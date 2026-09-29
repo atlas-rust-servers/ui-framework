@@ -161,6 +161,7 @@ public class SymbolCache
         public readonly FrameworkSymbolCache UiBorderWidth = new("Types.UiBorderWidth");
         public readonly FrameworkSymbolCache UiPadding = new("Types.UiPadding");
         public readonly FrameworkSymbolCache UiColor = new("Colors.UiColor");
+        public readonly FrameworkSymbolCache UiCanvasGroupFade = new("Types.UiCanvasGroupFade");
 
         public TypesCache(Compilation compilation)
         {
@@ -177,11 +178,11 @@ public class SymbolCache
             InitializeSymbols(this, compilation);
         }
     }
-    
+
     public class UniTaskCache
     {
         private const string BaseNamespace = "Cysharp.Threading.Tasks";
-        
+
         public readonly DotNetSymbolCache UniTask = new($"{BaseNamespace}.UniTask");
         public readonly DotNetSymbolCache UniTaskVoid = new($"{BaseNamespace}.UniTaskVoid");
 

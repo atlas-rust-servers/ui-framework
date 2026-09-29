@@ -1,6 +1,7 @@
 ﻿{
   "ColorMultiplier": 1.0,
   "ComponentType": "ColorBlock",
+  "DisabledColor": "#808080FF",
   "FadeDuration": 0.1,
   "HighlightedColor": "#F5F5F5FF",
   "PressedColor": "#C8C8C8FF",

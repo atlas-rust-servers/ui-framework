@@ -1,6 +1,8 @@
 ﻿{
   "Active": true,
+  "AllowRaycast": true,
   "Card": {
+    "AllowRaycast": true,
     "CardType": "SmallTransparent",
     "Color": "#808080FF",
     "ComponentType": "PlayingCard",

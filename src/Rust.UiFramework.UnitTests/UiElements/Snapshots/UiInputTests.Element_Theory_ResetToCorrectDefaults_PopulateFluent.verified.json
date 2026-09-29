@@ -6,18 +6,21 @@
   "FontSize": 14,
   "HudNeedsKeyboard": false,
   "Input": {
+    "AllowRaycast": true,
     "AutoFocus": false,
     "Color": "#FFFFFFFF",
     "ComponentType": "Input",
     "Enabled": true,
     "FontSize": 14,
     "HudNeedsKeyboard": false,
+    "Interactable": true,
     "IsPassword": false,
     "NeedsKeyboard": false,
     "ReadOnly": false,
     "Type": "UnityEngine.UI.InputField"
   },
   "InputNeedsKeyboard": false,
+  "Interactable": true,
   "IsPassword": false,
   "ReadOnly": false
 }

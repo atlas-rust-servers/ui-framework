@@ -13,7 +13,6 @@ public class UiPooledArray<T> : BasePoolable, IList<T>, IReadOnlyList<T>
     public int Count => _length < 0 ? _array.Length : _length;
     public bool IsReadOnly => _array.IsReadOnly;
     private int _length = -1;
-    private static readonly bool ClearArray = !Type.IsUnmanaged<T>();
     
     internal static readonly UiPooledArray<T> Empty = new(0);
 
@@ -63,9 +62,6 @@ public class UiPooledArray<T> : BasePoolable, IList<T>, IReadOnlyList<T>
     protected override void EnterPool()
     {
         _length = -1;
-        if (ClearArray)
-        {
-            _array.Clear();
-        }
+        _array.Clear();
     }
 }

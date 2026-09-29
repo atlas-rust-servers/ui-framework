@@ -17,7 +17,15 @@ public class PieMenuBuilder : BasePieMenuBuilder
 
     public IUiFrameworkPlugin Plugin { get; private set; }
 
-    public static PieMenuBuilder Create(IUiFrameworkCorePlugin plugin) => plugin.PluginPool.Get<PieMenuBuilder>().Init(plugin);
+    public static PieMenuBuilder Create(IUiFrameworkCorePlugin plugin)
+    {
+        return Create((IUiFrameworkPlugin)plugin);
+    }
+
+    public static PieMenuBuilder Create(IUiFrameworkPlugin plugin)
+    {
+        return plugin.PluginPool.Get<PieMenuBuilder>().Init(plugin);
+    }
 
     private PieMenuBuilder Init(IUiFrameworkPlugin plugin)
     {

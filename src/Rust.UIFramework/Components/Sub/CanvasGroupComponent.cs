@@ -28,7 +28,7 @@ public partial class CanvasGroupComponent : SubComponent
     protected override void WriteComponentFields(JsonFrameworkWriter writer, SerializeMode mode)
     {
         writer.AddField(JsonDefaults.CanvasGroup.AlphaName, AlphaTracked, mode);
-        writer.AddField(JsonDefaults.Common.AllowRaycastName, AllowRaycastTracked, mode);
+        writer.AddField(JsonDefaults.CanvasGroup.AllowRaycastName, AllowRaycastTracked, mode);
         writer.AddField(JsonDefaults.Common.InteractableName, InteractableTracked, mode);
         writer.AddField(JsonDefaults.CanvasGroup.FadeName, FadeTracked, mode);
     }

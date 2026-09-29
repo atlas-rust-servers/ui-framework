@@ -434,6 +434,8 @@ public static class JsonDefaults
     {
         public static readonly Utf8String Type = "UnityEngine.UI.CanvasGroup";
 
+        public static readonly Utf8String AllowRaycastName = "blocksRaycasts";
+
         public static readonly Utf8String AlphaName = "alpha";
         public const float Alpha = 1f;
 

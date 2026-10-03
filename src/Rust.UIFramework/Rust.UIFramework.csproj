@@ -41,6 +41,10 @@
       <Optimize>true</Optimize>
     </PropertyGroup>
     
+    <PropertyGroup Condition="'$(SharedReleaseBuild)' == 'true' and '$(RustFramework)' == 'carbon'">
+        <AssemblyName>Carbon.Ext.UiFramework</AssemblyName>
+    </PropertyGroup>
+
     <ItemGroup>
       <Reference Include="Assembly-CSharp">
         <HintPath>..\References\Assembly-CSharp.dll</HintPath>
@@ -48,10 +52,10 @@
       <Reference Include="Assembly-CSharp-firstpass">
         <HintPath>..\References\Assembly-CSharp-firstpass.dll</HintPath>
       </Reference>
-      <Reference Include="Carbon.Common" Condition=" '$(Platform)' == 'Carbon'">
+      <Reference Include="Carbon.Common" Condition=" ('$(Platform)' == 'Carbon' or '$(RustFramework)' == 'carbon')">
         <HintPath>..\References\Carbon.Common.dll</HintPath>
       </Reference>
-      <Reference Include="Carbon.SDK" Condition=" '$(Platform)' == 'Carbon'">
+      <Reference Include="Carbon.SDK" Condition=" ('$(Platform)' == 'Carbon' or '$(RustFramework)' == 'carbon')">
         <HintPath>..\References\Carbon.SDK.dll</HintPath>
       </Reference>
       <Reference Include="Facepunch.Console">
@@ -69,25 +73,25 @@
       <Reference Include="mscorlib">
         <HintPath>..\References\mscorlib.dll</HintPath>
       </Reference>
-      <Reference Include="Newtonsoft.Json" Condition=" '$(Platform)' == 'Carbon'">
+      <Reference Include="Newtonsoft.Json" Condition=" ('$(Platform)' == 'Carbon' or '$(RustFramework)' == 'carbon')">
         <HintPath>..\References\Newtonsoft.Json.dll</HintPath>
       </Reference>
-      <Reference Include="Oxide.Core" Condition=" '$(Platform)' == 'Oxide'">
+      <Reference Include="Oxide.Core" Condition=" ('$(Platform)' == 'Oxide' or '$(RustFramework)' == 'oxide')">
         <HintPath>..\References\Oxide.Core.dll</HintPath>
       </Reference>
-      <Reference Include="Oxide.CSharp" Condition=" '$(Platform)' == 'Oxide'">
+      <Reference Include="Oxide.CSharp" Condition=" ('$(Platform)' == 'Oxide' or '$(RustFramework)' == 'oxide')">
         <HintPath>..\References\Oxide.CSharp.dll</HintPath>
       </Reference>
-      <Reference Include="Oxide.References" Condition=" '$(Platform)' == 'Oxide'">
+      <Reference Include="Oxide.References" Condition=" ('$(Platform)' == 'Oxide' or '$(RustFramework)' == 'oxide')">
         <HintPath>..\References\Oxide.References.dll</HintPath>
       </Reference>
-      <Reference Include="Oxide.Rust" Condition=" '$(Platform)' == 'Oxide'">
+      <Reference Include="Oxide.Rust" Condition=" ('$(Platform)' == 'Oxide' or '$(RustFramework)' == 'oxide')">
         <HintPath>..\References\Oxide.Rust.dll</HintPath>
       </Reference>
-      <Reference Include="Oxide.SQLite" Condition=" '$(Platform)' == 'Oxide'">
+      <Reference Include="Oxide.SQLite" Condition=" ('$(Platform)' == 'Oxide' or '$(RustFramework)' == 'oxide')">
         <HintPath>..\References\Oxide.SQLite.dll</HintPath>
       </Reference>
-      <Reference Include="Oxide.Unity" Condition=" '$(Platform)' == 'Oxide'">
+      <Reference Include="Oxide.Unity" Condition=" ('$(Platform)' == 'Oxide' or '$(RustFramework)' == 'oxide')">
         <HintPath>..\References\Oxide.Unity.dll</HintPath>
       </Reference>
       <Reference Include="Rust.Data">
@@ -141,5 +145,6 @@
             <_Parameter1>Rust.UiFramework.Benchmarks</_Parameter1>
         </AssemblyAttribute>
     </ItemGroup>
+
 
 </Project>

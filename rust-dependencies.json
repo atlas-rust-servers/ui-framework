@@ -1,0 +1,7 @@
+{
+  "outputDirectory": "./src/dependencies",
+  "publicReleases": [],
+  "privateReleases": [],
+  "githubNuget": [],
+  "deleteDlls": []
+}

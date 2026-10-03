@@ -354,3 +354,4 @@ MigrationBackup/
 **/.idea/*
 
 src/References/*.dll
+/src/dependencies/

@@ -66,6 +66,7 @@ public class UiFrameworkExtension : Extension
     {
         string name = Name.ToUpper();
         yield return $"{name}_EXT";
+        yield return $"{name}_EXT_ATLAS";
         for (int i = 0; i <= Version.Minor; i++)
         {
             yield return $"{name}_EXT_{Version.Major}_{i}";

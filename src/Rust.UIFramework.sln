@@ -6,8 +6,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rust.UiFramework.Benchmarks
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rust.UiFramework.Plugins", "Rust.UiFramework.Plugins\Rust.UiFramework.Plugins.csproj", "{5E54706A-32E2-4E3E-BE13-D3C646DD1533}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rust.UiFramework.UnitTests", "Rust.UiFramework.UnitTests\Rust.UiFramework.UnitTests.csproj", "{6D5681D6-15DF-41DF-8A1F-03A923F592F1}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rust.UiFramework.SourceGenerators", "Rust.UiFramework.SourceGenerators\Rust.UiFramework.SourceGenerators.csproj", "{26704024-E6B8-488A-B781-81C4D96101D9}"
 EndProject
 Global
@@ -75,16 +73,5 @@ Global
 		{26704024-E6B8-488A-B781-81C4D96101D9}.Trace Leaks|Benchmarks.Build.0 = Trace Leaks|Benchmarks
 		{26704024-E6B8-488A-B781-81C4D96101D9}.Trace Leaks|Unit Tests.ActiveCfg = Trace Leaks|Unit Tests
 		{26704024-E6B8-488A-B781-81C4D96101D9}.Trace Leaks|Unit Tests.Build.0 = Trace Leaks|Unit Tests
-		{6D5681D6-15DF-41DF-8A1F-03A923F592F1}.Debug|Benchmarks.ActiveCfg = Debug|Benchmarks
-		{6D5681D6-15DF-41DF-8A1F-03A923F592F1}.Debug|UiFramework.ActiveCfg = Debug|UiFramework
-		{6D5681D6-15DF-41DF-8A1F-03A923F592F1}.Release|UiFramework.ActiveCfg = Release|UiFramework
-		{6D5681D6-15DF-41DF-8A1F-03A923F592F1}.Debug|Unit Tests.ActiveCfg = Debug|Unit Tests
-		{6D5681D6-15DF-41DF-8A1F-03A923F592F1}.Debug|Unit Tests.Build.0 = Debug|Unit Tests
-		{6D5681D6-15DF-41DF-8A1F-03A923F592F1}.Release|Benchmarks.ActiveCfg = Release|Benchmarks
-		{6D5681D6-15DF-41DF-8A1F-03A923F592F1}.Release|Unit Tests.ActiveCfg = Release|Unit Tests
-		{6D5681D6-15DF-41DF-8A1F-03A923F592F1}.Release|Unit Tests.Build.0 = Release|Unit Tests
-		{6D5681D6-15DF-41DF-8A1F-03A923F592F1}.Trace Leaks|Benchmarks.ActiveCfg = Trace Leaks|Benchmarks
-		{6D5681D6-15DF-41DF-8A1F-03A923F592F1}.Trace Leaks|Unit Tests.ActiveCfg = Trace Leaks|Unit Tests
-		{6D5681D6-15DF-41DF-8A1F-03A923F592F1}.Trace Leaks|Unit Tests.Build.0 = Trace Leaks|Unit Tests
 	EndGlobalSection
 EndGlobal

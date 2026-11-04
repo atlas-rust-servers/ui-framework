@@ -1,8 +1,0 @@
-﻿{
-  "AllowMultiple": true,
-  "ComponentType": "Outline",
-  "Distance": "0.5 -0.5",
-  "Enabled": true,
-  "Type": "UnityEngine.UI.Outline",
-  "UseGraphicAlpha": false
-}

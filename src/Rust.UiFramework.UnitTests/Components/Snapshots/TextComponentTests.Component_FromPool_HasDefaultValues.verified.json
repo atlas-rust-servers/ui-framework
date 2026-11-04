@@ -1,8 +1,0 @@
-﻿{
-  "AllowRaycast": true,
-  "Color": "#FFFFFFFF",
-  "ComponentType": "Text",
-  "Enabled": true,
-  "FontSize": 14,
-  "Type": "UnityEngine.UI.Text"
-}

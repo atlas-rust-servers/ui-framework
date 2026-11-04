@@ -1,7 +1,0 @@
-﻿{
-  "AllowMultiple": false,
-  "ComponentType": "Mask",
-  "Enabled": true,
-  "ShowMaskGraphic": false,
-  "Type": "UnityEngine.UI.Mask"
-}

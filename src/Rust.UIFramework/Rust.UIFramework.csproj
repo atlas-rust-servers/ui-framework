@@ -186,9 +186,6 @@
         <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleTo">
             <_Parameter1>Rust.UiFramework.Benchmarks</_Parameter1>
         </AssemblyAttribute>
-        <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleTo">
-            <_Parameter1>Rust.UiFramework.UnitTests</_Parameter1>
-        </AssemblyAttribute>
     </ItemGroup>
 
     <ItemGroup>

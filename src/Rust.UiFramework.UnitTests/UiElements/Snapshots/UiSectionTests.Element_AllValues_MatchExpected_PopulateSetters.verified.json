@@ -1,7 +1,0 @@
-﻿{
-  "Active": true,
-  "Enabled": true,
-  "Name": "element",
-  "Parent": "parent",
-  "Reference": "parent:element"
-}

@@ -12,7 +12,7 @@ public static class RpcFunctions
     private const string AddUiFunc = "AddUI";
     private const string DestroyUiFunc = "DestroyUI";
     private const string DestroyUisFunc = "DestroyUIs";
-    private const string ReceiveFilePngFunc = "CL_ReceiveFilePng";
+    private const string ReceiveFilePngFunc = "CL_ReceiveFile";
     private const string OpenPieFunc = "OpenPie";
 
     public static readonly uint AddUi = StringPool.Get(AddUiFunc);
@@ -79,6 +79,7 @@ public static class RpcFunctions
         NetWrite write = ClientRPCStart(ReceiveFilePng);
         if (write != null)
         {
+            write.UInt64(textureId);
             write.UInt32(textureId);
             write.BytesWithSizeCustom(bytes);
             write.Send(send);

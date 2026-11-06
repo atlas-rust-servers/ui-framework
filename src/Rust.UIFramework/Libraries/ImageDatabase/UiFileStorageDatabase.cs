@@ -13,7 +13,7 @@ internal class UiFileStorageDatabase : BaseUiFrameworkLibrary, ISingleton, IImag
     }
 
     public bool Exists(ImageId id) => Get(id) != null;
-    public ImageId Store(byte[] image) => new(FileStorage.server.Store(image, FileStorage.Type.png, CommunityEntity.ServerInstance.net.ID));
-    public byte[] Get(ImageId id) => FileStorage.server.Get(id.Id, FileStorage.Type.png, CommunityEntity.ServerInstance.net.ID);
+    public ImageId Store(byte[] image) => new(FileStorage.server.StoreByCrc(CommunityEntity.ServerInstance.net.ID, FileStorage.Type.png, image));
+    public byte[] Get(ImageId id) => FileStorage.server.Get(CommunityEntity.ServerInstance.net.ID, id.Id, id.Id);
     public SaveVersion GetSaveVersion(ICommunityEntity entity) => new(entity.Id);
 }
